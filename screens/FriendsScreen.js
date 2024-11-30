@@ -1,6 +1,6 @@
-// screens/FriendsScreen.js
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 // Friend data
 const friends = [
@@ -11,6 +11,7 @@ const friends = [
     status: 'View competition',
     averageScreenTime: '3:28',
     statusColor: '#D9534F',
+    competitionScreen: 'AndyCompetition',
   },
   {
     id: '2',
@@ -19,6 +20,7 @@ const friends = [
     status: 'Not competing',
     averageScreenTime: '5:35',
     statusColor: '#B0B0B0',
+    competitionScreen: null,
   },
   {
     id: '3',
@@ -27,24 +29,39 @@ const friends = [
     status: 'View competition',
     averageScreenTime: '2:31',
     statusColor: '#D9534F',
+    competitionScreen: 'MiaCompetition',
   },
 ];
 
 // FriendCard Component
-const FriendCard = ({ friend }) => (
-  <View style={styles.friendCard}>
-    <Image source={friend.image} style={styles.avatar} />
-    <View style={styles.infoContainer}>
-      <Text style={styles.name}>{friend.name}</Text>
-      <Text style={styles.averageScreenTime}>
-        Average Screen Time <Text style={styles.bold}>{friend.averageScreenTime}</Text>
-      </Text>
+const FriendCard = ({ friend }) => {
+  const navigation = useNavigation();
+
+  const handlePress = () => {
+    if (friend.competitionScreen) {
+      navigation.navigate(friend.competitionScreen); // Navigate to competition screen
+    }
+  };
+
+  return (
+    <View style={styles.friendCard}>
+      <Image source={friend.image} style={styles.avatar} />
+      <View style={styles.infoContainer}>
+        <Text style={styles.name}>{friend.name}</Text>
+        <Text style={styles.averageScreenTime}>
+          Average Screen Time <Text style={styles.bold}>{friend.averageScreenTime}</Text>
+        </Text>
+      </View>
+      <TouchableOpacity
+        style={[styles.statusButton, { backgroundColor: friend.statusColor }]}
+        onPress={handlePress}
+        disabled={!friend.competitionScreen} // Disable button if no competition screen
+      >
+        <Text style={styles.statusText}>{friend.status}</Text>
+      </TouchableOpacity>
     </View>
-    <TouchableOpacity style={[styles.statusButton, { backgroundColor: friend.statusColor }]}>
-      <Text style={styles.statusText}>{friend.status}</Text>
-    </TouchableOpacity>
-  </View>
-);
+  );
+};
 
 // FriendsScreen Component
 const FriendsScreen = () => {
@@ -64,6 +81,7 @@ const FriendsScreen = () => {
   );
 };
 
+// Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,

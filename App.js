@@ -9,6 +9,8 @@ import { Ionicons } from '@expo/vector-icons';
 import HomeScreen from './screens/HomeScreen';
 import CompeteScreen from './screens/CompeteScreen';
 import FriendsScreen from './screens/FriendsScreen';
+import AndyCompetition from './screens/AndyCompetition';
+import MiaCompetition from './screens/MiaCompetition';
 import JoinScreen from './screens/JoinScreen';
 import CurrentGameScreen from './screens/CurrentGameScreen';
 import LoginScreen from './screens/LoginScreen';
@@ -65,6 +67,28 @@ function HomeStack() {
   );
 }
 
+function FriendsStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Friends"
+        component={FriendsScreen}
+        options={{ title: 'Friends' }}
+      />
+      <Stack.Screen
+        name="AndyCompetition"
+        component={AndyCompetition}
+        options={{ title: "Andy's Competition" }}
+      />
+      <Stack.Screen
+        name="MiaCompetition"
+        component={MiaCompetition}
+        options={{ title: "Mia's Competition" }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 // Main Tabs (after login)
 function MainTabs() {
   return (
@@ -94,7 +118,7 @@ function MainTabs() {
     >
       <Tab.Screen name="Home" component={HomeStack} />
       <Tab.Screen name="Progress" component={() => <View />} />
-      <Tab.Screen name="Friends" component={FriendsScreen} />
+      <Tab.Screen name="Friends" component={FriendsStack} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
