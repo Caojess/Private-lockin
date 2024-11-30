@@ -65,6 +65,12 @@ const FriendCard = ({ friend }) => {
 
 // FriendsScreen Component
 const FriendsScreen = () => {
+  const navigation = useNavigation(); // Use navigation hook for navigation
+
+  const handleAddFriends = () => {
+    navigation.navigate('AddFriends'); // Navigate to the AddFriends screen
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Friends</Text>
@@ -74,7 +80,7 @@ const FriendsScreen = () => {
         renderItem={({ item }) => <FriendCard friend={item} />}
         contentContainerStyle={styles.friendsList}
       />
-      <TouchableOpacity style={styles.addButton}>
+      <TouchableOpacity style={styles.addButton} onPress={handleAddFriends}>
         <Text style={styles.addButtonText}>Add friends</Text>
       </TouchableOpacity>
     </View>

@@ -11,6 +11,7 @@ import CompeteScreen from './screens/CompeteScreen';
 import FriendsScreen from './screens/FriendsScreen';
 import AndyCompetition from './screens/AndyCompetition';
 import MiaCompetition from './screens/MiaCompetition';
+import AddFriends from './screens/AddFriends';
 import JoinScreen from './screens/JoinScreen';
 import CurrentGameScreen from './screens/CurrentGameScreen';
 import LoginScreen from './screens/LoginScreen';
@@ -83,6 +84,11 @@ function FriendsStack() {
       <Stack.Screen
         name="MiaCompetition"
         component={MiaCompetition}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="AddFriends"
+        component={AddFriends}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
