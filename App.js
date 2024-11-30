@@ -73,17 +73,17 @@ function FriendsStack() {
       <Stack.Screen
         name="Friends"
         component={FriendsScreen}
-        options={{ title: 'Friends' }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="AndyCompetition"
         component={AndyCompetition}
-        options={{ title: "Andy's Competition" }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="MiaCompetition"
         component={MiaCompetition}
-        options={{ title: "Mia's Competition" }}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

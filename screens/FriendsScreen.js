@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     padding: 16,
-    paddingTop: 40, // Add extra padding to move the content down
+    paddingTop: 50, // Add extra padding to move the content down
   },
   title: {
     fontSize: 24,

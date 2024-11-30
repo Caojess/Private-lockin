@@ -62,14 +62,6 @@ const AndyCompetition = ({ navigation }) => {
           </View>
         </View>
       ))}
-
-      {/* Bottom Navigation */}
-      <View style={styles.bottomNav}>
-        <Text style={styles.navItem}>Home</Text>
-        <Text style={styles.navItem}>Progress</Text>
-        <Text style={styles.navItem}>Friends</Text>
-        <Text style={styles.navItem}>Profile</Text>
-      </View>
     </View>
   );
 };
@@ -84,6 +76,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginTop: 50,
     marginBottom: 20,
   },
   backButton: {
@@ -161,14 +154,6 @@ const styles = StyleSheet.create({
   totalTime: {
     fontSize: 14,
     color: '#000',
-  },
-  bottomNav: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    borderTopWidth: 1,
-    borderTopColor: '#ddd',
-    paddingTop: 10,
-    paddingBottom: 20,
   },
   navItem: {
     fontSize: 14,
