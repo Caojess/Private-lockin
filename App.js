@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 // Import screens
 import HomeScreen from './screens/HomeScreen';
 import CompeteScreen from './screens/CompeteScreen';
+import FriendsScreen from './screens/FriendsScreen';
 import JoinScreen from './screens/JoinScreen';
 import CurrentGameScreen from './screens/CurrentGameScreen';
 import LoginScreen from './screens/LoginScreen';
@@ -93,7 +94,7 @@ function MainTabs() {
     >
       <Tab.Screen name="Home" component={HomeStack} />
       <Tab.Screen name="Progress" component={() => <View />} />
-      <Tab.Screen name="Friends" component={() => <View />} />
+      <Tab.Screen name="Friends" component={FriendsScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
