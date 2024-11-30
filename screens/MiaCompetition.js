@@ -4,19 +4,19 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, ProgressBarAndroid } f
 const participants = [
   {
     id: '1',
-    name: 'Andy',
-    image: require('../images/andy.png'),
-    timeElapsed: '00:45',
+    name: 'Mia',
+    image: require('../images/Mia.png'),
+    timeElapsed: '00:02',
     totalTime: '3:00',
-    progress: 0.25, // Progress in percentage (e.g., 0.25 = 25%)
+    progress: 0.25,
   },
   {
     id: '2',
-    name: 'Mia',
-    image: require('../images/Mia.png'),
-    timeElapsed: '00:45',
+    name: 'Andy',
+    image: require('../images/andy.png'),
+    timeElapsed: '00:03',
     totalTime: '3:00',
-    progress: 0.25,
+    progress: 0.25, // Progress in percentage (e.g., 0.25 = 25%)
   },
 ];
 
@@ -28,7 +28,7 @@ const MiaCompetition = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Text style={styles.backArrow}>←</Text>
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Mia’s competition</Text>
+        <Text style={styles.headerTitle}>The Olympics</Text>
         <TouchableOpacity style={styles.helpButton}>
           <Text style={styles.helpIcon}>?</Text>
         </TouchableOpacity>
