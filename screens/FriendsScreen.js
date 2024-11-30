@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     padding: 16,
+    paddingTop: 40, // Add extra padding to move the content down
   },
   title: {
     fontSize: 24,
@@ -120,11 +121,14 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   addButton: {
-    marginTop: 20,
+    marginTop: 30,
+    marginBottom: 70,
     backgroundColor: '#D9534F',
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
+    marginHorizontal: 50,
+    width: 'auto',
   },
   addButtonText: {
     color: '#fff',
