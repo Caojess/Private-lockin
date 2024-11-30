@@ -77,7 +77,7 @@ const AddFriends = () => {
               onPress={() => handleAddFriend(item)}
             >
               <Text style={styles.addButtonText}>
-                {addedFriends.has(item.id) ? 'Added' : 'Add'}
+                {addedFriends.has(item.id) ? 'Requested' : 'Send request'}
               </Text>
             </TouchableOpacity>
           </View>
