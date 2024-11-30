@@ -12,6 +12,7 @@ import FriendsScreen from './screens/FriendsScreen';
 import AndyCompetition from './screens/AndyCompetition';
 import MiaCompetition from './screens/MiaCompetition';
 import AddFriends from './screens/AddFriends';
+import FriendRequestsScreen from './screens/FriendRequestsScreen';
 import JoinScreen from './screens/JoinScreen';
 import CurrentGameScreen from './screens/CurrentGameScreen';
 import LoginScreen from './screens/LoginScreen';
@@ -89,6 +90,11 @@ function FriendsStack() {
       <Stack.Screen
         name="AddFriends"
         component={AddFriends}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="FriendRequests"
+        component={FriendRequestsScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

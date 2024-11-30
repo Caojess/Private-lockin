@@ -71,6 +71,10 @@ const FriendsScreen = () => {
     navigation.navigate('AddFriends'); // Navigate to the AddFriends screen
   };
 
+  const handleFriendRequests = () => {
+    navigation.navigate('FriendRequests'); // Navigate to the FriendRequests screen
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Friends</Text>
@@ -80,6 +84,9 @@ const FriendsScreen = () => {
         renderItem={({ item }) => <FriendCard friend={item} />}
         contentContainerStyle={styles.friendsList}
       />
+      <TouchableOpacity style={styles.friendRequestsButton} onPress={handleFriendRequests}>
+        <Text style={styles.friendRequestsText}>Friend requests</Text>
+      </TouchableOpacity>
       <TouchableOpacity style={styles.addButton} onPress={handleAddFriends}>
         <Text style={styles.addButtonText}>Add friends</Text>
       </TouchableOpacity>
@@ -94,6 +101,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 16,
     paddingTop: 50, // Add extra padding to move the content down
+    paddingBottom: 50,
   },
   title: {
     fontSize: 24,
@@ -144,15 +152,26 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '600',
   },
-  addButton: {
-    marginTop: 30,
-    marginBottom: 70,
+  friendRequestsButton: {
+    marginTop: 20,
     backgroundColor: '#D9534F',
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
     marginHorizontal: 50,
-    width: 'auto',
+  },
+  friendRequestsText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  addButton: {
+    marginTop: 20,
+    backgroundColor: '#D9534F',
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginHorizontal: 50,
   },
   addButtonText: {
     color: '#fff',
