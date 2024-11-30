@@ -17,6 +17,7 @@ const AddFriends = () => {
   const navigation = useNavigation(); // Use the hook here
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredFriends, setFilteredFriends] = useState(mockFriendsToAdd);
+  const [addedFriends, setAddedFriends] = useState(new Set()); // To track added friends
 
   const handleSearch = (text) => {
     setSearchTerm(text);
@@ -32,8 +33,16 @@ const AddFriends = () => {
   };
 
   const handleAddFriend = (friend) => {
-    // Logic to add the friend (e.g., update database or state)
-    alert(`${friend.name} has been added as a friend!`);
+    // Toggle the added status of the friend
+    setAddedFriends((prevAddedFriends) => {
+      const newAddedFriends = new Set(prevAddedFriends);
+      if (newAddedFriends.has(friend.id)) {
+        newAddedFriends.delete(friend.id); // Remove if already added
+      } else {
+        newAddedFriends.add(friend.id); // Add if not added
+      }
+      return newAddedFriends;
+    });
   };
 
   return (
@@ -61,10 +70,15 @@ const AddFriends = () => {
           <View style={styles.friendCard}>
             <Text style={styles.friendName}>{item.name}</Text>
             <TouchableOpacity
-              style={styles.addButton}
+              style={[
+                styles.addButton,
+                addedFriends.has(item.id) && styles.addedButton, // Apply added style if the friend is added
+              ]}
               onPress={() => handleAddFriend(item)}
             >
-              <Text style={styles.addButtonText}>Add</Text>
+              <Text style={styles.addButtonText}>
+                {addedFriends.has(item.id) ? 'Added' : 'Add'}
+              </Text>
             </TouchableOpacity>
           </View>
         )}
@@ -117,7 +131,7 @@ const styles = StyleSheet.create({
   },
   suggestedText: {
     fontSize: 18,
-    fontWeight: '300',
+    fontWeight: '600',
     marginBottom: 12, // Space between "Suggested" and the friend list
     paddingLeft: 16,
   },
@@ -139,6 +153,9 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     paddingHorizontal: 12,
     borderRadius: 20,
+  },
+  addedButton: {
+    backgroundColor: '#B0B0B0', // Gray background when added
   },
   addButtonText: {
     color: '#fff',
