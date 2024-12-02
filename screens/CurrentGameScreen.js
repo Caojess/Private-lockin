@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import Svg, { Circle } from 'react-native-svg';
-import { Ionicons } from '@expo/vector-icons';
+import React, { useState, useEffect } from "react";
+import { View, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
+import Svg, { Circle } from "react-native-svg";
+import { Ionicons } from "@expo/vector-icons";
 
 const CurrentGameScreen = ({ navigation }) => {
   const [timeLeft, setTimeLeft] = useState(36000); // 10 hours in seconds
@@ -19,9 +19,9 @@ const CurrentGameScreen = ({ navigation }) => {
     const hrs = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds % 3600) / 60);
     const secs = seconds % 60;
-    return `${hrs}h ${mins.toString().padStart(2, '0')}m ${secs
+    return `${hrs}h ${mins.toString().padStart(2, "0")}m ${secs
       .toString()
-      .padStart(2, '0')}s`;
+      .padStart(2, "0")}s`;
   };
 
   const progressPercentage = (timeLeft / 36000) * 100; // Based on 10-hour duration
@@ -33,7 +33,7 @@ const CurrentGameScreen = ({ navigation }) => {
         <Text style={styles.title}>Current Game</Text>
         <TouchableOpacity
           style={styles.infoButton}
-          onPress={() => navigation.navigate('Info')} // Navigate to the Info screen
+          onPress={() => navigation.navigate("Info")} // Navigate to the Info screen
         >
           <Ionicons name="help-circle-outline" size={28} color="#000" />
         </TouchableOpacity>
@@ -82,6 +82,13 @@ const CurrentGameScreen = ({ navigation }) => {
           <Text style={styles.timerCountdown}>{formatTime(timeLeft)}</Text>
         </View>
       </View>
+      {/* View Competition Button */}
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate("ViewCompetition")} // Navigate to ViewCompetition screen
+      >
+        <Text style={styles.buttonText}>View Competition</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -89,23 +96,23 @@ const CurrentGameScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     paddingHorizontal: 16,
     paddingTop: 50, // Leave room for the title
-    alignItems: 'center',
+    alignItems: "center",
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
     paddingHorizontal: 16,
     marginBottom: 16,
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#000',
+    fontWeight: "bold",
+    color: "#000",
     marginTop: 30,
   },
   infoButton: {
@@ -114,37 +121,37 @@ const styles = StyleSheet.create({
   stitle: {
     marginTop: 30,
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#DD3A3A',
+    fontWeight: "bold",
+    color: "#DD3A3A",
     marginBottom: 16,
   },
   todayBox: {
     marginTop: 30,
-    width: '90%',
+    width: "90%",
     height: 100,
-    backgroundColor: '#FAD4D4',
+    backgroundColor: "#FAD4D4",
     borderRadius: 12,
     padding: 16,
     marginBottom: 24,
   },
   todayRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 20,
   },
   todayText: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: '#DD3A3A',
+    fontWeight: "bold",
+    color: "#DD3A3A",
   },
   todayGoal: {
     fontSize: 14,
-    color: '#555',
+    color: "#555",
   },
   todayPayout: {
     fontSize: 14,
-    color: '#555',
-    fontWeight: 'bold',
+    color: "#555",
+    fontWeight: "bold",
   },
   participantsIcon: {
     borderRadius: 12,
@@ -152,25 +159,37 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   timerSection: {
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 24,
-    position: 'relative',
+    position: "relative",
   },
   timerTextContainer: {
-    position: 'absolute',
-    top: '38%',
-    left: '20.5%',
-    alignItems: 'center',
+    position: "absolute",
+    top: "38%",
+    left: "20.5%",
+    alignItems: "center",
   },
   timerDay: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#000',
+    fontWeight: "bold",
+    color: "#000",
   },
   timerCountdown: {
     fontSize: 28,
-    fontWeight: 'bold',
-    color: '#DD3A3A',
+    fontWeight: "bold",
+    color: "#DD3A3A",
+  },
+  button: {
+    backgroundColor: "#DD3A3A",
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    marginTop: 16,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
 

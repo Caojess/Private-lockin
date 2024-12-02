@@ -1,38 +1,41 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 // Import screens
-import HomeScreen from './screens/HomeScreen';
-import CompeteScreen from './screens/CompeteScreen';
-import FriendsScreen from './screens/FriendsScreen';
-import AndyCompetition from './screens/AndyCompetition';
-import MiaCompetition from './screens/MiaCompetition';
-import AddFriends from './screens/AddFriends';
-import FriendRequestsScreen from './screens/FriendRequestsScreen';
-import JoinScreen from './screens/JoinScreen';
-import CurrentGameScreen from './screens/CurrentGameScreen';
-import LoginScreen from './screens/LoginScreen';
-import WelcomeScreen from './screens/WelcomeScreen';
-import InfoScreen from './screens/InfoScreen';
-import ProfileScreen from './screens/ProfileScreen';
-import SetupCompetitionScreen from './screens/SetupCompetitionScreen';
-import InviteFriendsScreen from './screens/InviteFriendsScreen';
-import ShareInviteScreen from './screens/ShareInviteScreen';
+import HomeScreen from "./screens/HomeScreen";
+import CompeteScreen from "./screens/CompeteScreen";
+import FriendsScreen from "./screens/FriendsScreen";
+import AndyCompetition from "./screens/AndyCompetition";
+import MiaCompetition from "./screens/MiaCompetition";
+import AddFriends from "./screens/AddFriends";
+import FriendRequestsScreen from "./screens/FriendRequestsScreen";
+import JoinScreen from "./screens/JoinScreen";
+import CurrentGameScreen from "./screens/CurrentGameScreen";
+import LoginScreen from "./screens/LoginScreen";
+import WelcomeScreen from "./screens/WelcomeScreen";
+import InfoScreen from "./screens/InfoScreen";
+import ProfileScreen from "./screens/ProfileScreen";
+import SetupCompetitionScreen from "./screens/SetupCompetitionScreen";
+import InviteFriendsScreen from "./screens/InviteFriendsScreen";
+import ShareInviteScreen from "./screens/ShareInviteScreen";
+import ViewCompetition from "./screens/ViewCompetition";
+import HeadToHeadMia from "./screens/HeadToHeadMia";
+import HeadToHeadHarper from "./screens/HeadToHeadHarper";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 // Shared Header for Screens
 const sharedScreenOptions = ({ navigation }) => ({
-  headerTintColor: 'black',
-  headerTitleAlign: 'center',
-  headerStyle: { backgroundColor: '#fff' },
+  headerTintColor: "black",
+  headerTitleAlign: "center",
+  headerStyle: { backgroundColor: "#fff" },
   headerBackTitleVisible: false, // Completely hide back button text
-  headerBackTitle: '', // Ensure no inherited titles are displayed
+  headerBackTitle: "", // Ensure no inherited titles are displayed
   headerBackImage: () => (
     <Ionicons
       name="arrow-back"
@@ -43,7 +46,7 @@ const sharedScreenOptions = ({ navigation }) => ({
   ),
   headerRight: () => (
     <TouchableOpacity
-      onPress={() => navigation.navigate('Info')} // Navigate to Info screen
+      onPress={() => navigation.navigate("Info")} // Navigate to Info screen
       style={{ marginRight: 16 }}
     >
       <Ionicons name="help-circle-outline" size={28} color="#000" />
@@ -58,7 +61,7 @@ function HomeStack() {
       <Stack.Screen
         name="Home"
         component={HomeScreen}
-        options={{ title: 'LOCKIN',headerLeft: () => null, }} // Custom title for Home
+        options={{ title: "LOCKIN", headerLeft: () => null }} // Custom title for Home
       />
       <Stack.Screen name="Compete" component={CompeteScreen} />
       <Stack.Screen name="Join" component={JoinScreen} />
@@ -67,23 +70,27 @@ function HomeStack() {
         component={CurrentGameScreen}
         options={{ headerShown: false }} // No header for CurrentGame
       />
+
       <Stack.Screen name="Info" component={InfoScreen} />
+      <Stack.Screen name="ViewCompetition" component={ViewCompetition} />
+      <Stack.Screen name="HeadToHeadMia" component={HeadToHeadMia} />
+      <Stack.Screen name="HeadToHeadHarper" component={HeadToHeadHarper} />
 
       <Stack.Screen
         name="SetupCompetition"
         component={SetupCompetitionScreen}
-        options={{ title: 'Create Competition' }}
+        options={{ title: "Create Competition" }}
       />
       <Stack.Screen
         name="InviteFriends"
         component={InviteFriendsScreen}
-        options={{ title: 'Create Competition' }}
+        options={{ title: "Create Competition" }}
       />
       <Stack.Screen
-  name="ShareInvite"
-  component={ShareInviteScreen}
-  options={{ title: 'Create Competition' }}
-/>
+        name="ShareInvite"
+        component={ShareInviteScreen}
+        options={{ title: "Create Competition" }}
+      />
     </Stack.Navigator>
   );
 }
@@ -129,20 +136,20 @@ function MainTabs() {
         tabBarIcon: ({ focused, color }) => {
           let iconName;
 
-          if (route.name === 'Home') {
-            iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'Progress') {
-            iconName = focused ? 'trophy' : 'trophy-outline';
-          } else if (route.name === 'Friends') {
-            iconName = focused ? 'people' : 'people-outline';
-          } else if (route.name === 'Profile') {
-            iconName = focused ? 'person' : 'person-outline';
+          if (route.name === "Home") {
+            iconName = focused ? "home" : "home-outline";
+          } else if (route.name === "Progress") {
+            iconName = focused ? "trophy" : "trophy-outline";
+          } else if (route.name === "Friends") {
+            iconName = focused ? "people" : "people-outline";
+          } else if (route.name === "Profile") {
+            iconName = focused ? "person" : "person-outline";
           }
 
           return <Ionicons name={iconName} size={24} color={color} />;
         },
-        tabBarActiveTintColor: '#fff',
-        tabBarInactiveTintColor: '#aaa',
+        tabBarActiveTintColor: "#fff",
+        tabBarInactiveTintColor: "#aaa",
         tabBarStyle: styles.tabBar,
         tabBarLabelStyle: styles.tabLabel,
       })}
@@ -188,7 +195,7 @@ export default function App() {
 // Styles
 const styles = StyleSheet.create({
   tabBar: {
-    backgroundColor: '#000', // Black background
+    backgroundColor: "#000", // Black background
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     height: 90,
@@ -197,6 +204,6 @@ const styles = StyleSheet.create({
   },
   tabLabel: {
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });
