@@ -114,7 +114,7 @@ const LoginScreen = ({ navigation }) => {
       </Modal>
 
       {/* Gambling Warning Modal */}
-      <Modal   visible={showGamblingWarningModal} transparent={true} animationType="slide">
+      <Modal  visible={showGamblingWarningModal} transparent={true} animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.gamblingWarningTitle}>

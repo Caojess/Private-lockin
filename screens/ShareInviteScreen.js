@@ -35,11 +35,20 @@ const ShareInviteScreen = ({ navigation }) => {
 
       {/* Return to Home Button */}
       <TouchableOpacity
-        style={styles.returnButton}
-        onPress={() => navigation.navigate('Home')} // Navigate to Home
-      >
-        <Text style={styles.returnButtonText}>Return to Home</Text>
-      </TouchableOpacity>
+  style={styles.returnButton}
+  onPress={() =>
+    navigation.navigate('Home', {
+      newCompetition: {
+        id: '9', // Unique ID for the competition
+        name: 'My $10 Competition',
+        time: '2 Hours / 1 Day',
+        spots: '1/6 Spots Left',
+      },
+    })
+  }
+>
+  <Text style={styles.returnButtonText}>Return to Home</Text>
+</TouchableOpacity>
     </View>
   );
 };
