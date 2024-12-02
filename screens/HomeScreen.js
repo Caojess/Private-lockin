@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import FriendsScroll from '../components/FriendsScroll';
 import PublicScroll from '../components/PublicScroll';
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
     const mockCompetitions = [
         { id: 1, name: "Andy's $15 Competition", time: "3 Hours / 1 Day", spots: "1/4 Spots Left" },
         { id: 2, name: "Ingrid's $20 Competition", time: "5 Hours / 2 Days", spots: "2/5 Spots Left" },
@@ -27,9 +27,12 @@ const HomeScreen = () => {
       <Text style={styles.sectionTitle}>Local & Public</Text>
       <PublicScroll competitions={mockCompetitions.slice(4, 8)} />
 
-      <TouchableOpacity style={styles.createCustomButton}>
-        <Text style={styles.createCustomText}>Create Custom</Text>
-      </TouchableOpacity>
+      <TouchableOpacity
+  style={styles.createCustomButton}
+  onPress={() => navigation.navigate('SetupCompetition')} // Navigate to SetupCompetitionScreen
+>
+  <Text style={styles.createCustomText}>Create Custom</Text>
+</TouchableOpacity>
     </View>
   );
 };

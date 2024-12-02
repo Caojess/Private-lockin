@@ -19,6 +19,9 @@ import LoginScreen from './screens/LoginScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
 import InfoScreen from './screens/InfoScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import SetupCompetitionScreen from './screens/SetupCompetitionScreen';
+import InviteFriendsScreen from './screens/InviteFriendsScreen';
+import ShareInviteScreen from './screens/ShareInviteScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -55,7 +58,7 @@ function HomeStack() {
       <Stack.Screen
         name="Home"
         component={HomeScreen}
-        options={{ title: 'LOCKIN' }} // Custom title for Home
+        options={{ title: 'LOCKIN',headerLeft: () => null, }} // Custom title for Home
       />
       <Stack.Screen name="Compete" component={CompeteScreen} />
       <Stack.Screen name="Join" component={JoinScreen} />
@@ -65,6 +68,22 @@ function HomeStack() {
         options={{ headerShown: false }} // No header for CurrentGame
       />
       <Stack.Screen name="Info" component={InfoScreen} />
+
+      <Stack.Screen
+        name="SetupCompetition"
+        component={SetupCompetitionScreen}
+        options={{ title: 'Create Competition' }}
+      />
+      <Stack.Screen
+        name="InviteFriends"
+        component={InviteFriendsScreen}
+        options={{ title: 'Create Competition' }}
+      />
+      <Stack.Screen
+  name="ShareInvite"
+  component={ShareInviteScreen}
+  options={{ title: 'Create Competition' }}
+/>
     </Stack.Navigator>
   );
 }
