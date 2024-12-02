@@ -8,7 +8,10 @@ import {
   Image,
   Alert,
   Modal,
+  LogBox,
 } from 'react-native';
+
+LogBox.ignoreLogs(['Warning: ...']); // Ignore warnings for clean logs
 
 const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
@@ -18,26 +21,32 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = () => {
     if (username === 'username' && password === 'password') {
-      setShowScreenTimeModal(true); // Show the first modal
+      console.log('Login successful, showing ScreenTime modal');
+      setShowScreenTimeModal(true);
     } else {
       Alert.alert('Login Failed', 'Invalid username or password.');
     }
   };
 
   const handleAllowScreenTime = () => {
-    // Close the first modal and open the second modal
-    setShowScreenTimeModal(false);
-    setTimeout(() => setShowGamblingWarningModal(true), 500); // Ensure smooth transition
+    console.log('Allow Screen Time clicked');
+    setShowScreenTimeModal(false); // Close the first modal
+    setTimeout(() => {
+      console.log('Showing Gambling Warning modal');
+      setShowGamblingWarningModal(true); // Show the second modal
+    }, 300); // Delay to ensure smooth transition
   };
 
   const handleAgreeToGamblingWarning = () => {
-    setShowGamblingWarningModal(false);
-    navigation.replace('Welcome'); // Navigate to Welcome screen
+    console.log('Agree to Gambling Warning clicked');
+    setShowGamblingWarningModal(false); // Close the second modal
+    navigation.navigate('Welcome'); // Navigate to Welcome screen
   };
 
   const handleDisagree = () => {
-    setShowGamblingWarningModal(false);
-    navigation.replace('Home'); // Navigate to Home screen
+    console.log('Disagree clicked');
+    setShowGamblingWarningModal(false); // Close the modal
+    navigation.navigate('Home'); // Navigate to Home screen
   };
 
   return (
@@ -78,11 +87,11 @@ const LoginScreen = ({ navigation }) => {
       </TouchableOpacity>
 
       {/* Screen Time Modal */}
-      <Modal visible={showScreenTimeModal} transparent={true} animationType="slide">
+      <Modal key={"screenTimeModal"} visible={showScreenTimeModal} transparent={true} animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalText}>
-              Allow LockIn to Access your Screen time Data?
+              Allow LockIn to Access your Screen Time Data?
             </Text>
             <View style={styles.modalButtons}>
               <TouchableOpacity
@@ -105,7 +114,7 @@ const LoginScreen = ({ navigation }) => {
       </Modal>
 
       {/* Gambling Warning Modal */}
-      <Modal visible={showGamblingWarningModal} transparent={true} animationType="slide">
+      <Modal key={"gamblingWarningModal"} visible={showGamblingWarningModal} transparent={true} animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.gamblingWarningTitle}>
