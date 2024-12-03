@@ -21,19 +21,19 @@ const participants = [
 ];
 
 const AndyCompetition = ({ navigation }) => {
-  return (
-    <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
+  // Setting the custom back button in the header
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Text style={styles.backArrow}>←</Text>
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>The Olympics</Text>
-        <TouchableOpacity style={styles.helpButton}>
-          <Text style={styles.helpIcon}>?</Text>
-        </TouchableOpacity>
-      </View>
+      ),
+    });
+  }, [navigation]);
 
+  return (
+    <View style={styles.container}>
       {/* Competition Info */}
       <View style={styles.infoContainer}>
         <Text style={styles.dayInfo}>Day 3/5</Text>
@@ -72,30 +72,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 16,
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 50,
-    marginBottom: 20,
-  },
   backButton: {
     padding: 8,
   },
   backArrow: {
-    fontSize: 18,
-    color: '#000',
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    flex: 1,
-  },
-  helpButton: {
-    padding: 8,
-  },
-  helpIcon: {
     fontSize: 18,
     color: '#000',
   },
@@ -152,10 +132,6 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   totalTime: {
-    fontSize: 14,
-    color: '#000',
-  },
-  navItem: {
     fontSize: 14,
     color: '#000',
   },

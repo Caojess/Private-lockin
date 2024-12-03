@@ -77,7 +77,6 @@ const FriendsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Friends</Text>
       <FlatList
         data={friends}
         keyExtractor={(item) => item.id}
@@ -102,12 +101,6 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingTop: 50, // Add extra padding to move the content down
     paddingBottom: 50,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    textAlign: 'center',
-    marginVertical: 16,
   },
   friendsList: {
     paddingBottom: 20,

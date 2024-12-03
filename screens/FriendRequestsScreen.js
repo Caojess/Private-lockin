@@ -20,17 +20,19 @@ const FriendRequestsScreen = () => {
     }));
   };
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+  // Set up the custom back button in the header
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Text style={styles.backArrow}>←</Text>
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Friend Requests</Text>
-        <TouchableOpacity style={styles.helpButton}>
-          <Text style={styles.helpIcon}>?</Text>
-        </TouchableOpacity>
-      </View>
+      ),
+    });
+  }, [navigation]);
+
+  return (
+    <View style={styles.container}>
       <FlatList
         data={friendRequests}
         keyExtractor={(item) => item.id}
@@ -74,32 +76,13 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingTop: 50,
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
   backButton: {
     padding: 8,
   },
   backArrow: {
     fontSize: 18,
     color: '#000',
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    flex: 1,
-  },
-  helpButton: {
-    padding: 8,
-  },
-  helpIcon: {
-    fontSize: 18,
-    color: '#000',
-  },
+    },
   requestCard: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -122,27 +122,82 @@ function FriendsStack() {
       <Stack.Screen
         name="Friends"
         component={FriendsScreen}
-        options={{ headerShown: false }}
+        options={{ 
+          title: "Friends",
+          headerLeft: () => null,
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Info")}
+              style={{ marginRight: 16 }}
+            >
+              <Ionicons name="help-circle-outline" size={28} color="#000" />
+            </TouchableOpacity>
+          ),
+        }}
       />
       <Stack.Screen
         name="AndyCompetition"
         component={AndyCompetition}
-        options={{ headerShown: false }}
+        options={{ 
+          title: "The Olympics",
+          headerLeft: () => null,
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Info")}
+              style={{ marginRight: 16 }}
+            >
+              <Ionicons name="help-circle-outline" size={28} color="#000" />
+            </TouchableOpacity>
+          ),
+        }}
       />
       <Stack.Screen
         name="MiaCompetition"
         component={MiaCompetition}
-        options={{ headerShown: false }}
+        options={{ 
+          title: "The Olympics",
+          headerLeft: () => null,
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Info")}
+              style={{ marginRight: 16 }}
+            >
+              <Ionicons name="help-circle-outline" size={28} color="#000" />
+            </TouchableOpacity>
+          ),
+        }}
       />
       <Stack.Screen
         name="AddFriends"
         component={AddFriends}
-        options={{ headerShown: false }}
+        options={{ 
+          title: "Add Friends",
+          headerLeft: () => null,
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Info")}
+              style={{ marginRight: 16 }}
+            >
+              <Ionicons name="help-circle-outline" size={28} color="#000" />
+            </TouchableOpacity>
+          ),
+        }}
       />
       <Stack.Screen
         name="FriendRequests"
         component={FriendRequestsScreen}
-        options={{ headerShown: false }}
+        options={{ 
+          title: "Friend Requests",
+          headerLeft: () => null,
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Info")}
+              style={{ marginRight: 16 }}
+            >
+              <Ionicons name="help-circle-outline" size={28} color="#000" />
+            </TouchableOpacity>
+          ),
+        }}
       />
     </Stack.Navigator>
   );

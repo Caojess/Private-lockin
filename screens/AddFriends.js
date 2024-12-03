@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
 const mockFriendsToAdd = [
   { id: '1', name: 'Autumn' },
@@ -13,8 +12,7 @@ const mockFriendsToAdd = [
   { id: '8', name: 'Xinyi' },
 ];
 
-const AddFriends = () => {
-  const navigation = useNavigation(); // Use the hook here
+const AddFriends = ({ navigation }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredFriends, setFilteredFriends] = useState(mockFriendsToAdd);
   const [addedFriends, setAddedFriends] = useState(new Set()); // To track added friends
@@ -45,17 +43,19 @@ const AddFriends = () => {
     });
   };
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+  // Set the back button in the header
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Text style={styles.backArrow}>←</Text>
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Add Friends</Text>
-        <TouchableOpacity style={styles.helpButton}>
-          <Text style={styles.helpIcon}>?</Text>
-        </TouchableOpacity>
-      </View>
+      ),
+    });
+  }, [navigation]);
+
+  return (
+    <View style={styles.container}>
       <TextInput
         style={styles.searchInput}
         placeholder="Search"
@@ -92,33 +92,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     padding: 16,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 50,
-    marginBottom: 20,
-  },
-  backButton: {
-    padding: 8,
-  },
-  backArrow: {
-    fontSize: 18,
-    color: '#000',
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    flex: 1,
-  },
-  helpButton: {
-    padding: 8,
-  },
-  helpIcon: {
-    fontSize: 18,
-    color: '#000',
   },
   searchInput: {
     borderWidth: 1,
@@ -161,6 +134,13 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 14,
     fontWeight: '600',
+  },
+  backButton: {
+    padding: 8,
+  },
+  backArrow: {
+    fontSize: 18,
+    color: '#000',
   },
 });
 
