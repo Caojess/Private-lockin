@@ -1,83 +1,132 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
-import { Ionicons } from '@expo/vector-icons';
-import { BarChart } from 'react-native-chart-kit'; // For the bar charts
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ScrollView,
+  SafeAreaView,
+} from 'react-native';
+import { BarChart } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
 
 export default function ProfileScreen() {
   const screenWidth = Dimensions.get('window').width;
 
-  // Sample data for the charts
   const generalAnalyticsData = [2, 3, 2.5, 3.5, 4, 3, 2];
-  const timeSpentData = [1.5, 2, 1.8, 2.2, 2.5, 1.5, 1];
+  const tiktokData = [1.2, 1.5, 1.4, 1.6, 1.8, 1.4, 1.2];
+  const imessageData = [1.0, 1.2, 1.3, 1.4, 1.5, 1.3, 1.1];
+  const instagramData = [1.3, 1.5, 1.7, 1.8, 2.0, 1.6, 1.4];
 
   return (
-    <ScrollView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Image
-          source={{ uri: 'https://placekitten.com/200/200' }} // Placeholder for profile image
-          style={styles.profileImage}
-        />
-        <Text style={styles.title}>Your Analytics</Text>
-        <TouchableOpacity style={styles.helpIcon}>
-          <Ionicons name="help-circle-outline" size={28} color="#000" />
-        </TouchableOpacity>
-      </View>
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
+        {/* Header Section */}
+        <View style={styles.header}>
+          <Image
+            source={require('../images/Mia.png')} // Profile picture
+            style={styles.profileImage}
+          />
+          <Text style={styles.title}>Your Analytics</Text>
+        </View>
 
-      {/* Dropdown */}
-      <View style={styles.dropdownContainer}>
-        <Picker
-          selectedValue="This week"
-          style={styles.picker}
-          onValueChange={(itemValue) => console.log(itemValue)}
-        >
-          <Picker.Item label="This week" value="This week" />
-          <Picker.Item label="Last week" value="Last week" />
-          <Picker.Item label="This month" value="This month" />
-        </Picker>
-      </View>
+        {/* Dropdown Section */}
+        <View style={styles.dropdownContainer}>
+          <Text style={styles.dropdownText}>This Week</Text>
+        </View>
 
-      {/* General Analytics Section */}
-      <Text style={styles.sectionTitle}>General Analytics</Text>
-      <BarChart
-        data={{
-          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-          datasets: [{ data: generalAnalyticsData }],
-        }}
-        width={screenWidth - 40}
-        height={220}
-        yAxisSuffix="h"
-        chartConfig={chartConfig}
-        style={styles.chart}
-      />
+        {/* General Analytics Section */}
+        <View style={styles.generalBanner}>
+          <Text style={styles.sectionTitle}>General Analytics</Text>
+          <View style={styles.chartContainer}>
+            <BarChart
+              data={{
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{ data: generalAnalyticsData }],
+              }}
+              width={screenWidth - 80}
+              height={220}
+              yAxisSuffix="h"
+              chartConfig={chartConfig}
+              style={[styles.chart, styles.roundedChart]}
+            />
+          </View>
+        </View>
 
-      {/* Time Spent Section */}
-      <Text style={styles.sectionTitle}>You spend the most time on...</Text>
-      <View style={styles.timeSpentContainer}>
-        <Ionicons name="logo-youtube" size={32} color="#FF0000" />
-        <BarChart
-          data={{
-            labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
-            datasets: [{ data: timeSpentData }],
-          }}
-          width={screenWidth - 90}
-          height={220}
-          yAxisSuffix="h"
-          chartConfig={chartConfig}
-          style={styles.chart}
-        />
-      </View>
-    </ScrollView>
+        {/* TikTok Section */}
+        <View style={styles.compressedBanner}>
+          <Text style={styles.sectionTitle}>You used TikTok for an avg 1.5 hours/day</Text>
+          <View style={styles.timeSpentContainer}>
+            <Image
+              source={require('../images/tiktok-icon.png')}
+              style={styles.icon}
+            />
+            <BarChart
+              data={{
+                labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+                datasets: [{ data: tiktokData }],
+              }}
+              width={screenWidth - 120}
+              height={180}
+              yAxisSuffix="h"
+              chartConfig={chartConfig}
+              style={[styles.chart, styles.roundedChart]}
+            />
+          </View>
+        </View>
+
+        {/* iMessage Section */}
+        <View style={styles.compressedBanner}>
+          <Text style={styles.sectionTitle}>You used iMessage for an avg 1.2 hours/day</Text>
+          <View style={styles.timeSpentContainer}>
+            <Image
+              source={require('../images/message-icon.png')}
+              style={styles.icon}
+            />
+            <BarChart
+              data={{
+                labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+                datasets: [{ data: imessageData }],
+              }}
+              width={screenWidth - 120}
+              height={180}
+              yAxisSuffix="h"
+              chartConfig={chartConfig}
+              style={[styles.chart, styles.roundedChart]}
+            />
+          </View>
+        </View>
+
+        {/* Instagram Section */}
+        <View style={styles.compressedBanner}>
+          <Text style={styles.sectionTitle}>You used Instagram for an avg 1.8 hours/day</Text>
+          <View style={styles.timeSpentContainer}>
+            <Image
+              source={require('../images/instagram-icon.png')}
+              style={styles.icon}
+            />
+            <BarChart
+              data={{
+                labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+                datasets: [{ data: instagramData }],
+              }}
+              width={screenWidth - 120}
+              height={180}
+              yAxisSuffix="h"
+              chartConfig={chartConfig}
+              style={[styles.chart, styles.roundedChart]}
+            />
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
-// Chart Configuration
 const chartConfig = {
   backgroundGradientFrom: '#fff',
   backgroundGradientTo: '#fff',
-  color: (opacity = 1) => `rgba(255, 87, 51, ${opacity})`, // Matching the accent color
+  color: (opacity = 1) => `rgba(221, 58, 58, ${opacity})`,
   labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
   barPercentage: 0.5,
   fillShadowGradient: '#DD3A3A',
@@ -85,54 +134,103 @@ const chartConfig = {
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
   container: {
     flex: 1,
-    backgroundColor: '#fce4e4',
+    backgroundColor: '#fff',
     paddingHorizontal: 20,
-    paddingTop: 20,
+    paddingTop: 10,
+  },
+  scrollContent: {
+    paddingBottom: 20, // Ensure there's space at the bottom of the scroll
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginBottom: 20,
+    marginTop: 10,
   },
   profileImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 40,
+    height: 40,
+    borderRadius: 20, // Circular image
+    marginRight: 10,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#DD3A3A',
-  },
-  helpIcon: {
-    padding: 10,
+    flex: 1, // Takes remaining space
+    marginLeft: 10, // Adds space between profile picture and title
   },
   dropdownContainer: {
-    marginTop: 10,
-    marginBottom: 20,
     backgroundColor: '#fff',
     borderRadius: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
     elevation: 2,
+    marginBottom: 20,
   },
-  picker: {
-    height: 50,
+  dropdownText: {
+    fontSize: 16,
     color: '#000',
+  },
+  generalBanner: {
+    backgroundColor: 'rgba(220, 53, 69, 0.5)',
+    borderRadius: 15,
+    paddingVertical: 15,
+    paddingHorizontal: 15,
+    marginBottom: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  chartContainer: {
+    padding: 10, // Added padding around the chart
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  compressedBanner: {
+    backgroundColor: 'rgba(220, 53, 69, 0.5)',
+    borderRadius: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    marginBottom: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#000',
-    marginVertical: 10,
+    marginBottom: 8,
+    alignSelf: 'flex-start',
   },
   chart: {
     borderRadius: 10,
     marginVertical: 10,
   },
+  roundedChart: {
+    overflow: 'hidden',
+    borderRadius: 10,
+  },
   timeSpentContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'flex-start',
+    marginHorizontal: 15,
+  },
+  icon: {
+    width: 40,
+    height: 40,
+    resizeMode: 'contain',
+    marginRight: 12,
   },
 });
-

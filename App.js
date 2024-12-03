@@ -19,12 +19,6 @@ import LoginScreen from "./screens/LoginScreen";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import InfoScreen from "./screens/InfoScreen";
 import ProfileScreen from "./screens/ProfileScreen";
-import SetupCompetitionScreen from "./screens/SetupCompetitionScreen";
-import InviteFriendsScreen from "./screens/InviteFriendsScreen";
-import ShareInviteScreen from "./screens/ShareInviteScreen";
-import ViewCompetition from "./screens/ViewCompetition";
-import HeadToHeadMia from "./screens/HeadToHeadMia";
-import HeadToHeadHarper from "./screens/HeadToHeadHarper";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -44,14 +38,15 @@ const sharedScreenOptions = ({ navigation }) => ({
       style={{ marginLeft: 16 }}
     />
   ),
-  headerRight: () => (
-    <TouchableOpacity
-      onPress={() => navigation.navigate("Info")} // Navigate to Info screen
-      style={{ marginRight: 16 }}
-    >
-      <Ionicons name="help-circle-outline" size={28} color="#000" />
-    </TouchableOpacity>
-  ),
+  headerRight: () =>
+    navigation.canGoBack() ? (
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Info")} // Navigate to Info screen
+        style={{ marginRight: 16 }}
+      >
+        <Ionicons name="help-circle-outline" size={28} color="#000" />
+      </TouchableOpacity>
+    ) : null,
 });
 
 // Stack for authenticated screens (with tabs)
@@ -70,59 +65,30 @@ function HomeStack() {
         component={CurrentGameScreen}
         options={{ headerShown: false }} // No header for CurrentGame
       />
-
       <Stack.Screen name="Info" component={InfoScreen} />
-      <Stack.Screen name="ViewCompetition" component={ViewCompetition} />
-      <Stack.Screen name="HeadToHeadMia" component={HeadToHeadMia} />
-      <Stack.Screen name="HeadToHeadHarper" component={HeadToHeadHarper} />
-
-      <Stack.Screen
-        name="SetupCompetition"
-        component={SetupCompetitionScreen}
-        options={{ title: "Create Competition" }}
-      />
-      <Stack.Screen
-        name="InviteFriends"
-        component={InviteFriendsScreen}
-        options={{ title: "Create Competition" }}
-      />
-      <Stack.Screen
-        name="ShareInvite"
-        component={ShareInviteScreen}
-        options={{ title: "Create Competition" }}
-      />
     </Stack.Navigator>
   );
 }
 
-function FriendsStack() {
+function ProfileStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={sharedScreenOptions}>
       <Stack.Screen
-        name="Friends"
-        component={FriendsScreen}
-        options={{ headerShown: false }}
+        name="Profile"
+        component={ProfileScreen}
+        options={({ navigation }) => ({
+          title: "Profile",
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Info")}
+              style={{ marginRight: 16 }}
+            >
+              <Ionicons name="help-circle-outline" size={28} color="#000" />
+            </TouchableOpacity>
+          ),
+        })}
       />
-      <Stack.Screen
-        name="AndyCompetition"
-        component={AndyCompetition}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="MiaCompetition"
-        component={MiaCompetition}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="AddFriends"
-        component={AddFriends}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="FriendRequests"
-        component={FriendRequestsScreen}
-        options={{ headerShown: false }}
-      />
+      <Stack.Screen name="Info" component={InfoScreen} />
     </Stack.Navigator>
   );
 }
@@ -156,8 +122,8 @@ function MainTabs() {
     >
       <Tab.Screen name="Home" component={HomeStack} />
       <Tab.Screen name="Progress" component={() => <View />} />
-      <Tab.Screen name="Friends" component={FriendsStack} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="Friends" component={FriendsScreen} />
+      <Tab.Screen name="Profile" component={ProfileStack} />
     </Tab.Navigator>
   );
 }
