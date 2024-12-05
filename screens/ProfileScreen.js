@@ -92,19 +92,21 @@ export default function ProfileScreen() {
             style={styles.profileImage}
           />
           <Text style={styles.title}>Mia Jones</Text>
-          <Text style={styles.subtitle}>San Francisco, CA</Text>{" "}
+          <Text style={styles.subtitle}>San Francisco, CA</Text>
           {/* Smaller subtitle */}
         </View>
 
         {/* Money Section */}
         <View style={styles.generalBanner}>
-          <Text style={styles.sectionTitle}>
-            Current Balance: <Text style={styles.sectionText}>$45</Text>
-          </Text>
+        <Text style={styles.sectionTitle}>
+          {`Current Balance: `}
+          <Text style={styles.sectionText}>$45</Text>
+        </Text>
+
         </View>
 
         {/* Dropdown Section */}
-        <View>
+        <View>89
           <TouchableOpacity
             style={styles.dropdownContainer}
             onPress={() => setDropdownVisible(!isDropdownVisible)}
