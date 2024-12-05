@@ -29,7 +29,7 @@ const ViewCompetition = ({ navigation }) => {
         <View style={styles.progressSection}>
           <TouchableOpacity
             style={styles.compareButton}
-            onPress={() => navigation.navigate("Profile")}
+            onPress={() => navigation.navigate("Profile", { fromStats: true })}
           >
             <Text style={styles.compareText}>My Stats</Text>
           </TouchableOpacity>

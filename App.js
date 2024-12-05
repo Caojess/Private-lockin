@@ -75,7 +75,7 @@ function HomeStack() {
         options={{ headerShown: false }}
       />
       <Stack.Screen name="Info" component={InfoScreen} />
-    
+
       <Stack.Screen
         name="SetupCompetition"
         component={SetupCompetitionScreen}
@@ -106,8 +106,18 @@ function ProfileStack() {
       <Stack.Screen
         name="Profile"
         component={ProfileScreen}
-        options={({ navigation }) => ({
+        options={({ route, navigation }) => ({
           title: "Profile",
+          headerLeft: route.params?.fromStats
+            ? () => (
+                <TouchableOpacity
+                  onPress={() => navigation.goBack()}
+                  style={{ marginLeft: 16 }}
+                >
+                  <Ionicons name="arrow-back" size={24} color="#000" />
+                </TouchableOpacity>
+              )
+            : null, // No back button in other cases
           headerRight: () => (
             <TouchableOpacity
               onPress={() => navigation.navigate("Info")}
@@ -190,7 +200,7 @@ function ProgressStack() {
           options={{ title: "Progress", headerLeft: () => null }}
         />
       )}
-      
+
       <Stack.Screen name="ViewCompetition" component={ViewCompetition} />
       <Stack.Screen name="HeadToHeadMia" component={HeadToHeadMia} />
       <Stack.Screen name="HeadToHeadHarper" component={HeadToHeadHarper} />
