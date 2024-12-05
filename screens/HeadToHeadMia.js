@@ -55,14 +55,14 @@ const HeadToHeadMiaScreen = () => {
         <View style={styles.user}>
           <Text style={styles.label}>You</Text>
           <Image source={require("../images/you.png")} style={styles.avatar} />
-          <Text style={[styles.userTime, { color: "green" }]}>1:37</Text>
+          <Text style={[styles.userTime, styles.bold]}>1:37</Text>
         </View>
 
         {/* Opponent Section */}
         <View style={styles.user}>
           <Text style={styles.label}>Mia</Text>
           <Image source={require("../images/Mia.png")} style={styles.avatar} />
-          <Text style={[styles.userTime, { color: "red" }]}>2:30</Text>
+          <Text style={[styles.userTime, styles.nonBold]}>2:30</Text>
         </View>
       </View>
 
@@ -86,7 +86,7 @@ const HeadToHeadMiaScreen = () => {
               style={[
                 styles.cellText,
                 styles.leftColumn,
-                isLower(item.you, item.opponent) && styles.greenBold,
+                isLower(item.you, item.opponent) ? styles.bold : styles.nonBold,
               ]}
             >
               {item.you}
@@ -103,7 +103,9 @@ const HeadToHeadMiaScreen = () => {
               style={[
                 styles.cellText,
                 styles.rightColumn,
-                !isLower(item.you, item.opponent) && styles.greenBold,
+                !isLower(item.you, item.opponent)
+                  ? styles.bold
+                  : styles.nonBold,
               ]}
             >
               {item.opponent}
@@ -157,7 +159,12 @@ const styles = StyleSheet.create({
   userTime: {
     marginTop: 10,
     fontSize: 18,
+  },
+  bold: {
     fontWeight: "bold",
+  },
+  nonBold: {
+    fontWeight: "normal",
   },
   sectionHeader: {
     fontSize: 18,
@@ -217,10 +224,6 @@ const styles = StyleSheet.create({
   rightColumn: {
     textAlign: "right",
     paddingRight: 15,
-  },
-  greenBold: {
-    fontWeight: "bold",
-    color: "green",
   },
 });
 
