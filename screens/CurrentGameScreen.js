@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { View, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Svg, { Circle } from "react-native-svg";
-import { Ionicons } from "@expo/vector-icons";
 
 const CurrentGameScreen = ({ navigation }) => {
-  const [timeLeft, setTimeLeft] = useState(36000); // 10 hours in seconds
+  const [timeLeft, setTimeLeft] = useState(54000); // 15 hours in seconds
 
   // Countdown logic
   useEffect(() => {
@@ -24,36 +23,39 @@ const CurrentGameScreen = ({ navigation }) => {
       .padStart(2, "0")}s`;
   };
 
-  const progressPercentage = (timeLeft / 36000) * 100; // Based on 10-hour duration
+  const progressPercentage = 40 / 180; // Example: 40 mins out of 3 hours
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-    
-      {/* Today Progress Box */}
+      {/* Today Progress */}
       <View style={styles.todayBox}>
-        <View style={styles.todayRow}>
-          <Text style={styles.todayText}>40 mins spent today</Text>
-          <Text style={styles.todayGoal}>Daily Goal: 3 hrs</Text>
+        <View style={styles.row}>
+          <Text style={styles.todayText1}>40 mins today</Text>
+          <Text style={styles.todayText2}> Daily Goal: 3 hours</Text>
         </View>
-        <View style={styles.todayRow}>
-          <Text style={styles.todayPayout}>Current Payout: $20</Text>
-          <View style={styles.participantsIcon}>
-            <Text>👥👥 4 ppl left</Text>
-          </View>
+        <View style={styles.progressBar}>
+          <View
+            style={[
+              styles.progress,
+              { width: `${progressPercentage * 100}%` },
+            ]}
+          />
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.payoutText}>Current Payout: $15</Text>
+          <Text style={styles.participantsIcon}>4 ppl left</Text>
         </View>
       </View>
 
-      <Text style={styles.stitle}>Competition Countdown</Text>
-      {/* Circular Timer */}
-      <View style={styles.timerSection}>
+      {/* Countdown Timer */}
+      <View style={styles.timerContainer}>
         <Svg width={300} height={300} viewBox="0 0 200 200">
           <Circle
             cx="100"
             cy="100"
             r="90"
-            stroke="#ddd"
-            strokeWidth="1"
+            stroke="#F5F5F5"
+            strokeWidth="10"
             fill="none"
           />
           <Circle
@@ -63,20 +65,21 @@ const CurrentGameScreen = ({ navigation }) => {
             stroke="#DD3A3A"
             strokeWidth="10"
             fill="none"
-            strokeDasharray="565" // Circumference of the circle
-            strokeDashoffset={(1 - progressPercentage / 100) * 565}
+            strokeDasharray="565"
+            strokeDashoffset={(1 - timeLeft / 54000) * 565}
             strokeLinecap="round"
           />
         </Svg>
         <View style={styles.timerTextContainer}>
-          <Text style={styles.timerDay}>Day 2</Text>
-          <Text style={styles.timerCountdown}>{formatTime(timeLeft)}</Text>
+          <Text style={styles.dayText}>Day 2</Text>
+          <Text style={styles.timeLeftText}>{formatTime(timeLeft)}</Text>
         </View>
       </View>
+
       {/* View Competition Button */}
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate("ViewCompetition")} // Navigate to ViewCompetition screen
+        onPress={() => navigation.navigate("ViewCompetition")}
       >
         <Text style={styles.buttonText}>View Competition</Text>
       </TouchableOpacity>
@@ -86,87 +89,74 @@ const CurrentGameScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: 30,
     flex: 1,
-    backgroundColor: "#fff",
-    paddingHorizontal: 16,
-    paddingTop: 0, // Leave room for the title
+    backgroundColor: "#FFFFFF",
     alignItems: "center",
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "100%",
     paddingHorizontal: 16,
-    marginBottom: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#000",
-    marginTop: -10,
-  },
-  infoButton: {
-    padding: 8,
-  },
-  stitle: {
-    marginTop: 30,
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#DD3A3A",
-    marginBottom: 16,
   },
   todayBox: {
-    marginTop: 30,
+    marginTop: 20,
     width: "90%",
-    height: 100,
     backgroundColor: "#FAD4D4",
     borderRadius: 12,
     padding: 16,
     marginBottom: 24,
   },
-  todayRow: {
+  row: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 20,
+    alignItems: "center",
+    marginBottom: 8,
   },
-  todayText: {
-    fontSize: 16,
+  todayText1: {
+    fontSize: 18,
     fontWeight: "bold",
     color: "#DD3A3A",
   },
-  todayGoal: {
+  todayText2: {
     fontSize: 14,
-    color: "#555",
-  },
-  todayPayout: {
-    fontSize: 14,
-    color: "#555",
-    fontWeight: "bold",
-  },
-  participantsIcon: {
-    borderRadius: 12,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-  },
-  timerSection: {
-    alignItems: "center",
-    marginBottom: 24,
-    position: "relative",
-  },
-  timerTextContainer: {
-    position: "absolute",
-    top: "38%",
-    left: "20.5%",
-    alignItems: "center",
-  },
-  timerDay: {
-    fontSize: 24,
     fontWeight: "bold",
     color: "#000",
   },
-  timerCountdown: {
-    fontSize: 28,
+  payoutText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#000",
+  },
+  participantsIcon: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#000",
+  },
+  progressBar: {
+    height: 10,
+    backgroundColor: "#F5F5F5",
+    borderRadius: 5,
+    marginVertical: 8,
+    overflow: "hidden",
+  },
+  progress: {
+    height: 10,
+    backgroundColor: "#DD3A3A",
+  },
+  timerContainer: {
+    alignItems: "center",
+    marginBottom: 24,
+  },
+  timerTextContainer: {
+    position: "absolute",
+    alignItems: "center",
+    justifyContent: "center",
+    top: 110,
+  },
+  dayText: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#000",
+  },
+  timeLeftText: {
+    fontSize: 24,
     fontWeight: "bold",
     color: "#DD3A3A",
   },
@@ -175,11 +165,12 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
+    alignItems: "center",
     marginTop: 16,
   },
   buttonText: {
-    color: "#fff",
     fontSize: 18,
+    color: "#FFFFFF",
     fontWeight: "bold",
   },
 });
