@@ -17,7 +17,7 @@ const friends = [
     id: '2',
     name: 'Harper',
     image: require('../images/harper.png'),
-    status: 'Not competing',
+    status: 'No competition',
     averageScreenTime: '5:35',
     statusColor: '#B0B0B0',
     competitionScreen: null,
@@ -84,10 +84,10 @@ const FriendsScreen = () => {
         contentContainerStyle={styles.friendsList}
       />
       <TouchableOpacity style={styles.friendRequestsButton} onPress={handleFriendRequests}>
-        <Text style={styles.friendRequestsText}>Friend requests</Text>
+        <Text style={styles.friendRequestsText}>Friend Requests</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.addButton} onPress={handleAddFriends}>
-        <Text style={styles.addButtonText}>Add friends</Text>
+        <Text style={styles.addButtonText}>Add Friends</Text>
       </TouchableOpacity>
     </View>
   );

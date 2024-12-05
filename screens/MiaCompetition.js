@@ -21,6 +21,8 @@ const participants = [
 ];
 
 const MiaCompetition = ({ navigation }) => {
+  console.log('MiaCompetition Loaded');
+  console.log('MiaCompetition Loaded');
   // Setting the custom back button in the header
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -36,6 +38,7 @@ const MiaCompetition = ({ navigation }) => {
     <View style={styles.container}>
       {/* Competition Info */}
       <View style={styles.infoContainer}>
+        <Text style={styles.dayInfo}>The Olympics</Text>
         <Text style={styles.dayInfo}>Day 3/5</Text>
         <Text style={styles.potInfo}>Current Pot: $40</Text>
       </View>
