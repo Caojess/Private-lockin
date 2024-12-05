@@ -14,7 +14,7 @@ const InviteFriendsScreen = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [friendsList, setFriendsList] = useState([
     { id: '1', name: 'Julia', invited: false, avatar: 'https://via.placeholder.com/50' },
-    { id: '2', name: 'Harper', invited: true, avatar: 'https://via.placeholder.com/50' },
+    { id: '2', name: 'Harper', invited: false, avatar: 'https://via.placeholder.com/50' },
     { id: '3', name: 'Mia', invited: false, avatar: 'https://via.placeholder.com/50' },
   ]);
   const [modalVisible, setModalVisible] = useState(false);
