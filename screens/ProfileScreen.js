@@ -355,6 +355,7 @@ const styles = StyleSheet.create({
    height: 40,
    resizeMode: "contain",
    marginRight: 8, // Reduced from the previous value to shift the icons left slightly
+ },
  compressedBanner: {
    backgroundColor: "rgba(220, 53, 69, 0.5)",
    borderRadius: 15,
