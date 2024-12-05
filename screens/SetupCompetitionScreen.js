@@ -29,7 +29,7 @@ const SetupCompetitionScreen = ({ navigation }) => {
       <Text style={styles.title}>Set up your competition</Text>
 
       {/* Set Goal */}
-      <Text style={styles.sectionHeader}>Set Goal (time per day)</Text>
+      <Text style={styles.sectionHeader}>Select Daily Screen Time Goal</Text>
       <View style={styles.optionsContainer}>
         {options.goal.map((item) => (
           <TouchableOpacity
@@ -61,7 +61,7 @@ const SetupCompetitionScreen = ({ navigation }) => {
       </View>
 
       {/* Set Duration */}
-      <Text style={styles.sectionHeader}>Set Duration</Text>
+      <Text style={styles.sectionHeader}>Select Duration</Text>
       <View style={styles.optionsContainer}>
         {options.duration.map((item) => (
           <TouchableOpacity
@@ -93,7 +93,7 @@ const SetupCompetitionScreen = ({ navigation }) => {
       </View>
 
       {/* Privacy Setting */}
-      <Text style={styles.sectionHeader}>Privacy Setting</Text>
+      <Text style={styles.sectionHeader}>Select Privacy Setting</Text>
       <View style={styles.optionsContainer}>
         {options.privacy.map((item) => (
           <TouchableOpacity
@@ -117,7 +117,7 @@ const SetupCompetitionScreen = ({ navigation }) => {
       </View>
 
       {/* Set Amount */}
-      <Text style={styles.sectionHeader}>Set Amount</Text>
+      <Text style={styles.sectionHeader}>Select Stake Amount</Text>
       <View style={styles.optionsContainer}>
         {options.amount.map((item) => (
           <TouchableOpacity
