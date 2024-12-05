@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const FriendsScroll = () => {
   // Randomized buy-in amounts
-  const buyInAmounts = ["$6", "$15", "$10", "$15", "$4"];
+  const buyInAmounts = ["$15", "$15", "$10", "$15", "$4"];
   // Define the competitions array directly in this component
   const competitions = [
     {
