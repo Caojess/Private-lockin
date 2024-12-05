@@ -142,10 +142,26 @@ function FriendsStack() {
           ),
         }}
       />
-      <Stack.Screen name="AndyCompetition" component={AndyCompetition} />
-      <Stack.Screen name="MiaCompetition" component={MiaCompetition} />
-      <Stack.Screen name="AddFriends" component={AddFriends} />
-      <Stack.Screen name="FriendRequests" component={FriendRequestsScreen} />
+      <Stack.Screen
+        name="AndyCompetition"
+        component={AndyCompetition}
+        options={{ title: "Andy's Competition" }}
+      />
+      <Stack.Screen
+        name="MiaCompetition"
+        component={MiaCompetition}
+        options={{ title: "Mia's Competition" }}
+      />
+      <Stack.Screen
+        name="AddFriends"
+        component={AddFriends}
+        options={{ title: "Add Friends" }}
+      />
+      <Stack.Screen
+        name="FriendRequests"
+        component={FriendRequestsScreen}
+        options={{ title: "Friend Requests" }}
+      />
     </Stack.Navigator>
   );
 }
