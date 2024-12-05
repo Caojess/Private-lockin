@@ -8,16 +8,16 @@ const friends = [
     id: '1',
     name: 'Andy',
     image: require('../images/andy.png'),
-    status: 'View competition',
+    status: 'Competition Status',
     averageScreenTime: '3:28',
-    statusColor: '#D9534F',
+    statusColor: '#DD3A3A',
     competitionScreen: 'AndyCompetition',
   },
   {
     id: '2',
     name: 'Harper',
     image: require('../images/harper.png'),
-    status: 'No competition',
+    status: 'No Competition',
     averageScreenTime: '5:35',
     statusColor: '#B0B0B0',
     competitionScreen: null,
@@ -26,9 +26,9 @@ const friends = [
     id: '3',
     name: 'Mia',
     image: require('../images/Mia.png'),
-    status: 'View competition',
+    status: 'Competition Status',
     averageScreenTime: '2:31',
-    statusColor: '#D9534F',
+    statusColor: '#DD3A3A',
     competitionScreen: 'MiaCompetition',
   },
 ];
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   },
   bold: {
     fontWeight: '700',
-    color: '#D9534F',
+    color: '#DD3A3A',
   },
   statusButton: {
     paddingHorizontal: 12,
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   },
   friendRequestsButton: {
     marginTop: 20,
-    backgroundColor: '#D9534F',
+    backgroundColor: '#DD3A3A',
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   },
   addButton: {
     marginTop: 20,
-    backgroundColor: '#D9534F',
+    backgroundColor: '#DD3A3A',
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
