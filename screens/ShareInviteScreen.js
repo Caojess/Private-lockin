@@ -16,19 +16,16 @@ const ShareInviteScreen = ({ navigation }) => {
       {/* Social Media Icons */}
       <View style={styles.iconContainer}>
         <Image
-          source={{ uri: 'https://via.placeholder.com/50?text=IG' }}
+          source={{ uri: 'images/instagram-icon.png' }}
           style={styles.icon}
         />
         <Image
-          source={{ uri: 'https://via.placeholder.com/50?text=FB' }}
+          source={{ uri: 'images/tiktok-icon.png' }}
           style={styles.icon}
         />
+
         <Image
-          source={{ uri: 'https://via.placeholder.com/50?text=TW' }}
-          style={styles.icon}
-        />
-        <Image
-          source={{ uri: 'https://via.placeholder.com/50?text=SMS' }}
+          source={{ uri: 'images/message-icon.png' }}
           style={styles.icon}
         />
       </View>

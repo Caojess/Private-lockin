@@ -13,9 +13,9 @@ import {
 const InviteFriendsScreen = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [friendsList, setFriendsList] = useState([
-    { id: '1', name: 'Julia', invited: false, avatar: 'https://via.placeholder.com/50' },
-    { id: '2', name: 'Harper', invited: false, avatar: 'https://via.placeholder.com/50' },
-    { id: '3', name: 'Mia', invited: false, avatar: 'https://via.placeholder.com/50' },
+    { id: '1', name: 'Julia', invited: false, avatar: '../images/Mia.png'},
+    { id: '2', name: 'Harper', invited: false, avatar: '../images/harper.png' },
+    { id: '3', name: 'Mia', invited: false, avatar: '../images/andy.png' },
   ]);
   const [modalVisible, setModalVisible] = useState(false);
 
