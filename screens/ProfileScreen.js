@@ -169,7 +169,7 @@ return (
               labels: data.labels,
               datasets: [{ data: data.tiktok }],
             }}
-            width={screenWidth - 20}
+            width={screenWidth - 120}
             height={180}
             fromZero
             yAxisSuffix="h"
@@ -178,9 +178,6 @@ return (
           />
         </View>
       </View>
-
-
-
 
       {/* iMessage Section */}
       <View style={styles.compressedBanner}>
