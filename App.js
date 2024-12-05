@@ -38,8 +38,8 @@ const sharedScreenOptions = ({ navigation }) => ({
   headerTintColor: "black",
   headerTitleAlign: "center",
   headerStyle: { backgroundColor: "#fff" },
-  headerBackTitleVisible: true,
-  headerBackTitle: "",
+  headerBackTitleVisible: false,
+  headerBackTitle: null, // Ensure no text fallback occurs
   headerBackImage: () => (
     <Ionicons name="arrow-back" size={24} color="#000" style={{ marginLeft: 16 }} />
   ),

@@ -74,10 +74,14 @@ const styles = StyleSheet.create({
   },
   backButton: {
     padding: 8,
+    size: 24,
+    marginLeft: 16,
   },
   backArrow: {
-    fontSize: 18,
+    fontSize: 24,
+    marginLeft: 16,
     color: '#000',
+    
   },
   infoContainer: {
     alignItems: 'center',
