@@ -144,8 +144,8 @@ function FriendsStack() {
           headerLeft: () => null,
           headerRight: () => (
             <TouchableOpacity
-              onPress={() => navigation.navigate("Info")}
-              style={{ marginRight: 16 }}
+              onPress={() => {}}
+              style={{ marginRight: 16 }} // Removed navigation
             >
               <Ionicons name="help-circle-outline" size={28} color="#000" />
             </TouchableOpacity>
@@ -192,9 +192,17 @@ function ProgressStack() {
           name="NoCompetition"
           component={() => (
             <View style={styles.centeredView}>
-              <Text style={styles.noCompetitionText}>
-                You have not joined a competition yet
-              </Text>
+              <View style={styles.popupContainer}>
+                <Text style={styles.popupTitle}>Competition Not Joined</Text>
+                <Text style={styles.popupMessage}>
+                  You haven't joined a competition yet. Please return to the
+                  home page and select a competition to view your progress.
+                </Text>
+                {/* Button does not navigate anymore */}
+                <TouchableOpacity style={styles.button} onPress={() => {}}>
+                  <Text style={styles.buttonText}>Go Back to Home</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           )}
           options={{ title: "Progress", headerLeft: () => null }}
@@ -272,7 +280,52 @@ const styles = StyleSheet.create({
     height: 90,
   },
   noCompetitionText: {
-    alignSelf: "center",
-    top: 300,
+    fontSize: 18,
+    textAlign: "center",
+    paddingBottom: 20,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 20, // Added padding for better layout
+  },
+  popupContainer: {
+    width: "100%",
+    maxWidth: 280,
+    backgroundColor: "white",
+    borderRadius: 10,
+    padding: 20,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  popupTitle: {
+    fontSize: 16, // Reduced font size
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 10,
+  },
+  popupMessage: {
+    fontSize: 14, // Adjusted font size for better readability
+    textAlign: "left", // Align the message to the left
+    marginBottom: 20,
+    width: "100%",
+  },
+  button: {
+    backgroundColor: "#1e90ff",
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 6,
+    width: "100%", // Ensure the button is full width for better UI
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 15,
+    textAlign: "center",
+    fontWeight: "bold",
   },
 });
