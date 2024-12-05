@@ -10,9 +10,13 @@ import {
 } from "react-native";
 import { BarChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+
 
 
 export default function ProfileScreen() {
+ const navigation = useNavigation(); // Get the navigation object
+
  const screenWidth = Dimensions.get("window").width;
 
 
@@ -209,21 +213,18 @@ export default function ProfileScreen() {
          </View>
        </View>
 
-
-       {/* Logout Button */}
-       <View style={styles.logoutButtonContainer}>
-       <TouchableOpacity
-          style={styles.logoutButton}
-          onPress={() => {
-            navigation.navigate("Login");
-          }}
-        >
-          <Text style={styles.logoutButtonText}>Logout</Text>
-        </TouchableOpacity>
-       </View>
-     </ScrollView>
-   </SafeAreaView>
- );
+        {/* Logout Button */}
+        <View style={styles.logoutButtonContainer}>
+          <TouchableOpacity
+            style={styles.logoutButton}
+            onPress={() => navigation.navigate("Login")} // Navigate to LoginScreen
+          >
+            <Text style={styles.logoutButtonText}>Logout</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
 }
 
 
