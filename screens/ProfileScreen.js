@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -6,17 +6,63 @@ import {
   Image,
   ScrollView,
   SafeAreaView,
-} from 'react-native';
-import { BarChart } from 'react-native-chart-kit';
-import { Dimensions } from 'react-native';
+  TouchableOpacity,
+} from "react-native";
+import { BarChart } from "react-native-chart-kit";
+import { Dimensions } from "react-native";
 
 export default function ProfileScreen() {
-  const screenWidth = Dimensions.get('window').width;
+  const screenWidth = Dimensions.get("window").width;
 
-  const generalAnalyticsData = [2, 3, 2.5, 3.5, 4, 3, 2];
-  const tiktokData = [1.2, 1.5, 1.4, 1.6, 1.8, 1.4, 1.2];
-  const imessageData = [1.0, 1.2, 1.3, 1.4, 1.5, 1.3, 1.1];
-  const instagramData = [1.3, 1.5, 1.7, 1.8, 2.0, 1.6, 1.4];
+  const chartData = {
+    "This Week": {
+      general: [2.5, 3, 2.8, 3.2, 3, 2.7, 2.9],
+      tiktok: [1, 1.2, 1.1, 1.3, 1.2, 1.1, 1],
+      messages: [0.8, 0.9, 0.7, 1, 0.9, 0.8, 0.7],
+      instagram: [1.2, 1.3, 1.1, 1.4, 1.2, 1.1, 1.3],
+      labels: ["M", "T", "W", "T", "F", "Sa", "Su"],
+    },
+    "This Month": {
+      general: [3, 2.9, 3.1, 3],
+      tiktok: [1.2, 1.1, 1.3, 1.2],
+      messages: [0.9, 0.8, 1, 0.9],
+      instagram: [1.3, 1.2, 1.4, 1.3],
+      labels: ["W1", "W2", "W3", "W4"],
+    },
+    "Past 6 Months": {
+      general: [3, 3.1, 2.9, 3, 3.2, 3.1],
+      tiktok: [1.2, 1.3, 1.1, 1.2, 1.4, 1.3],
+      messages: [0.9, 0.8, 0.9, 1, 0.9, 0.8],
+      instagram: [1.3, 1.4, 1.2, 1.3, 1.5, 1.4],
+      labels: ["J", "A", "S", "O", "N", "D"],
+    },
+    "Past Year": {
+      general: [2.9, 3, 3.1, 2.8, 3, 2.9, 3, 3.1, 3.2, 3, 2.9, 3],
+      tiktok: [1.1, 1.2, 1.3, 1, 1.2, 1.1, 1.3, 1.4, 1.2, 1.3, 1.2, 1.3],
+      messages: [0.8, 0.9, 0.7, 0.8, 0.9, 0.7, 0.8, 1, 0.9, 0.8, 0.9, 1],
+      instagram: [1.3, 1.2, 1.4, 1.3, 1.5, 1.4, 1.3, 1.6, 1.4, 1.5, 1.4, 1.5],
+      labels: ["Ja", "Fe", "Ma", "Ap", "Ma", "Ju", "Jul", "Au", "Se", "Oc", "No", "De"],
+    },
+  };
+
+  const [selectedTimeframe, setSelectedTimeframe] = useState("This Week");
+  const [isDropdownVisible, setDropdownVisible] = useState(false);
+
+  const handleTimeframeChange = (timeframe) => {
+    setSelectedTimeframe(timeframe);
+    setDropdownVisible(false);
+  };
+
+  const formatAverage = (data) => {
+    const avg = data.reduce((a, b) => a + b, 0) / data.length;
+    const hours = Math.floor(avg);
+    const minutes = Math.round((avg - hours) * 60);
+    return `${hours} hour${hours !== 1 ? "s" : ""} ${
+      minutes > 0 ? `${minutes} min` : ""
+    }`;
+  };
+
+  const data = chartData[selectedTimeframe];
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -24,15 +70,37 @@ export default function ProfileScreen() {
         {/* Header Section */}
         <View style={styles.header}>
           <Image
-            source={require('../images/Mia.png')} // Profile picture
+            source={require("../images/Mia.png")} // Profile picture
             style={styles.profileImage}
           />
           <Text style={styles.title}>Your Analytics</Text>
         </View>
 
         {/* Dropdown Section */}
-        <View style={styles.dropdownContainer}>
-          <Text style={styles.dropdownText}>This Week</Text>
+        <View>
+          <TouchableOpacity
+            style={styles.dropdownContainer}
+            onPress={() => setDropdownVisible(!isDropdownVisible)}
+          >
+            <Text style={styles.dropdownText}>{selectedTimeframe}</Text>
+            <Text style={styles.dropdownArrow}>▼</Text>
+          </TouchableOpacity>
+          {isDropdownVisible && (
+            <View style={styles.dropdownOptions}>
+              {Object.keys(chartData).map(
+                (timeframe) =>
+                  timeframe !== selectedTimeframe && (
+                    <TouchableOpacity
+                      key={timeframe}
+                      onPress={() => handleTimeframeChange(timeframe)}
+                      style={styles.dropdownOption}
+                    >
+                      <Text style={styles.dropdownOptionText}>{timeframe}</Text>
+                    </TouchableOpacity>
+                  )
+              )}
+            </View>
+          )}
         </View>
 
         {/* General Analytics Section */}
@@ -41,80 +109,90 @@ export default function ProfileScreen() {
           <View style={styles.chartContainer}>
             <BarChart
               data={{
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                datasets: [{ data: generalAnalyticsData }],
+                labels: data.labels,
+                datasets: [{ data: data.general }],
               }}
               width={screenWidth - 80}
               height={220}
+              fromZero
               yAxisSuffix="h"
               chartConfig={chartConfig}
-              style={[styles.chart, styles.roundedChart]}
+              style={styles.chart}
             />
           </View>
         </View>
 
         {/* TikTok Section */}
         <View style={styles.compressedBanner}>
-          <Text style={styles.sectionTitle}>You used TikTok for an avg 1.5 hours/day</Text>
+          <Text style={styles.sectionTitle}>
+           Your daily TikTok average was {formatAverage(data.tiktok)} 
+          </Text>
           <View style={styles.timeSpentContainer}>
             <Image
-              source={require('../images/tiktok-icon.png')}
+              source={require("../images/tiktok-icon.png")}
               style={styles.icon}
             />
             <BarChart
               data={{
-                labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
-                datasets: [{ data: tiktokData }],
+                labels: data.labels,
+                datasets: [{ data: data.tiktok }],
               }}
               width={screenWidth - 120}
               height={180}
+              fromZero
               yAxisSuffix="h"
               chartConfig={chartConfig}
-              style={[styles.chart, styles.roundedChart]}
+              style={styles.chart}
             />
           </View>
         </View>
 
         {/* iMessage Section */}
         <View style={styles.compressedBanner}>
-          <Text style={styles.sectionTitle}>You used iMessage for an avg 1.2 hours/day</Text>
+          <Text style={styles.sectionTitle}>
+            Your daily Message average was {formatAverage(data.messages)} 
+          </Text>
           <View style={styles.timeSpentContainer}>
             <Image
-              source={require('../images/message-icon.png')}
+              source={require("../images/message-icon.png")}
               style={styles.icon}
             />
             <BarChart
               data={{
-                labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
-                datasets: [{ data: imessageData }],
+                labels: data.labels,
+                datasets: [{ data: data.messages }],
               }}
               width={screenWidth - 120}
               height={180}
+              fromZero
               yAxisSuffix="h"
               chartConfig={chartConfig}
-              style={[styles.chart, styles.roundedChart]}
+              style={styles.chart}
             />
           </View>
         </View>
 
         {/* Instagram Section */}
         <View style={styles.compressedBanner}>
-          <Text style={styles.sectionTitle}>You used Instagram for an avg 1.8 hours/day</Text>
+          <Text style={styles.sectionTitle}>
+            Your daily Instagram average was {formatAverage(data.instagram)} 
+          </Text>
           <View style={styles.timeSpentContainer}>
             <Image
-              source={require('../images/instagram-icon.png')}
+              source={require("../images/instagram-icon.png")}
               style={styles.icon}
             />
             <BarChart
               data={{
-                labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
-                datasets: [{ data: instagramData }],
+                labels: data.labels,
+                datasets: [{ data: data.instagram }],
               }}
               width={screenWidth - 120}
               height={180}
+              fromZero
               yAxisSuffix="h"
               chartConfig={chartConfig}
-              style={[styles.chart, styles.roundedChart]}
+              style={styles.chart}
             />
           </View>
         </View>
@@ -122,115 +200,134 @@ export default function ProfileScreen() {
     </SafeAreaView>
   );
 }
-
 const chartConfig = {
-  backgroundGradientFrom: '#fff',
-  backgroundGradientTo: '#fff',
+  backgroundGradientFrom: "#fff",
+  backgroundGradientTo: "#fff",
   color: (opacity = 1) => `rgba(221, 58, 58, ${opacity})`,
   labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-  barPercentage: 0.5,
-  fillShadowGradient: '#DD3A3A',
+  barPercentage: 0.25, // Slightly thicker bars
+  fillShadowGradient: "#DD3A3A",
   fillShadowGradientOpacity: 1,
+  propsForLabels: {
+    fontSize: 10, // Reduced font size for x-axis labels
+  },
 };
 
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     paddingHorizontal: 20,
     paddingTop: 10,
   },
   scrollContent: {
-    paddingBottom: 20, // Ensure there's space at the bottom of the scroll
+    paddingBottom: 20,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 20,
     marginTop: 10,
   },
   profileImage: {
     width: 40,
     height: 40,
-    borderRadius: 20, // Circular image
+    borderRadius: 20,
     marginRight: 10,
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#DD3A3A',
-    flex: 1, // Takes remaining space
-    marginLeft: 10, // Adds space between profile picture and title
+    fontWeight: "bold",
+    color: "#DD3A3A",
+    flex: 1,
+    marginLeft: 10,
   },
   dropdownContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 8,
     paddingVertical: 10,
     paddingHorizontal: 15,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 10,
     elevation: 2,
     marginBottom: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   dropdownText: {
     fontSize: 16,
-    color: '#000',
+    color: "#000",
+  },
+  dropdownArrow: {
+    fontSize: 16,
+    color: "#000",
+  },
+  dropdownOptions: {
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    elevation: 3,
+    marginTop: 5,
+    paddingVertical: 5,
+  },
+  dropdownOption: {
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+  },
+  dropdownOptionText: {
+    fontSize: 16,
+    color: "#000",
   },
   generalBanner: {
-    backgroundColor: 'rgba(220, 53, 69, 0.5)',
+    backgroundColor: "rgba(220, 53, 69, 0.5)",
     borderRadius: 15,
     paddingVertical: 15,
     paddingHorizontal: 15,
     marginBottom: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   chartContainer: {
-    padding: 10, // Added padding around the chart
-    backgroundColor: '#fff',
+    padding: 10,
+    backgroundColor: "#fff",
     borderRadius: 10,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   compressedBanner: {
-    backgroundColor: 'rgba(220, 53, 69, 0.5)',
+    backgroundColor: "rgba(220, 53, 69, 0.5)",
     borderRadius: 15,
     paddingVertical: 10,
     paddingHorizontal: 15,
     marginBottom: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#000',
+    fontWeight: "bold",
+    color: "#000",
     marginBottom: 8,
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
   },
   chart: {
     borderRadius: 10,
     marginVertical: 10,
   },
-  roundedChart: {
-    overflow: 'hidden',
-    borderRadius: 10,
-  },
   timeSpentContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
     marginHorizontal: 15,
   },
   icon: {
     width: 40,
     height: 40,
-    resizeMode: 'contain',
+    resizeMode: "contain",
     marginRight: 12,
   },
 });

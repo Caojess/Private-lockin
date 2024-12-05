@@ -130,7 +130,7 @@ function FriendsStack() {
       <Stack.Screen
         name="Friends"
         component={FriendsScreen}
-        options={{ 
+        options={{
           title: "Friends",
           headerLeft: () => null,
           headerRight: () => (
@@ -146,7 +146,7 @@ function FriendsStack() {
       <Stack.Screen
         name="AndyCompetition"
         component={AndyCompetition}
-        options={{ 
+        options={{
           title: "The Olympics",
           headerLeft: () => null,
           headerRight: () => (
@@ -162,7 +162,7 @@ function FriendsStack() {
       <Stack.Screen
         name="MiaCompetition"
         component={MiaCompetition}
-        options={{ 
+        options={{
           title: "The Olympics",
           headerLeft: () => null,
           headerRight: () => (
@@ -178,7 +178,7 @@ function FriendsStack() {
       <Stack.Screen
         name="AddFriends"
         component={AddFriends}
-        options={{ 
+        options={{
           title: "Add Friends",
           headerLeft: () => null,
           headerRight: () => (
@@ -194,7 +194,7 @@ function FriendsStack() {
       <Stack.Screen
         name="FriendRequests"
         component={FriendRequestsScreen}
-        options={{ 
+        options={{
           title: "Friend Requests",
           headerLeft: () => null,
           headerRight: () => (
@@ -241,7 +241,9 @@ function MainTabs() {
       <Tab.Screen name="Home" component={HomeStack} />
       <Tab.Screen name="Progress" component={ProgressStack} />
       <Tab.Screen name="Friends" component={FriendsStack} />
-      <Tab.Screen name="Profile" component={ProfileStack} />
+      <Tab.Screen name="Profile" component={ProfileStack} initialParams={{ fromCompete: false }}
+/>
+
 
 
     </Tab.Navigator>

@@ -37,9 +37,9 @@ const CompeteScreen = ({ route, navigation }) => {
       {/* Continue Button */}
       <TouchableOpacity
         style={styles.continueButton}
-        onPress={() => navigation.navigate('Join')}
+        onPress={() => navigation.navigate('Profile', { fromCompete: true })}
       >
-        <Text style={styles.continueButtonText}>Continue</Text>
+        <Text style={styles.continueButtonText}>Go to Profile</Text>
       </TouchableOpacity>
     </View>
   );
