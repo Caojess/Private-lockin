@@ -29,16 +29,7 @@ const CurrentGameScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.title}>Current Game</Text>
-        <TouchableOpacity
-          style={styles.infoButton}
-          onPress={() => navigation.navigate("Info")} // Navigate to the Info screen
-        >
-          <Ionicons name="help-circle-outline" size={28} color="#000" />
-        </TouchableOpacity>
-      </View>
-
+    
       {/* Today Progress Box */}
       <View style={styles.todayBox}>
         <View style={styles.todayRow}>
@@ -98,7 +89,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingHorizontal: 16,
-    paddingTop: 50, // Leave room for the title
+    paddingTop: 0, // Leave room for the title
     alignItems: "center",
   },
   header: {
@@ -113,7 +104,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "#000",
-    marginTop: 30,
+    marginTop: -10,
   },
   infoButton: {
     padding: 8,
