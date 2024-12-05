@@ -17,7 +17,7 @@ const JoinScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {/* Title */}
-      <Text style={styles.title}>YOU’RE READY TO JOIN</Text>
+      <Text style={styles.title}>You're Ready To Join!</Text>
 
       {/* Pot Total and Payout */}
       <View style={styles.payoutContainer}>
@@ -35,8 +35,9 @@ const JoinScreen = ({ navigation }) => {
       <Text style={styles.rulesText}>Stay under 3 hours a day for 3 days</Text>
       <Text style={styles.warningText}>or LOSE YOUR $15</Text>
 
-      {/* Current Balance */}
-      <Text style={styles.balanceText}>Current account balance: $40</Text>
+      <View style={styles.balanceBox}>
+        <Text style={styles.balanceText}>You currently have $40 in your account</Text>
+      </View>
 
       {/* Join Button */}
       <TouchableOpacity
@@ -84,19 +85,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingHorizontal: 16,
-    justifyContent: "center",
+    justifyContent: "flex-start",
+    paddingTop: 30,
   },
   title: {
     fontSize: 30,
     fontWeight: "bold",
-    color: "#000",
+    color: "#DD3A3A",
     textAlign: "center",
     marginBottom: 24,
   },
   payoutContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 24,
+    marginBottom: 60,
     borderRadius: 12,
     backgroundColor: "#EE9B9B",
     height: "25%",
@@ -140,12 +142,24 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 16,
   },
+  balanceBox: {
+    backgroundColor: "#f0f0f0", // Light gray color
+    borderRadius: 12,
+    marginHorizontal: 8,
+    marginTop: 60,
+    paddingVertical: 4,  // Reduced vertical padding
+    paddingHorizontal: 16, // Keep horizontal padding
+    alignItems: "center",
+    justifyContent: "center", // Ensure text is vertically centered
+    alignSelf: "center",
+    height: 40, // Set a fixed height that is smaller but enough for text
+  },
+  
   balanceText: {
-    fontSize: 18,
-    paddingTop: 80,
+    fontSize: 16,  // Reduce font size to fit in smaller box
     color: "#000",
     textAlign: "center",
-    marginBottom: 24,
+    fontWeight: "bold",
   },
   joinButton: {
     backgroundColor: "#DD3A3A",
@@ -154,6 +168,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     width: "50%",
     alignSelf: "center",
+    marginTop: 20,
   },
   joinButtonText: {
     color: "#fff",
