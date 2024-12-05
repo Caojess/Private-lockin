@@ -38,7 +38,8 @@ const sharedScreenOptions = ({ navigation }) => ({
   headerTintColor: "black",
   headerTitleAlign: "center",
   headerStyle: { backgroundColor: "#fff" },
-  headerBackTitleVisible: false,
+  headerBackTitleVisible: true,
+  headerBackTitle: "",
   headerBackImage: () => (
     <Ionicons
       name="arrow-back"
@@ -74,9 +75,7 @@ function HomeStack() {
         options={{ headerShown: false }}
       />
       <Stack.Screen name="Info" component={InfoScreen} />
-      <Stack.Screen name="ViewCompetition" component={ViewCompetition} />
-      <Stack.Screen name="HeadToHeadMia" component={HeadToHeadMia} />
-      <Stack.Screen name="HeadToHeadHarper" component={HeadToHeadHarper} />
+    
       <Stack.Screen
         name="SetupCompetition"
         component={SetupCompetitionScreen}
@@ -175,6 +174,7 @@ function ProgressStack() {
           options={{ title: "Progress", headerLeft: () => null }}
         />
       )}
+      
       <Stack.Screen name="ViewCompetition" component={ViewCompetition} />
       <Stack.Screen name="HeadToHeadMia" component={HeadToHeadMia} />
       <Stack.Screen name="HeadToHeadHarper" component={HeadToHeadHarper} />
