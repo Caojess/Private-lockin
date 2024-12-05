@@ -37,7 +37,7 @@ export default function ProfileScreen() {
       tiktok: [1.2, 1.3, 1.1, 1.2, 1.4, 1.3],
       messages: [0.9, 0.8, 0.9, 1, 0.9, 0.8],
       instagram: [1.3, 1.4, 1.2, 1.3, 1.5, 1.4],
-      labels: ["J", "A", "S", "O", "N", "D"],
+      labels: ["Jul", "Au", "Se", "Oc", "No", "De"],
     },
     "Past Year": {
       general: [2.9, 3, 3.1, 2.8, 3, 2.9, 3, 3.1, 3.2, 3, 2.9, 3],
@@ -84,11 +84,20 @@ export default function ProfileScreen() {
 
   const formatAverage = (data) => {
     const avg = data.reduce((a, b) => a + b, 0) / data.length;
-    const hours = Math.floor(avg);
-    const minutes = Math.round((avg - hours) * 60);
-    return `${hours} hour${hours !== 1 ? "s" : ""} ${
-      minutes > 0 ? `${minutes} min` : ""
-    }`;
+    const hours = Math.floor(avg); // Get whole hours
+    const minutes = Math.round((avg - hours) * 60); // Get the remainder as minutes
+
+    let formattedTime = `${hours} hour${hours !== 1 ? "s" : ""}`; // Handle plural form
+    if (minutes > 0) {
+      formattedTime += ` ${minutes} min`;
+    }
+
+    // This ensures that times like 0.8 hours get properly displayed as minutes, not as a fraction
+    if (hours === 0 && minutes === 0) {
+      formattedTime = "0 min"; // Case when both hours and minutes round to zero
+    }
+
+    return formattedTime;
   };
 
   const data = chartData[selectedTimeframe];
@@ -105,7 +114,7 @@ export default function ProfileScreen() {
             source={require("../images/Mia.png")} // Profile picture
             style={styles.profileImage}
           />
-          <Text style={styles.title}>Mia Jones</Text>
+          <Text style={styles.title}>Julia L. (you) </Text>
           <Text style={styles.subtitle}>San Francisco, CA</Text>
           {/* Smaller subtitle */}
         </View>
@@ -121,7 +130,7 @@ export default function ProfileScreen() {
               style={styles.addButton}
               onPress={() => setIsModalVisible(!isModalVisible)} // Toggle modal visibility
             >
-              <Text style={styles.addButtonText}>Add</Text>
+              <Text style={styles.addButtonText}>Add Funds</Text>
             </TouchableOpacity>
           </View>
 
@@ -151,10 +160,36 @@ export default function ProfileScreen() {
             </View>
           )}
         </View>
+        <View style={styles.dropdownContainer}>
+          <TouchableOpacity
+            onPress={() => setDropdownVisible(!isDropdownVisible)}
+            style={styles.dropdown}
+          >
+            <Text style={styles.dropdownText}>{selectedTimeframe}</Text>
+            <Text style={styles.dropdownArrow}>
+              {isDropdownVisible ? "▲" : "▼"}
+            </Text>
+          </TouchableOpacity>
+          {isDropdownVisible && (
+            <View style={styles.dropdownOptions}>
+              {Object.keys(chartData).map((timeframe) => (
+                <TouchableOpacity
+                  key={timeframe}
+                  style={styles.dropdownOption}
+                  onPress={() => handleTimeframeChange(timeframe)}
+                >
+                  <Text style={styles.dropdownOptionText}>{timeframe}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+        </View>
 
         {/* General Analytics Section */}
         <View style={styles.generalBanner}>
-          <Text style={styles.sectionTitle}>General Analytics</Text>
+          <Text style={styles.sectionTitle}>
+            General Analytics {selectedTimeframe}
+          </Text>
           <View style={styles.chartContainer}>
             <BarChart
               data={{
@@ -174,7 +209,8 @@ export default function ProfileScreen() {
         {/* TikTok Section */}
         <View style={styles.compressedBanner}>
           <Text style={styles.sectionTitle}>
-            Your daily TikTok average was {formatAverage(data.tiktok)}
+            Your spent an average of {formatAverage(data.tiktok)} per day on
+            TikTok
           </Text>
           <View style={styles.timeSpentContainer}>
             <Image
@@ -199,7 +235,8 @@ export default function ProfileScreen() {
         {/* iMessage Section */}
         <View style={styles.compressedBanner}>
           <Text style={styles.sectionTitle}>
-            Your daily Message average was {formatAverage(data.messages)}
+            You spent an average of {formatAverage(data.messages)} per day on
+            iMessage
           </Text>
           <View style={styles.timeSpentContainer}>
             <Image
@@ -224,7 +261,8 @@ export default function ProfileScreen() {
         {/* Instagram Section */}
         <View style={styles.compressedBanner}>
           <Text style={styles.sectionTitle}>
-            Your daily Instagram average was {formatAverage(data.instagram)}
+            You spent an average of {formatAverage(data.instagram)} per day on
+            Instagram
           </Text>
           <View style={styles.timeSpentContainer}>
             <Image
@@ -320,6 +358,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
+  dropdown: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    backgroundColor: "#f5f5f5",
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#ddd",
+  },
   dropdownText: {
     fontSize: 16,
     color: "#000",
@@ -327,6 +376,7 @@ const styles = StyleSheet.create({
   dropdownArrow: {
     fontSize: 16,
     color: "#000",
+    marginLeft: 15,
   },
   dropdownOptions: {
     backgroundColor: "#fff",
@@ -359,11 +409,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: "bold",
     color: "#000",
     marginBottom: 8,
-    alignSelf: "flex-start",
+    alignSelf: "center",
   },
   sectionText: {
     fontSize: 18,
@@ -476,7 +526,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 15, // Add extra spacing when modal is visible
   },
-
   modalContainer: {
     marginTop: 10, // Adds spacing after the balance section
     backgroundColor: "#fff",
