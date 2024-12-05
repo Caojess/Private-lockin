@@ -17,8 +17,8 @@ const FriendsScroll = () => {
     {
       id: 1,
       name: "Andy's",
-      time: "3 hours / 1 day",
-      spots: "6/10 Spots Left",
+      time: "3 hours / 3 day",
+      spots: "1/4 Spots Left",
       avatar: require("../images/andy.png"),
     },
     {
@@ -87,24 +87,18 @@ const FriendsScroll = () => {
                 competitors: [
                   {
                     id: 1,
-                    name: "Syd",
-                    time: "5.5 hours",
-                    avatar: require("../images/you.png"),
-                  },
-                  {
-                    id: 2,
                     name: "Andy",
                     time: "5 hours",
                     avatar: require("../images/andy.png"),
                   },
                   {
-                    id: 3,
+                    id: 2,
                     name: "Harper",
                     time: "6 hours",
                     avatar: require("../images/harper.png"),
                   },
                   {
-                    id: 4,
+                    id: 3,
                     name: "Mia",
                     time: "5 hours",
                     avatar: require("../images/Mia.png"),

@@ -111,7 +111,7 @@ export default function ProfileScreen() {
         {/* Header Section */}
         <View style={styles.header}>
           <Image
-            source={require("../images/Mia.png")} // Profile picture
+            source={require("../images/you.png")} // Profile picture
             style={styles.profileImage}
           />
           <Text style={styles.title}>Julia L. (you) </Text>
