@@ -169,7 +169,11 @@ function ProgressStack() {
           )}
           options={{ title: "Progress", headerLeft: () => null }}
         />
+        
       )}
+      <Stack.Screen name="ViewCompetition" component={ViewCompetition} />
+      <Stack.Screen name="HeadToHeadMia" component={HeadToHeadMia} />
+      <Stack.Screen name="HeadToHeadHarper" component={HeadToHeadHarper} />
     </Stack.Navigator>
   );
 }
