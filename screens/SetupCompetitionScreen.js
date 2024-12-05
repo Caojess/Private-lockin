@@ -26,7 +26,6 @@ const SetupCompetitionScreen = ({ navigation }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <Text style={styles.title}>Set up your competition</Text>
 
       {/* Set Goal */}
       <Text style={styles.sectionHeader}>Select Daily Screen Time Goal</Text>

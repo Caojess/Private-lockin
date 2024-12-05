@@ -79,17 +79,17 @@ function HomeStack() {
       <Stack.Screen
         name="SetupCompetition"
         component={SetupCompetitionScreen}
-        options={{ title: "Create Competition" }}
+        options={{ title: "Setup Competition" }}
       />
       <Stack.Screen
         name="InviteFriends"
         component={InviteFriendsScreen}
-        options={{ title: "Create Competition" }}
+        options={{ title: "Invite Friends" }}
       />
       <Stack.Screen
         name="ShareInvite"
         component={ShareInviteScreen}
-        options={{ title: "Create Competition" }}
+        options={{ title: "Share Invite" }}
       />
       <Stack.Screen
         name="MyCompetitionDetails"

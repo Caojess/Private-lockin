@@ -33,7 +33,6 @@ const InviteFriendsScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Invite friends</Text>
 
       {/* Search Bar */}
       <View style={styles.searchBar}>
