@@ -233,7 +233,9 @@ function MainTabs() {
       <Tab.Screen name="Home" component={HomeStack} />
       <Tab.Screen name="Progress" component={() => <View />} />
       <Tab.Screen name="Friends" component={FriendsStack} />
-      <Tab.Screen name="Profile" component={ProfileStack} />
+      <Tab.Screen name="Profile" component={ProfileStack} initialParams={{ fromCompete: false }}
+/>
+
     </Tab.Navigator>
   );
 }
