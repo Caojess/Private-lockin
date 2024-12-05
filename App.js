@@ -41,7 +41,12 @@ const sharedScreenOptions = ({ navigation }) => ({
   headerBackTitleVisible: false,
   headerBackTitle: null, // Ensure no text fallback occurs
   headerBackImage: () => (
-    <Ionicons name="arrow-back" size={24} color="#000" style={{ marginLeft: 16 }} />
+    <Ionicons
+      name="arrow-back"
+      size={24}
+      color="#000"
+      style={{ marginLeft: 16 }}
+    />
   ),
   headerRight: () => (
     <TouchableOpacity
@@ -168,7 +173,6 @@ function ProgressStack() {
           )}
           options={{ title: "Progress", headerLeft: () => null }}
         />
-        
       )}
       
       <Stack.Screen name="ViewCompetition" component={ViewCompetition} />
@@ -180,20 +184,26 @@ function ProgressStack() {
 
 function MainTabs() {
   return (
-    <Tab.Navigator screenOptions={({ route }) => ({
-      headerShown: false,
-      tabBarIcon: ({ focused, color }) => {
-        let iconName;
-        if (route.name === "Home") iconName = focused ? "home" : "home-outline";
-        else if (route.name === "Progress") iconName = focused ? "trophy" : "trophy-outline";
-        else if (route.name === "Friends") iconName = focused ? "people" : "people-outline";
-        else if (route.name === "Profile") iconName = focused ? "person" : "person-outline";
-        return <Ionicons name={iconName} size={24} color={color} />;
-      },
-      tabBarActiveTintColor: "#fff",
-      tabBarInactiveTintColor: "#aaa",
-      tabBarStyle: styles.tabBar,
-    })}>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarIcon: ({ focused, color }) => {
+          let iconName;
+          if (route.name === "Home")
+            iconName = focused ? "home" : "home-outline";
+          else if (route.name === "Progress")
+            iconName = focused ? "trophy" : "trophy-outline";
+          else if (route.name === "Friends")
+            iconName = focused ? "people" : "people-outline";
+          else if (route.name === "Profile")
+            iconName = focused ? "person" : "person-outline";
+          return <Ionicons name={iconName} size={24} color={color} />;
+        },
+        tabBarActiveTintColor: "#fff",
+        tabBarInactiveTintColor: "#aaa",
+        tabBarStyle: styles.tabBar,
+      })}
+    >
       <Tab.Screen name="Home" component={HomeStack} />
       <Tab.Screen name="Progress" component={ProgressStack} />
       <Tab.Screen name="Friends" component={FriendsStack} />
@@ -204,7 +214,10 @@ function MainTabs() {
 
 function AuthStack() {
   return (
-    <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      initialRouteName="Login"
+      screenOptions={{ headerShown: false }}
+    >
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Welcome" component={WelcomeScreen} />
       <Stack.Screen name="MainTabs" component={MainTabs} />

@@ -16,14 +16,12 @@ LogBox.ignoreLogs(["Warning: ..."]); // Ignore warnings for clean logs
 const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [showScreenTimeModal, setShowScreenTimeModal] = useState(false);
-  const [showGamblingWarningModal, setShowGamblingWarningModal] =
-    useState(false);
+  const [modalType, setModalType] = useState(null); // 'screenTime' or 'gamblingWarning'
 
   const handleLogin = () => {
     if (username === "username" && password === "password") {
       console.log("Login successful, showing ScreenTime modal");
-      setShowScreenTimeModal(true);
+      setModalType("screenTime");
     } else {
       Alert.alert("Login Failed", "Invalid username or password.");
     }
@@ -31,22 +29,18 @@ const LoginScreen = ({ navigation }) => {
 
   const handleAllowScreenTime = () => {
     console.log("Allow Screen Time clicked");
-    setShowScreenTimeModal(false); // Close the first modal
-    setTimeout(() => {
-      setShowGamblingWarningModal(true); // Show the second modal
-      console.log("Showing Gambling Warning modal");
-    }, 300); // Delay to ensure smooth transition
+    setModalType("gamblingWarning"); // Move to next modal
   };
 
   const handleAgreeToGamblingWarning = () => {
     console.log("Agree to Gambling Warning clicked");
-    setShowGamblingWarningModal(false); // Close the second modal
+    setModalType(null); // Close modal
     navigation.navigate("Welcome"); // Navigate to Welcome screen
   };
 
   const handleDisagree = () => {
     console.log("Disagree clicked");
-    setShowGamblingWarningModal(false); // Close the modal
+    setModalType(null); // Close modal
     navigation.navigate("Home"); // Navigate to Home screen
   };
 
@@ -54,7 +48,7 @@ const LoginScreen = ({ navigation }) => {
     <View style={styles.container}>
       {/* Lock Icon */}
       <Image
-        source={require("../images/Lock Orientation.png")} // Relative path for the lock icon
+        source={require("../images/Lock Orientation.png")}
         style={styles.lockIcon}
       />
       <Text style={styles.title}>WELCOME TO</Text>
@@ -87,74 +81,69 @@ const LoginScreen = ({ navigation }) => {
         <Text style={styles.signupButtonText}>Sign up</Text>
       </TouchableOpacity>
 
-      {/* Screen Time Modal */}
-      <Modal
-        key={"screenTimeModal"}
-        visible={showScreenTimeModal}
-        transparent={true}
-        animationType="slide"
-      >
+      {/* Modal */}
+      <Modal visible={!!modalType} transparent={true} animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalText}>
-              Allow LockIn to Access your Screen Time Data?
-            </Text>
-            <View style={styles.modalButtons}>
-              <TouchableOpacity
-                onPress={() => setShowScreenTimeModal(false)}
-                style={styles.modalButton}
-              >
-                <Text style={styles.modalButtonText}>Don't Allow</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleAllowScreenTime}
-                style={[styles.modalButton, styles.allowButton]}
-              >
-                <Text style={[styles.modalButtonText, styles.allowButtonText]}>
-                  OK
+            {modalType === "screenTime" && (
+              <>
+                <Text style={styles.modalText}>
+                  Allow LockIn to Access your Screen Time Data?
                 </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
+                <View style={styles.modalButtons}>
+                  <TouchableOpacity
+                    onPress={() => setModalType(null)}
+                    style={styles.modalButton}
+                  >
+                    <Text style={styles.modalButtonText}>Don't Allow</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={handleAllowScreenTime}
+                    style={[styles.modalButton, styles.allowButton]}
+                  >
+                    <Text
+                      style={[styles.modalButtonText, styles.allowButtonText]}
+                    >
+                      OK
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </>
+            )}
 
-      {/* Gambling Warning Modal */}
-      <Modal
-        key={"GamblingWarningModal"}
-        visible={showGamblingWarningModal}
-        transparent={true}
-        animationType="slide"
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.gamblingWarningTitle}>
-              WARNING: Participate Responsibly
-            </Text>
-            <Text style={styles.modalText}>
-              Only stake what you can afford to lose. Focus on healthy habits,
-              not just winning. Understand the risks: gambling-like stakes can
-              cause stress and financial strain.{"\n\n"}Need help? Call
-              1-800-522-4700 for support from the National Problem Gambling
-              Helpline.{"\n\n"}Press “I agree” to acknowledge this message and
-              to use LOCKIN responsibly.
-            </Text>
-            <View style={styles.modalButtons}>
-              <TouchableOpacity
-                onPress={handleDisagree}
-                style={styles.modalButton}
-              >
-                <Text style={styles.modalButtonText}>I disagree</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleAgreeToGamblingWarning}
-                style={[styles.modalButton, styles.allowButton]}
-              >
-                <Text style={[styles.modalButtonText, styles.allowButtonText]}>
-                  I agree
+            {modalType === "gamblingWarning" && (
+              <>
+                <Text style={styles.gamblingWarningTitle}>
+                  WARNING: Participate Responsibly
                 </Text>
-              </TouchableOpacity>
-            </View>
+                <Text style={styles.modalText}>
+                  Only stake what you can afford to lose. Focus on healthy
+                  habits, not just winning. Understand the risks: gambling-like
+                  stakes can cause stress and financial strain.
+                  {"\n\n"}Need help? Call 1-800-522-4700 for support from the
+                  National Problem Gambling Helpline.{"\n\n"}Press “I agree” to
+                  acknowledge this message and to use LOCKIN responsibly.
+                </Text>
+                <View style={styles.modalButtons}>
+                  <TouchableOpacity
+                    onPress={handleDisagree}
+                    style={styles.modalButton}
+                  >
+                    <Text style={styles.modalButtonText}>I disagree</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={handleAgreeToGamblingWarning}
+                    style={[styles.modalButton, styles.allowButton]}
+                  >
+                    <Text
+                      style={[styles.modalButtonText, styles.allowButtonText]}
+                    >
+                      I agree
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </>
+            )}
           </View>
         </View>
       </Modal>
