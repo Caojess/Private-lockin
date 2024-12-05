@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
-    marginHorizontal: 50,
+    marginHorizontal: 90,
   },
   friendRequestsText: {
     color: '#fff',
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
-    marginHorizontal: 50,
+    marginHorizontal: 90,
   },
   addButtonText: {
     color: '#fff',

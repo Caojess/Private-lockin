@@ -114,20 +114,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   createCustomButton: {
-    marginTop: 16,
-    borderWidth: 2,
-    borderColor: '#DD3A3A',
+    marginTop: 20,
+    backgroundColor: '#D9534F',
+    paddingVertical: 12,
     borderRadius: 8,
-    paddingVertical: 10,
     alignItems: 'center',
-    marginBottom: 30,
-    width: '50%',
-    alignSelf: 'center',
+    marginHorizontal: 90,
   },
   createCustomText: {
+    color: '#fff',
     fontSize: 16,
-    fontWeight: 'bold',
-    color: '#DD3A3A',
+    fontWeight: '600',
   },
 });
 
