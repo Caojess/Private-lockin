@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   todayText1: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#000",
+    color: "#DD3A3A",
   },
   todayText2: {
     fontSize: 14,
