@@ -7,6 +7,7 @@ import {
   ScrollView,
   SafeAreaView,
   TouchableOpacity,
+  TextInput,
 } from "react-native";
 import { BarChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
@@ -63,6 +64,19 @@ export default function ProfileScreen() {
   const [selectedTimeframe, setSelectedTimeframe] = useState("This Week");
   const [isDropdownVisible, setDropdownVisible] = useState(false);
 
+  // adding the additional bank account
+  const [balance, setBalance] = useState(45); // Initial balance set to $45
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [newBalance, setNewBalance] = useState(""); // Track the input for new balance
+
+  const handleBalanceUpdate = () => {
+    if (newBalance && !isNaN(newBalance)) {
+      setBalance((prevBalance) => prevBalance + parseFloat(newBalance)); // Add funds to balance
+      setIsModalVisible(false); // Close the modal
+      setNewBalance(""); // Clear input
+    }
+  };
+
   const handleTimeframeChange = (timeframe) => {
     setSelectedTimeframe(timeframe);
     setDropdownVisible(false);
@@ -96,38 +110,44 @@ export default function ProfileScreen() {
           {/* Smaller subtitle */}
         </View>
 
-        {/* Money Section */}
-        <View style={styles.generalBanner}>
-        <Text style={styles.sectionTitle}>
-          {`Current Balance: `}
-          <Text style={styles.sectionText}>$45</Text>
-        </Text>
+        {/* Balance Section */}
+        <View>
+          <View style={styles.balanceContainer}>
+            <Text style={styles.sectionTitle}>
+              Current Balance:{" "}
+              <Text style={styles.sectionText}>${balance}</Text>
+            </Text>
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() => setIsModalVisible(!isModalVisible)} // Toggle modal visibility
+            >
+              <Text style={styles.addButtonText}>Add</Text>
+            </TouchableOpacity>
+          </View>
 
-        </View>
-
-        {/* Dropdown Section */}
-        <View>89
-          <TouchableOpacity
-            style={styles.dropdownContainer}
-            onPress={() => setDropdownVisible(!isDropdownVisible)}
-          >
-            <Text style={styles.dropdownText}>{selectedTimeframe}</Text>
-            <Text style={styles.dropdownArrow}>▼</Text>
-          </TouchableOpacity>
-          {isDropdownVisible && (
-            <View style={styles.dropdownOptions}>
-              {Object.keys(chartData).map(
-                (timeframe) =>
-                  timeframe !== selectedTimeframe && (
-                    <TouchableOpacity
-                      key={timeframe}
-                      onPress={() => handleTimeframeChange(timeframe)}
-                      style={styles.dropdownOption}
-                    >
-                      <Text style={styles.dropdownOptionText}>{timeframe}</Text>
-                    </TouchableOpacity>
-                  )
-              )}
+          {/* Conditionally Render Modal Section */}
+          {isModalVisible && (
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalTitle}>Enter Amount to Add</Text>
+              <TextInput
+                style={styles.modalInput}
+                keyboardType="numeric"
+                value={newBalance}
+                onChangeText={setNewBalance}
+                placeholder="Enter amount"
+              />
+              <TouchableOpacity
+                style={styles.modalButton}
+                onPress={handleBalanceUpdate}
+              >
+                <Text style={styles.modalButtonText}>Add from bank</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.modalCloseButton}
+                onPress={() => setIsModalVisible(false)}
+              >
+                <Text style={styles.modalCloseButtonText}>Cancel</Text>
+              </TouchableOpacity>
             </View>
           )}
         </View>
@@ -323,15 +343,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#000",
   },
-  generalBanner: {
-    backgroundColor: "rgba(220, 53, 69, 0.5)",
-    borderRadius: 15,
-    paddingVertical: 15,
-    paddingHorizontal: 15,
-    marginBottom: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
   icon: {
     width: 40,
     height: 40,
@@ -387,5 +398,93 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
+  },
+
+  addButton: {
+    backgroundColor: "#DD3A3A",
+    padding: 10,
+    borderRadius: 5,
+    marginLeft: -30, // Move left slightly
+    marginTop: -5, // Move higher slightly
+    alignSelf: "center", // Ensure alignment relative to parent container
+    paddingHorizontal: 20,
+  },
+  addButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+
+  modal: {
+    position: "absolute",
+    top: "30%",
+    left: "10%",
+    width: "80%",
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    padding: 20,
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  modalInput: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 15,
+  },
+  modalButton: {
+    backgroundColor: "#DD3A3A",
+    borderRadius: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  modalButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  modalCloseButton: {
+    alignItems: "center",
+  },
+  modalCloseButtonText: {
+    color: "#DD3A3A",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  balanceContainer: {
+    flexDirection: "row", // Arrange items horizontally
+    alignItems: "center", // Vertically align items
+    justifyContent: "space-between", // Space between balance and button
+    marginBottom: 10, // Add spacing below
+  },
+  generalBanner: {
+    backgroundColor: "rgba(220, 53, 69, 0.5)",
+    borderRadius: 15,
+    paddingVertical: 15,
+    paddingHorizontal: 15,
+    marginBottom: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 15, // Add extra spacing when modal is visible
+  },
+
+  modalContainer: {
+    marginTop: 10, // Adds spacing after the balance section
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    padding: 20,
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 5,
   },
 });
