@@ -9,7 +9,7 @@ const ViewCompetition = ({ navigation }) => {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
         ></TouchableOpacity>
-        <Text style={styles.headerText}>Competition Feed</Text>
+
         <TouchableOpacity></TouchableOpacity>
       </View>
 

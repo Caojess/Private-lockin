@@ -201,7 +201,11 @@ function ProgressStack() {
         />
       )}
 
-      <Stack.Screen name="ViewCompetition" component={ViewCompetition} />
+<Stack.Screen 
+  name="ViewCompetition" 
+  component={ViewCompetition} 
+  options={{ title: "Competition Feed" }} 
+/>
       <Stack.Screen name="HeadToHeadMia" component={HeadToHeadMia} />
       <Stack.Screen name="HeadToHeadHarper" component={HeadToHeadHarper} />
     </Stack.Navigator>
