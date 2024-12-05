@@ -33,8 +33,8 @@ const LoginScreen = ({ navigation }) => {
     console.log("Allow Screen Time clicked");
     setShowScreenTimeModal(false); // Close the first modal
     setTimeout(() => {
-      console.log("Showing Gambling Warning modal");
       setShowGamblingWarningModal(true); // Show the second modal
+      console.log("Showing Gambling Warning modal");
     }, 300); // Delay to ensure smooth transition
   };
 

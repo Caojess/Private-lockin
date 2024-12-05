@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import FriendsScroll from '../components/FriendsScroll';
 import PublicScroll from '../components/PublicScroll';
 
+//username
+//password
 const HomeScreen = ({ navigation, route }) => {
   const [myCompetitions, setMyCompetitions] = useState([]);
   const mockCompetitions = [
     { id: 1, name: "Andy's $15 Competition", time: '3 Hours / 1 Day', spots: '1/4 Spots Left' },
     { id: 2, name: "Ingrid's $20 Competition", time: '5 Hours / 2 Days', spots: '2/5 Spots Left' },
-    { id: 3, name: "Nava's $100 Competition", time: '1 Hour / 7 Days', spots: '2/8 Spots Left' },
-    { id: 4, name: "Jeff's $50 Competition", time: '2 Hours / 3 Days', spots: '3/6 Spots Left' },
-    { id: 5, name: "Mila's $10 Competition", time: '4 Hours / 1 Day', spots: '4/4 Spots Left' },
-    { id: 6, name: "Ethan's $25 Competition", time: '2 Hours / 1 Day', spots: '1/5 Spots Left' },
-    { id: 7, name: "Sophia's $15 Competition", time: '6 Hours / 2 Days', spots: '3/8 Spots Left' },
-    { id: 8, name: "Olivia's $30 Competition", time: '3 Hours / 1 Day', spots: '5/6 Spots Left' },
   ];
 
   // Check if a new competition is passed from ShareInviteScreen
@@ -25,7 +21,6 @@ const HomeScreen = ({ navigation, route }) => {
 
   return (
     <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.contentContainer}>
-      {/* Header */}
       <Text style={styles.header}>Browse Competitions</Text>
 
       {/* My Competitions */}
@@ -37,20 +32,23 @@ const HomeScreen = ({ navigation, route }) => {
               <Text style={styles.competitionName}>{competition.name}</Text>
               <Text style={styles.competitionDetails}>{competition.time}</Text>
               <Text style={styles.competitionSpots}>{competition.spots}</Text>
+              <TouchableOpacity
+                style={styles.viewButton}
+                onPress={() => navigation.navigate('MyCompetitionDetails', { competition })}
+              >
+                <Text style={styles.viewButtonText}>View</Text>
+              </TouchableOpacity>
             </View>
           ))}
         </>
       )}
 
-      {/* Friends Competitions */}
       <Text style={styles.sectionTitle}>Your Friends</Text>
-      <FriendsScroll competitions={mockCompetitions.slice(0, 4)} />
+      <FriendsScroll competitions={mockCompetitions} />
 
-      {/* Local Competitions */}
       <Text style={styles.sectionTitle}>Local & Public</Text>
-      <PublicScroll competitions={mockCompetitions.slice(4, 8)} />
+      <PublicScroll competitions={mockCompetitions} />
 
-      {/* Create Custom Button */}
       <TouchableOpacity
         style={styles.createCustomButton}
         onPress={() => navigation.navigate('SetupCompetition')}
@@ -71,7 +69,6 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
   },
   header: {
-    paddingTop: 1,
     fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -104,9 +101,20 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#777',
   },
+  viewButton: {
+    backgroundColor: '#DD3A3A',
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    marginTop: 10,
+  },
+  viewButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
   createCustomButton: {
     marginTop: 16,
-    backgroundColor: 'transparent',
     borderWidth: 2,
     borderColor: '#DD3A3A',
     borderRadius: 8,

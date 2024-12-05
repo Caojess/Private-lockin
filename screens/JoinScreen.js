@@ -6,7 +6,9 @@ const JoinScreen = ({ navigation }) => {
 
   const handleJoin = () => {
     setModalVisible(false);
-    navigation.navigate('CurrentGame');
+    navigation.navigate('Progress', {
+      screen: 'CurrentGame',
+    });
   };
 
   return (

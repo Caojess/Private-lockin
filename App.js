@@ -2,8 +2,10 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
+import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+
+
 
 // Import screens
 import HomeScreen from "./screens/HomeScreen";
@@ -25,6 +27,7 @@ import ShareInviteScreen from "./screens/ShareInviteScreen";
 import ViewCompetition from "./screens/ViewCompetition";
 import HeadToHeadMia from "./screens/HeadToHeadMia";
 import HeadToHeadHarper from "./screens/HeadToHeadHarper";
+import MyCompetitionDetailsScreen from "./screens/MyCompetitionDetailsScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -89,6 +92,11 @@ function HomeStack() {
         component={ShareInviteScreen}
         options={{ title: "Create Competition" }}
       />
+      <Stack.Screen
+  name="MyCompetitionDetails"
+  component={MyCompetitionDetailsScreen}
+  options={{ title: 'Competition Details' }}
+/>
     </Stack.Navigator>
   );
 }
@@ -231,12 +239,45 @@ function MainTabs() {
       })}
     >
       <Tab.Screen name="Home" component={HomeStack} />
-      <Tab.Screen name="Progress" component={() => <View />} />
+      <Tab.Screen name="Progress" component={ProgressStack} />
       <Tab.Screen name="Friends" component={FriendsStack} />
       <Tab.Screen name="Profile" component={ProfileStack} />
+
+
     </Tab.Navigator>
   );
 }
+
+function ProgressStack() {
+  const [inCompetition, setInCompetition] = React.useState(false); // Track competition state
+
+  return (
+    <Stack.Navigator screenOptions={sharedScreenOptions}>
+      {inCompetition ? (
+        <Stack.Screen
+          name="CurrentGame"
+          component={(props) => (
+            <CurrentGameScreen {...props} setInCompetition={setInCompetition} />
+          )}
+          options={{ title: "Current Game", headerShown: true , headerLeft: () => null }}
+        />
+      ) : (
+        <Stack.Screen
+          name="NoCompetition"
+          component={() => (
+            <View style={styles.centeredView}>
+              <Text style={styles.noCompetitionText}>
+                You have not joined a competition yet
+              </Text>
+            </View>
+          )}
+          options={{ title: "Progress" , headerLeft: () => null }}
+        />
+      )}
+    </Stack.Navigator>
+  );
+}
+
 
 // Unauthenticated Screens (Login and Welcome)
 function AuthStack() {
@@ -282,4 +323,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "600",
   },
+  noCompetitionText: {
+    alignSelf: "center",
+    top: 300,
+  },
+  
 });
