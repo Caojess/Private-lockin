@@ -15,21 +15,21 @@ const InviteFriendsScreen = ({ navigation }) => {
   const [friendsList, setFriendsList] = useState([
     {
       id: "1",
-      name: "Julia",
+      name: "Bill",
       invited: false,
-      avatar: require("../images/Mia.png"),
+      avatar: Image.resolveAssetSource(require("../images/bill.png")).uri,
     },
     {
       id: "2",
-      name: "Harper",
+      name: "Amanda",
       invited: false,
-      avatar: require("../images/harper.png"),
+      avatar: Image.resolveAssetSource(require("../images/amanda.png")).uri,
     },
     {
       id: "3",
-      name: "Mia",
+      name: "Michelle",
       invited: false,
-      avatar: require("../images/andy.png"),
+      avatar: Image.resolveAssetSource(require("../images/PNG image.png")).uri,
     },
   ]);
 

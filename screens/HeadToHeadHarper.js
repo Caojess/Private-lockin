@@ -6,34 +6,34 @@ const DATA = [
   {
     id: "1",
     app: "Instagram",
-    you: "30 min",
+    you: "15 min",
     opponent: "45 min",
     icon: require("../images/instagram-icon.png"),
   },
   {
     id: "2",
     app: "Messages",
-    you: "10 min",
-    opponent: "43 min",
+    you: "13 min",
+    opponent: "10 min",
     icon: require("../images/message-icon.png"),
   },
   {
     id: "3",
     app: "TikTok",
-    you: "47 min",
+    you: "5 min",
     opponent: "40 min",
     icon: require("../images/tiktok-icon.png"),
   },
   {
     id: "4",
     app: "YouTube",
-    you: "10 min",
-    opponent: "22 min",
+    you: "7 min",
+    opponent: "55 min",
     icon: require("../images/youtube-icon.png"),
   },
 ];
 
-const HeadToHeadScreen = () => {
+const HeadToHeadMiaScreen = () => {
   const isLower = (value1, value2) => {
     // Helper function to determine the lower value
     const num1 = parseInt(value1.replace(" min", ""));
@@ -55,17 +55,14 @@ const HeadToHeadScreen = () => {
         <View style={styles.user}>
           <Text style={styles.label}>You</Text>
           <Image source={require("../images/you.png")} style={styles.avatar} />
-          <Text style={[styles.userTime, { color: "green" }]}>1:37</Text>
+          <Text style={[styles.userTime, styles.bold]}>0:40</Text>
         </View>
 
         {/* Opponent Section */}
         <View style={styles.user}>
           <Text style={styles.label}>Harper</Text>
-          <Image
-            source={require("../images/harper.png")}
-            style={styles.avatar}
-          />
-          <Text style={[styles.userTime, { color: "red" }]}>2:30</Text>
+          <Image source={require("../images/Mia.png")} style={styles.avatar} />
+          <Text style={[styles.userTime, styles.nonBold]}>2:30</Text>
         </View>
       </View>
 
@@ -78,7 +75,7 @@ const HeadToHeadScreen = () => {
         <View style={[styles.row, styles.headerRow]}>
           <Text style={[styles.columnHeader, styles.leftColumn]}>You</Text>
           <Text style={styles.columnHeader}>App</Text>
-          <Text style={[styles.columnHeader, styles.rightColumn]}>Harper</Text>
+          <Text style={[styles.columnHeader, styles.rightColumn]}>Mia</Text>
         </View>
 
         {/* Table Data */}
@@ -89,7 +86,7 @@ const HeadToHeadScreen = () => {
               style={[
                 styles.cellText,
                 styles.leftColumn,
-                isLower(item.you, item.opponent) && styles.greenBold,
+                isLower(item.you, item.opponent) ? styles.bold : styles.nonBold,
               ]}
             >
               {item.you}
@@ -106,7 +103,9 @@ const HeadToHeadScreen = () => {
               style={[
                 styles.cellText,
                 styles.rightColumn,
-                !isLower(item.you, item.opponent) && styles.greenBold,
+                !isLower(item.you, item.opponent)
+                  ? styles.bold
+                  : styles.nonBold,
               ]}
             >
               {item.opponent}
@@ -160,7 +159,12 @@ const styles = StyleSheet.create({
   userTime: {
     marginTop: 10,
     fontSize: 18,
+  },
+  bold: {
     fontWeight: "bold",
+  },
+  nonBold: {
+    fontWeight: "normal",
   },
   sectionHeader: {
     fontSize: 18,
@@ -221,10 +225,6 @@ const styles = StyleSheet.create({
     textAlign: "right",
     paddingRight: 15,
   },
-  greenBold: {
-    fontWeight: "bold",
-    color: "green",
-  },
 });
 
-export default HeadToHeadScreen;
+export default HeadToHeadMiaScreen;

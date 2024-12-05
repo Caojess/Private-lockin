@@ -1,35 +1,42 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 // Friend data
 const friends = [
   {
-    id: '1',
-    name: 'Andy',
-    image: require('../images/andy.png'),
-    status: 'Competition Status',
-    averageScreenTime: '3:28',
-    statusColor: '#DD3A3A',
-    competitionScreen: 'AndyCompetition',
+    id: "1",
+    name: "Bill",
+    image: require("../images/bill.png"),
+    status: "Competition Status",
+    averageScreenTime: "3:28",
+    statusColor: "#DD3A3A",
+    competitionScreen: "AndyCompetition",
   },
   {
-    id: '2',
-    name: 'Harper',
-    image: require('../images/harper.png'),
-    status: 'No Competition',
-    averageScreenTime: '5:35',
-    statusColor: '#B0B0B0',
+    id: "2",
+    name: "Amanda",
+    image: require("../images/amanda.png"),
+    status: "No Competition",
+    averageScreenTime: "5:35",
+    statusColor: "#B0B0B0",
     competitionScreen: null,
   },
   {
-    id: '3',
-    name: 'Mia',
-    image: require('../images/Mia.png'),
-    status: 'Competition Status',
-    averageScreenTime: '2:31',
-    statusColor: '#DD3A3A',
-    competitionScreen: 'MiaCompetition',
+    id: "3",
+    name: "Mia",
+    image: require("../images/PNG image.png"),
+    status: "Competition Status",
+    averageScreenTime: "2:31",
+    statusColor: "#DD3A3A",
+    competitionScreen: "MiaCompetition",
   },
 ];
 
@@ -49,7 +56,8 @@ const FriendCard = ({ friend }) => {
       <View style={styles.infoContainer}>
         <Text style={styles.name}>{friend.name}</Text>
         <Text style={styles.averageScreenTime}>
-          Average Screen Time <Text style={styles.bold}>{friend.averageScreenTime}</Text>
+          Average Screen Time{" "}
+          <Text style={styles.bold}>{friend.averageScreenTime}</Text>
         </Text>
       </View>
       <TouchableOpacity
@@ -68,11 +76,11 @@ const FriendsScreen = () => {
   const navigation = useNavigation(); // Use navigation hook for navigation
 
   const handleAddFriends = () => {
-    navigation.navigate('AddFriends'); // Navigate to the AddFriends screen
+    navigation.navigate("AddFriends"); // Navigate to the AddFriends screen
   };
 
   const handleFriendRequests = () => {
-    navigation.navigate('FriendRequests'); // Navigate to the FriendRequests screen
+    navigation.navigate("FriendRequests"); // Navigate to the FriendRequests screen
   };
 
   return (
@@ -83,7 +91,10 @@ const FriendsScreen = () => {
         renderItem={({ item }) => <FriendCard friend={item} />}
         contentContainerStyle={styles.friendsList}
       />
-      <TouchableOpacity style={styles.friendRequestsButton} onPress={handleFriendRequests}>
+      <TouchableOpacity
+        style={styles.friendRequestsButton}
+        onPress={handleFriendRequests}
+      >
         <Text style={styles.friendRequestsText}>Friend Requests</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.addButton} onPress={handleAddFriends}>
@@ -97,7 +108,7 @@ const FriendsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 16,
     paddingTop: 50, // Add extra padding to move the content down
     paddingBottom: 50,
@@ -106,11 +117,11 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   friendCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 16,
     padding: 16,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: "#F9F9F9",
     borderRadius: 8,
   },
   avatar: {
@@ -124,16 +135,16 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
     marginBottom: 4,
   },
   averageScreenTime: {
     fontSize: 14,
-    color: '#555',
+    color: "#555",
   },
   bold: {
-    fontWeight: '700',
-    color: '#DD3A3A',
+    fontWeight: "700",
+    color: "#DD3A3A",
   },
   statusButton: {
     paddingHorizontal: 12,
@@ -141,35 +152,35 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   statusText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   friendRequestsButton: {
     marginTop: 20,
-    backgroundColor: '#DD3A3A',
+    backgroundColor: "#DD3A3A",
     paddingVertical: 12,
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
     marginHorizontal: 90,
   },
   friendRequestsText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   addButton: {
     marginTop: 20,
-    backgroundColor: '#DD3A3A',
+    backgroundColor: "#DD3A3A",
     paddingVertical: 12,
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
     marginHorizontal: 90,
   },
   addButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });
 
