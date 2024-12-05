@@ -121,7 +121,7 @@ const LoginScreen = ({ navigation }) => {
 
       {/* Gambling Warning Modal */}
       <Modal
-        // key={"GamblingWarningModal"}
+        
         visible={showGamblingWarningModal}
         transparent={true}
         animationType="slide"

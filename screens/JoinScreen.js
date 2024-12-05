@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
+import React, { useState, useContext } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Modal } from "react-native";
+import { CompetitionContext } from "../App"; // Import the context
 
 const JoinScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const { setInCompetition } = useContext(CompetitionContext); // Access the context
 
   const handleJoin = () => {
     setModalVisible(false);
-    navigation.navigate('Progress', {
-      screen: 'CurrentGame',
+    setInCompetition(true); // Mark that the user has joined a competition
+    navigation.navigate("Progress", {
+      screen: "CurrentGame", // Navigate to the CurrentGame screen
     });
   };
 
@@ -79,125 +82,125 @@ const JoinScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     paddingHorizontal: 16,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   title: {
     fontSize: 30,
-    fontWeight: 'bold',
-    color: '#000',
-    textAlign: 'center',
+    fontWeight: "bold",
+    color: "#000",
+    textAlign: "center",
     marginBottom: 24,
   },
   payoutContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 24,
     borderRadius: 12,
-    backgroundColor: '#EE9B9B',
-    height: '25%',
-    alignContent: 'center',
-    alignSelf: 'center',
+    backgroundColor: "#EE9B9B",
+    height: "25%",
+    alignContent: "center",
+    alignSelf: "center",
   },
   payoutBox: {
-    backgroundColor: '#EE9B9B',
+    backgroundColor: "#EE9B9B",
     borderRadius: 12,
     flex: 1,
     marginHorizontal: 8,
     paddingVertical: 16,
-    alignItems: 'center',
-    alignContent: 'center',
-    alignSelf: 'center',
+    alignItems: "center",
+    alignContent: "center",
+    alignSelf: "center",
   },
   payoutLabel: {
     fontSize: 18,
-    fontWeight: '600',
-    alignSelf: 'center',
-    color: '#fff',
+    fontWeight: "600",
+    alignSelf: "center",
+    color: "#fff",
     marginBottom: 8,
   },
   payoutValue: {
     fontSize: 26,
-    fontWeight: 'bold',
-    color: '#000',
+    fontWeight: "bold",
+    color: "#000",
   },
   rulesText: {
     paddingTop: 30,
     fontSize: 18,
-    color: '#000',
-    textAlign: 'center',
+    color: "#000",
+    textAlign: "center",
     marginBottom: 8,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   warningText: {
     fontSize: 24,
-    fontWeight: '800',
-    color: '#DD3A3A',
-    textAlign: 'center',
+    fontWeight: "800",
+    color: "#DD3A3A",
+    textAlign: "center",
     marginBottom: 16,
   },
   balanceText: {
     fontSize: 18,
     paddingTop: 80,
-    color: '#000',
-    textAlign: 'center',
+    color: "#000",
+    textAlign: "center",
     marginBottom: 24,
   },
   joinButton: {
-    backgroundColor: '#DD3A3A',
+    backgroundColor: "#DD3A3A",
     borderRadius: 8,
     paddingVertical: 12,
     marginHorizontal: 16,
-    width: '50%',
-    alignSelf: 'center',
+    width: "50%",
+    alignSelf: "center",
   },
   joinButtonText: {
-    color: '#fff',
-    textAlign: 'center',
+    color: "#fff",
+    textAlign: "center",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   modalOverlay: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    width: '80%',
-    backgroundColor: '#fff',
+    width: "80%",
+    backgroundColor: "#fff",
     borderRadius: 12,
     padding: 16,
-    alignItems: 'center',
+    alignItems: "center",
   },
   modalText: {
     fontSize: 18,
-    color: '#000',
-    textAlign: 'center',
+    color: "#000",
+    textAlign: "center",
     marginBottom: 24,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   modalButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
   },
   modalButton: {
     flex: 1,
-    backgroundColor: '#ccc',
+    backgroundColor: "#ccc",
     borderRadius: 8,
     paddingVertical: 12,
     marginHorizontal: 8,
-    alignItems: 'center',
+    alignItems: "center",
   },
   modalButtonConfirm: {
-    backgroundColor: '#DD3A3A',
+    backgroundColor: "#DD3A3A",
   },
   modalButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 

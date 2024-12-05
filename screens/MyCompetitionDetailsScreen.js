@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -6,23 +6,26 @@ import {
   TouchableOpacity,
   Image,
   Modal,
-} from 'react-native';
+} from "react-native";
+import { CompetitionContext } from "../App"; // Import the context
 
 const MyCompetitionDetailsScreen = ({ navigation, route }) => {
   const { competition } = route.params; // Receive competition details
   const [accepted, setAccepted] = useState([
-    { id: 1, name: 'Julia', image: 'https://via.placeholder.com/50' },
-    { id: 2, name: 'Harper', image: 'https://via.placeholder.com/50' },
+    { id: 1, name: "Julia", image: "https://via.placeholder.com/50" },
+    { id: 2, name: "Harper", image: "https://via.placeholder.com/50" },
   ]);
   const [pending, setPending] = useState([
-    { id: 3, name: 'Mia', image: 'https://via.placeholder.com/50' },
-    { id: 4, name: 'Maximus', image: 'https://via.placeholder.com/50' },
+    { id: 3, name: "Mia", image: "https://via.placeholder.com/50" },
+    { id: 4, name: "Maximus", image: "https://via.placeholder.com/50" },
   ]);
   const [requests, setRequests] = useState([
-    { id: 5, name: 'Papa', image: 'https://via.placeholder.com/50' },
-    { id: 6, name: 'Luna', image: 'https://via.placeholder.com/50' },
+    { id: 5, name: "Papa", image: "https://via.placeholder.com/50" },
+    { id: 6, name: "Luna", image: "https://via.placeholder.com/50" },
   ]);
   const [modalVisible, setModalVisible] = useState(false);
+
+  const { setInCompetition } = useContext(CompetitionContext); // Access the global state
 
   const handleApprove = (user) => {
     setAccepted((prev) => [...prev, user]); // Add to accepted
@@ -31,6 +34,14 @@ const MyCompetitionDetailsScreen = ({ navigation, route }) => {
 
   const handleDecline = (user) => {
     setRequests((prev) => prev.filter((req) => req.id !== user.id)); // Remove from requests
+  };
+
+  const handleStartCompetition = () => {
+    setModalVisible(false);
+    setInCompetition(true); // Update the global competition state
+    navigation.navigate("Progress", {
+      screen: "CurrentGame", // Navigate to CurrentGame
+    });
   };
 
   return (
@@ -93,7 +104,8 @@ const MyCompetitionDetailsScreen = ({ navigation, route }) => {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>
-              Are you sure you want to join this {competition.time} competition for $15?
+              Are you sure you want to join this {competition.time} competition
+              for $15?
             </Text>
             <View style={styles.modalButtons}>
               <TouchableOpacity
@@ -104,12 +116,7 @@ const MyCompetitionDetailsScreen = ({ navigation, route }) => {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.modalButtonConfirm}
-                onPress={() => {
-                  setModalVisible(false);
-                  navigation.navigate('Progress', {
-                    screen: 'CurrentGame',
-                  });
-                }}
+                onPress={handleStartCompetition}
               >
                 <Text style={styles.modalButtonTextConfirm}>Yes!</Text>
               </TouchableOpacity>
@@ -124,18 +131,18 @@ const MyCompetitionDetailsScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 16,
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginVertical: 8,
-    color: '#DD3A3A',
+    color: "#DD3A3A",
   },
   userRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginVertical: 8,
   },
   avatar: {
@@ -146,96 +153,96 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontSize: 16,
-    color: '#000',
+    color: "#000",
     flex: 1,
   },
   pendingText: {
-    color: '#777',
+    color: "#777",
   },
   approveButton: {
-    backgroundColor: '#DD3A3A',
+    backgroundColor: "#DD3A3A",
     borderRadius: 8,
     padding: 8,
     marginLeft: 8,
   },
   declineButton: {
-    backgroundColor: '#FCE9E9',
+    backgroundColor: "#FCE9E9",
     borderRadius: 8,
     padding: 8,
     marginLeft: 8,
   },
   approveText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: "#fff",
+    fontWeight: "bold",
   },
   declineText: {
-    color: '#DD3A3A',
-    fontWeight: 'bold',
+    color: "#DD3A3A",
+    fontWeight: "bold",
   },
   divider: {
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomColor: "#ddd",
     marginVertical: 16,
   },
   startButton: {
     marginTop: 20,
-    backgroundColor: '#DD3A3A',
+    backgroundColor: "#DD3A3A",
     paddingVertical: 12,
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
   },
   startButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   modalOverlay: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 20,
     borderRadius: 8,
-    width: '80%',
-    alignItems: 'center',
+    width: "80%",
+    alignItems: "center",
   },
   modalTitle: {
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: 20,
-    color: '#000',
+    color: "#000",
   },
   modalButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
   },
   modalButtonCancel: {
-    backgroundColor: '#ccc',
+    backgroundColor: "#ccc",
     borderRadius: 8,
     paddingVertical: 10,
     paddingHorizontal: 20,
     marginHorizontal: 5,
   },
   modalButtonConfirm: {
-    backgroundColor: '#DD3A3A',
+    backgroundColor: "#DD3A3A",
     borderRadius: 8,
     paddingVertical: 10,
     paddingHorizontal: 20,
     marginHorizontal: 5,
   },
   modalButtonTextCancel: {
-    color: '#000',
+    color: "#000",
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   modalButtonTextConfirm: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 
