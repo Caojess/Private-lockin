@@ -33,10 +33,14 @@ const CurrentGameScreen = ({ navigation }) => {
       {/* Today Progress Box */}
       <View style={styles.todayBox}>
         <View style={styles.todayRow}>
-          <Text style={styles.todayText}>Current Screen Time: 40 mins</Text>
-          <Text style={styles.todayText}>Daily Goal: 3 hours</Text>
-          <Text style={styles.todayText}>Current Payout: $20</Text>
-          <Text style={styles.todayGoal}>4 competitors remaining</Text>
+          <Text style={styles.todayText}>40 mins spent today</Text>
+          <Text style={styles.todayGoal}>Daily Goal: 3 hrs</Text>
+        </View>
+        <View style={styles.todayRow}>
+          <Text style={styles.todayPayout}>Current Payout: $20</Text>
+          <View style={styles.participantsIcon}>
+            <Text>👥👥 4 ppl left</Text>
+          </View>
         </View>
       </View>
 
@@ -115,22 +119,21 @@ const styles = StyleSheet.create({
   todayBox: {
     marginTop: 30,
     width: "90%",
-    height: 200,
+    height: 100,
     backgroundColor: "#FAD4D4",
     borderRadius: 12,
     padding: 16,
     marginBottom: 24,
   },
   todayRow: {
-    flexDirection: "column",
-    justifyContent: "space-evenly",
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 20,
-    marginTop: 20,
   },
   todayText: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#000",
+    color: "#DD3A3A",
   },
   todayGoal: {
     fontSize: 14,
