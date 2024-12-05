@@ -65,7 +65,7 @@ export default function ProfileScreen() {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
 
   // adding the additional bank account
-  const [balance, setBalance] = useState(40); // Initial balance set to $40
+  const [balance, setBalance] = useState(25); // Initial balance set to $25
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [newBalance, setNewBalance] = useState(""); // Track the input for new balance
 
