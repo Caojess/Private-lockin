@@ -115,16 +115,16 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   uncheckedButton: {
-    borderColor: '#D9534F', // Red border when unchecked
+    borderColor: '#DD3A3A', // Red border when unchecked
     backgroundColor: 'transparent', // Transparent background
   },
   acceptedButton: {
-    backgroundColor: '#D9534F', // Red fill when checked (Accepted)
-    borderColor: '#D9534F',
+    backgroundColor: '#DD3A3A', // Red fill when checked (Accepted)
+    borderColor: '#DD3A3A',
   },
   rejectedButton: {
-    backgroundColor: '#D9534F', // Red fill when checked (Rejected)
-    borderColor: '#D9534F',
+    backgroundColor: '#DD3A3A', // Red fill when checked (Rejected)
+    borderColor: '#DD3A3A',
   },
   actionButtonText: {
     color: '#fff',

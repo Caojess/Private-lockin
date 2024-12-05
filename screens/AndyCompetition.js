@@ -54,7 +54,7 @@ const AndyCompetition = ({ navigation }) => {
                 styleAttr="Horizontal"
                 indeterminate={false}
                 progress={participant.progress}
-                color="#D9534F"
+                color="#DD3A3A"
                 style={styles.progressBar}
               />
             </View>
@@ -93,13 +93,13 @@ const styles = StyleSheet.create({
   dayInfo: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#D9534F',
+    color: '#DD3A3A',
     marginBottom: 4,
   },
   potInfo: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#D9534F',
+    color: '#DD3A3A',
   },
   participantCard: {
     flexDirection: 'row',
