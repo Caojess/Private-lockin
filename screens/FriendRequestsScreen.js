@@ -4,9 +4,9 @@ import { useNavigation } from '@react-navigation/native';
 
 // Mock friend request data
 const friendRequests = [
-  { id: '1', name: 'Emilia', image: require('../images/harper.png') },
-  { id: '2', name: 'Lourde', image: require('../images/Mia.png') },
-  { id: '3', name: 'Zach', image: require('../images/you.png') },
+  { id: '1', name: 'Emilia', image: require('../images/Emilia.png') },
+  { id: '2', name: 'Lourde', image: require('../images/Lourde.png') },
+  { id: '3', name: 'Zach', image: require('../images/Zach.png') },
 ];
 
 const FriendRequestsScreen = () => {
