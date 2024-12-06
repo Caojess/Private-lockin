@@ -163,6 +163,11 @@ function FriendsStack() {
         options={{ title: "Mia's Competition" }}
       />
       <Stack.Screen
+        name="Info"
+        component={InfoScreen}
+        options={{ title: "Information" }}
+      />
+      <Stack.Screen
         name="AddFriends"
         component={AddFriends}
         options={{ title: "Add Friends" }}
@@ -214,6 +219,11 @@ function ProgressStack() {
   component={ViewCompetition} 
   options={{ title: "Competition Feed" }} 
 />
+<Stack.Screen
+        name="Info"
+        component={InfoScreen}
+        options={{ title: "Information" }}
+      />
 <Stack.Screen 
   name="HeadToHeadMia" 
   component={HeadToHeadMia} 
@@ -254,6 +264,7 @@ function MainTabs() {
       <Tab.Screen name="Progress" component={ProgressStack} />
       <Tab.Screen name="Friends" component={FriendsStack} />
       <Tab.Screen name="Profile" component={ProfileStack} />
+      
 
     </Tab.Navigator>
   );
