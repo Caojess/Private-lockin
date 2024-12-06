@@ -17,29 +17,29 @@ const FriendsScroll = () => {
     {
       id: 1,
       name: "Andy's",
-      time: "<3 hours for 3 day",
-      spots: "1/4 spots left",
+      time: "<3 hours for 3 days",
+      spots: "1 spot left",
       avatar: require("../images/andy.png"),
     },
     {
       id: 2,
       name: "Mia's",
       time: "<4 hours for 1 day",
-      spots: "1/5 spots left",
+      spots: "1 spot left",
       avatar: require("../images/Mia.png"),
     },
     {
       id: 3,
       name: "Harper's",
       time: "<6 hours for 2 days",
-      spots: "4/8 spots left",
+      spots: "4 spots left",
       avatar: require("../images/harper.png"),
     },
     {
       id: 4,
-      name: "You",
+      name: "Yours",
       time: "<5.5 hours for 1 day",
-      spots: "1/5 spots left",
+      spots: "1 spots left",
       avatar: require("../images/you.png"),
     },
   ];
@@ -73,7 +73,7 @@ const FriendsScroll = () => {
           {/* Competition Details */}
           <Text style={styles.cardTitle}>{competition.name}</Text>
           <Text style={styles.cardSubTitle}>
-            {competition.buyIn} competition
+            {competition.buyIn} 
           </Text>
           <Text style={styles.cardDetails}>{competition.time}</Text>
           <Text style={styles.cardDetails}>{competition.spots}</Text>
