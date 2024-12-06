@@ -17,7 +17,7 @@ const CompeteScreen = ({ route, navigation }) => {
       <View style={styles.headerContainer}>
         <Text
           style={styles.headerText}
-        >{`${competitionName} Competition`}</Text>
+        >{`${competitionName} `}</Text>
       </View>
 
       {/* Competitors Section */}
