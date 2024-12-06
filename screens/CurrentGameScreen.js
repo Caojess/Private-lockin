@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   todayText1: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: "bold",
     color: "#DD3A3A",
   },
