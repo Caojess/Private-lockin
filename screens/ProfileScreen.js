@@ -21,15 +21,15 @@ export default function ProfileScreen() {
     "This Week": {
       general: [1.2, 2.1, 2.8, 3.5, 2.4, 3.3, 2.7], // Scaled values between 1 and 4
       tiktok: [1.5, 2, 2.5, 3, 2.8, 3.3, 3.5],
-      messages: [1.2, 1.6, 2.8, 2.4, 2.8, 3, 3.2],
+      messages: [1.5, 2, 2.5, 3, 2.8, 3.3, 3.5],
       instagram: [2, 2.5, 3, 3.2, 3.5, 3.8, 4],
       labels: ["M", "T", "W", "T", "F", "Sa", "Su"],
     },
     "This Month": {
       general: [1.8, 2.7, 3.3, 3.8], // Scaled values
-      tiktok: [1.5, 2, 2.5, 3],
-      messages: [1.2, 1.8, 2.2, 3],
-      instagram: [2, 2.5, 3, 3.5],
+      tiktok: [2, 2.5, 3, 3.5],
+      messages: [2, 2.6, 3, 3.5],
+      instagram: [2, 2.5, 3.1, 3.5],
       labels: ["W1", "W2", "W3", "W4"],
     },
     "Past 6 Months": {
