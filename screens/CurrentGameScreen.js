@@ -35,15 +35,12 @@ const CurrentGameScreen = ({ navigation }) => {
         </View>
         <View style={styles.progressBar}>
           <View
-            style={[
-              styles.progress,
-              { width: `${progressPercentage * 100}%` },
-            ]}
+            style={[styles.progress, { width: `${progressPercentage * 100}%` }]}
           />
         </View>
         <View style={styles.row}>
           <Text style={styles.payoutText}>Current Payout: $15</Text>
-          <Text style={styles.participantsIcon}>4 ppl left</Text>
+          <Text style={styles.participantsIcon}>4 👤</Text>
         </View>
       </View>
 
