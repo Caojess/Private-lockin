@@ -31,7 +31,7 @@ const CurrentGameScreen = ({ navigation }) => {
       <View style={styles.todayBox}>
         <View style={styles.row}>
           <Text style={styles.todayText1}>40 Mins Today</Text>
-          <Text style={styles.todayText2}> Goal: Under 3 Hours</Text>
+          <Text style={styles.todayText2}> Goal: &lt; 3 Hours</Text>
         </View>
         <View style={styles.progressBar}>
           <View
