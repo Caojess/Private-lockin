@@ -39,7 +39,7 @@ const FriendsScroll = () => {
       id: 4,
       name: "Your Competition",
       time: "<5.5 hours for 1 day",
-      spots: "1 spots left",
+      spots: "1 spot left",
       avatar: require("../images/you.png"),
     },
   ];

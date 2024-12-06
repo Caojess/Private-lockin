@@ -18,14 +18,14 @@ const PublicScroll = () => {
       id: 2,
       name: "Leah's Competition",
       time: '<3.5 hours for 1 day',
-      spots: '6 spot left',
+      spots: '6 spots left',
       avatar: require('../images/you.png'),
     },
     {
       id: 3,
       name: "Jon's Competition",
       time: '<4 hours for 2 days',
-      spots: '3 spot left',
+      spots: '3 spots left',
       avatar: require('../images/andy.png'),
     },
     {
