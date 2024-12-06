@@ -254,22 +254,83 @@ function MainTabs() {
       <Tab.Screen name="Progress" component={ProgressStack} />
       <Tab.Screen name="Friends" component={FriendsStack} />
       <Tab.Screen name="Profile" component={ProfileStack} />
+
     </Tab.Navigator>
   );
+  
 }
-
 function AuthStack() {
   return (
     <Stack.Navigator
       initialRouteName="Login"
-      screenOptions={{ headerShown: false }}
+      screenOptions={{
+        headerShown: true, // Default to showing headers
+        headerStyle: { backgroundColor: "#fff" },
+        headerTintColor: "black",
+        headerTitleAlign: "center",
+      }}
     >
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Welcome" component={WelcomeScreen} />
-      <Stack.Screen name="MainTabs" component={MainTabs} />
+      {/* Login screen with no header */}
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{ headerShown: false }}
+      />
+
+      {/* Welcome screen with a default header */}
+      <Stack.Screen
+        name="Welcome"
+        component={WelcomeScreen}
+        options={{ title: "Welcome to LockIn" }}
+      />
+
+      {/* MainTabs integrates the bottom tab navigation */}
+      <Stack.Screen
+        name="MainTabs"
+        component={MainTabs}
+        options={{ headerShown: false }} // Hide header for MainTabs
+      />
+
+      {/* Competition-related screens with headers */}
+      <Stack.Screen
+        name="SetupCompetition"
+        component={SetupCompetitionScreen}
+        options={{ title: "Setup Competition" }}
+      />
+      <Stack.Screen
+        name="InviteFriends"
+        component={InviteFriendsScreen}
+        options={{ title: "Invite Friends" }}
+      />
+      <Stack.Screen
+        name="ShareInvite"
+        component={ShareInviteScreen}
+        options={{ title: "Share Invite" }}
+      />
+      <Stack.Screen
+        name="MyCompetitionDetails"
+        component={MyCompetitionDetailsScreen}
+        options={{ title: "Competition Details" }}
+      />
+
+      {/* Home screen for navigation */}
+      <Stack.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{ title: "Home" }}
+      />
+      {/* Andy screen for navigation */}
+      <Stack.Screen
+        name="AndyCompetition"
+        component={AndyCompetition}
+        options={{ title: "Andy's Competition" }}
+      />
     </Stack.Navigator>
   );
 }
+
+
+
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

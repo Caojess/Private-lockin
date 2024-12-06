@@ -60,7 +60,7 @@ const InviteFriendsScreen = ({ navigation }) => {
         />
       </View>
 
-      {/* Previous Competitors */}
+      {/* Friends List */}
       <FlatList
         data={filteredFriends}
         keyExtractor={(item) => item.id}
@@ -140,15 +140,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 16,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 16,
-    color: "#DD3A3A",
-  },
   searchBar: {
-    backgroundColor: "#FCE9E9",
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: '#ccc',
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 10,
@@ -161,15 +156,12 @@ const styles = StyleSheet.create({
     color: "#000",
     flex: 1,
   },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 12,
-    color: "#DD3A3A",
-  },
   friendItem: {
     flexDirection: "row",
     alignItems: "center",
+    paddingVertical: 16,
+    backgroundColor: "#F9F9F9", // Matching background color with Add Friends screen
+    borderRadius: 8,
     marginBottom: 12,
   },
   avatar: {
@@ -177,29 +169,30 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
     marginRight: 12,
+    marginLeft: 15,
   },
   friendName: {
+    fontSize: 18, // Adjusted text size to match Add Friends screen
+    fontWeight: '600', // Matching weight from Add Friends
     flex: 1,
-    fontSize: 16,
-    color: "#000",
   },
   inviteButton: {
-    borderWidth: 1,
-    borderColor: "#DD3A3A",
-    borderRadius: 8,
+    backgroundColor: "#DD3A3A",
     paddingVertical: 6,
     paddingHorizontal: 12,
+    borderRadius: 20,
+    marginRight: 15,
   },
   inviteButtonText: {
-    color: "#DD3A3A",
-    fontWeight: "bold",
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: '600',
   },
   invitedButton: {
-    backgroundColor: "#FCE9E9",
-    borderColor: "#FCE9E9",
+    backgroundColor: "#B0B0B0", // Gray background when invited
   },
   invitedButtonText: {
-    color: "#999",
+    color: "#fff",
   },
   nextButton: {
     backgroundColor: "#DD3A3A",

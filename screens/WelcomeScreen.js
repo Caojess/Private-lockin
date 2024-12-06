@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from "@react-navigation/native";
 
 const WelcomeScreen = ({ navigation }) => {
   return (
@@ -14,9 +15,13 @@ const WelcomeScreen = ({ navigation }) => {
         <Text style={styles.buttonText}>Join Competition</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={[styles.button, styles.createButton]}>
+      <TouchableOpacity
+        style={[styles.button, styles.createButton]}
+        onPress={() => {navigation.navigate("SetupCompetition")}} // Navigate to SetupCompetitionScreen
+      >
         <Text style={[styles.buttonText, styles.createButtonText]}>Create Custom</Text>
       </TouchableOpacity>
+
     </View>
   );
 };
