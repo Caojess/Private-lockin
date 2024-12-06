@@ -125,7 +125,7 @@ export default function ProfileScreen() {
         <View>
           <View style={styles.balanceContainer}>
             <Text style={styles.sectionTitle}>
-              Current Balance:{" "}
+              LockIn Bucks:{" "}
               <Text style={styles.sectionText}>${balance}</Text>
             </Text>
             <TouchableOpacity
