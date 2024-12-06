@@ -254,7 +254,6 @@ function MainTabs() {
       <Tab.Screen name="Progress" component={ProgressStack} />
       <Tab.Screen name="Friends" component={FriendsStack} />
       <Tab.Screen name="Profile" component={ProfileStack} />
-      <Tab.Screen name="CreateComp" component={AuthStack} />
 
     </Tab.Navigator>
   );
