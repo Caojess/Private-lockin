@@ -52,7 +52,7 @@ const HomeScreen = ({ navigation, route }) => {
             <View key={competition.id} style={styles.competitionCard}>
               <Text style={styles.competitionName}>{competition.name}</Text>
               <Text style={styles.competitionParticipants}>
-                {competition.participants.toUpperCase()}
+                {competition.participants}
               </Text>
               <Text style={styles.competitionDetails}>
                 {competition.time}

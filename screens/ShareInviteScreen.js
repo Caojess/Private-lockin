@@ -16,36 +16,43 @@ const ShareInviteScreen = ({ navigation }) => {
       {/* Social Media Icons */}
       <View style={styles.iconContainer}>
         <Image
-          source={{ uri: 'images/instagram-icon.png' }}
+          source={{ uri: '/Users/jessicacao/caojess/Private-lockin/images/instagram-icon.png' }}
           style={styles.icon}
         />
         <Image
-          source={{ uri: 'images/tiktok-icon.png' }}
+          source={{ uri: '/Users/jessicacao/caojess/Private-lockin/images/tiktok-icon.png' }}
           style={styles.icon}
         />
 
         <Image
-          source={{ uri: 'images/message-icon.png' }}
+          source={{ uri: '/Users/jessicacao/caojess/Private-lockin/images/message-icon.png' }}
           style={styles.icon}
         />
       </View>
 
-      {/* Return to Home Button */}
       <TouchableOpacity
   style={styles.returnButton}
-  onPress={() =>
-    navigation.navigate('HomeScreen', {
-      newCompetition: {
-        id: '9', // Unique ID for the competition
-        name: 'My $10 Competition',
-        time: '2 Hours / 1 Day',
-        spots: '1/6 Spots Left',
+  onPress={() => {
+    navigation.navigate('MainTabs', {
+      screen: 'Home', // Specify the Home tab
+      params: {
+        screen: 'Home', // Navigate to the HomeScreen inside the HomeStack
+        params: {
+          newCompetition: {
+            id: '9', // Unique ID for the competition
+            name: 'My $10 Competition',
+            time: '2 Hours / 1 Day',
+            spots: '1/6 Spots Left',
+          },
+        },
       },
-    })
-  }
+    });
+  }}
 >
   <Text style={styles.returnButtonText}>Return to Home</Text>
 </TouchableOpacity>
+
+
     </View>
   );
 };
@@ -68,11 +75,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '80%',
-    marginBottom: 24,
+    margin: 24,
   },
   icon: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     borderRadius: 8,
   },
   returnButton: {
@@ -81,6 +88,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     borderRadius: 8,
     alignItems: 'center',
+    marginTop: 50,
   },
   returnButtonText: {
     color: '#fff',
