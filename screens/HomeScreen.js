@@ -56,7 +56,6 @@ const HomeScreen = ({ navigation, route }) => {
               </Text>
               <Text style={styles.competitionDetails}>
                 {competition.time}
-                numberOfLines={1}
               </Text>
               <Text style={styles.competitionSpots}>{competition.spots}</Text>
               <TouchableOpacity
@@ -132,7 +131,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   competitionName: {
-    fontSize: 10,
+    fontSize: 16,
     fontWeight: "bold",
     color: "#DD3A3A",
     textTransform: "uppercase", // Ensures ALL CAPS
@@ -180,7 +179,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   localPublicSpacing: {
-    marginTop: 30, // Creates more space between "Your Friends" section and "Local & Public"
+    marginTop:10, // Creates more space between "Your Friends" section and "Local & Public"
   },
   lockInBucksContainer: {
     flexDirection: "row",
