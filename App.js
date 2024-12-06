@@ -200,13 +200,11 @@ function ProgressStack() {
               <View style={styles.popupContainer}>
                 <Text style={styles.popupTitle}>Competition Not Joined</Text>
                 <Text style={styles.popupMessage}>
-                  You haven't joined a competition yet. Please return to the
-                  home page and select a competition to view your progress.
+                  You haven't joined a competition yet. 
+
+                  Please return to the home page and select a competition to view your progress.
                 </Text>
-                {/* Button does not navigate anymore */}
-                <TouchableOpacity style={styles.button} onPress={() => {}}>
-                  <Text style={styles.buttonText}>Go Back to Home</Text>
-                </TouchableOpacity>
+    
               </View>
             </View>
           )}
@@ -395,12 +393,12 @@ const styles = StyleSheet.create({
   },
   popupMessage: {
     fontSize: 14, // Adjusted font size for better readability
-    textAlign: "left", // Align the message to the left
+    textAlign: "center", // Align the message to the left
     marginBottom: 20,
     width: "100%",
   },
   button: {
-    backgroundColor: "#DD3A3A",
+    backgroundColor: "#fff",
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 6,
