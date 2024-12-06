@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
   },
   lockInBucksText: {
     color: "black",
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: "bold",
   },
 });

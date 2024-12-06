@@ -60,8 +60,6 @@ export default function ProfileScreen() {
       ],
     },
   };
-  
-  
 
   const [selectedTimeframe, setSelectedTimeframe] = useState("This Week");
   const [isDropdownVisible, setDropdownVisible] = useState(false);
@@ -124,10 +122,11 @@ export default function ProfileScreen() {
         {/* Balance Section */}
         <View>
           <View style={styles.balanceContainer}>
-            <Text style={styles.sectionTitle}>
-              LockIn Bucks:{" "}
-              <Text style={styles.sectionText}>${balance}</Text>
-            </Text>
+            <View style={styles.lockInBucksContainer}>
+              <Text style={styles.sectionTitle}>
+                LockIn Bucks: <Text style={styles.sectionText}>${balance}</Text>
+              </Text>
+            </View>
             <TouchableOpacity
               style={styles.addButton}
               onPress={() => setIsModalVisible(!isModalVisible)} // Toggle modal visibility
@@ -200,7 +199,7 @@ export default function ProfileScreen() {
               }}
               width={screenWidth - 80}
               height={220}
-              fromZero 
+              fromZero
               minValue={1}
               maxValue={4}
               yAxisSuffix="h"
@@ -421,15 +420,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   sectionTitle: {
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: "bold",
     color: "#000",
     marginBottom: 8,
     alignSelf: "center",
   },
   sectionText: {
-    fontSize: 18,
-    fontWeight: "normal",
+    fontSize: 16,
+    fontWeight: "bold",
     color: "#000",
     marginBottom: 8,
     alignSelf: "flex-start",
@@ -547,5 +546,19 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 10,
     elevation: 5,
+  },
+  balanceContainer: {
+    flexDirection: "row", // Arrange items horizontally
+    alignItems: "center", // Vertically align items
+    justifyContent: "space-between", // Space between balance and button
+    marginBottom: 10, // Add spacing below
+  },
+  lockInBucksContainer: {
+    backgroundColor: "#FCE9E9", // Light pink background for LockIn Bucks
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    marginRight: 10, // Add space between the pink container and the button
+    alignSelf: "center",
   },
 });
