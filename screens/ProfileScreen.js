@@ -419,20 +419,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#000",
-    marginBottom: 8,
-    alignSelf: "center",
-  },
-  sectionText: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#000",
-    marginBottom: 8,
-    alignSelf: "flex-start",
-  },
+  
   chart: {
     borderRadius: 10,
     marginVertical: 10,
@@ -460,19 +447,39 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
-
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#000",
+    alignSelf: "center",
+  },
+  sectionText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#000",
+    alignSelf: "flex-start",
+  },
+  lockInBucksContainer: {
+    backgroundColor: "#FCE9E9", // Light pink background for LockIn Bucks
+    padding: 10,
+    borderRadius: 5,
+    borderRadius: 5,
+    alignSelf: "center", // Ensure alignment relative to parent container
+    paddingHorizontal: 20,
+  },
   addButton: {
     backgroundColor: "#DD3A3A",
     padding: 10,
     borderRadius: 5,
     marginLeft: -30, // Move left slightly
-    marginTop: -5, // Move higher slightly
+    marginTop: 0, // Move higher slightly
     alignSelf: "center", // Ensure alignment relative to parent container
     paddingHorizontal: 20,
   },
   addButtonText: {
     color: "#fff",
     fontWeight: "bold",
+    fontSize: 16,
   },
 
   modal: {
@@ -553,12 +560,5 @@ const styles = StyleSheet.create({
     justifyContent: "space-between", // Space between balance and button
     marginBottom: 10, // Add spacing below
   },
-  lockInBucksContainer: {
-    backgroundColor: "#FCE9E9", // Light pink background for LockIn Bucks
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-    marginRight: 10, // Add space between the pink container and the button
-    alignSelf: "center",
-  },
+  
 });
