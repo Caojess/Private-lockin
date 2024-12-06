@@ -213,7 +213,7 @@ export default function ProfileScreen() {
         {/* TikTok Section */}
         <View style={styles.compressedBanner}>
           <Text style={styles.sectionTitle}>
-            Your spent an average of {formatAverage(data.tiktok)} per day on
+            You spent an average of {formatAverage(data.tiktok)} per day on
             TikTok
           </Text>
           <View style={styles.timeSpentContainer}>
