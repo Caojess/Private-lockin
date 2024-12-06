@@ -114,7 +114,7 @@ export default function ProfileScreen() {
             source={require("../images/Mia.png")} // Profile picture
             style={styles.profileImage}
           />
-          <Text style={styles.title}>Julia L. (you) </Text>
+          <Text style={styles.title}>Julia L. </Text>
           <Text style={styles.subtitle}>San Francisco, CA</Text>
           {/* Smaller subtitle */}
         </View>
@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 2,
     marginBottom: 20,
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "space-between",
   },
   dropdown: {
