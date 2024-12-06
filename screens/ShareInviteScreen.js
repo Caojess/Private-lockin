@@ -34,7 +34,7 @@ const ShareInviteScreen = ({ navigation }) => {
       <TouchableOpacity
   style={styles.returnButton}
   onPress={() =>
-    navigation.navigate('Home', {
+    navigation.navigate('HomeScreen', {
       newCompetition: {
         id: '9', // Unique ID for the competition
         name: 'My $10 Competition',
