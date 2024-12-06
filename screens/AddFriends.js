@@ -1,15 +1,15 @@
 import React, { useState, useLayoutEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
 
 const mockFriendsToAdd = [
-  { id: '1', name: 'Autumn' },
-  { id: '2', name: 'Bridgerton' },
-  { id: '3', name: 'Coy' },
-  { id: '4', name: 'Maximilian' },
-  { id: '5', name: 'Maximilius' },
-  { id: '6', name: 'Reginor' },
-  { id: '7', name: 'Salvadore' },
-  { id: '8', name: 'Xinyi' },
+  { id: '1', name: 'Autumn', image: require('../images/Autumn.png') },
+  { id: '2', name: 'Bridgerton', image: require('../images/Bridgerton.png') },
+  { id: '3', name: 'Coy', image: require('../images/Coy.png') },
+  { id: '4', name: 'Maximilian', image: require('../images/Maximilian.png') },
+  { id: '5', name: 'Maximilius', image: require('../images/Maximilius.png') },
+  { id: '6', name: 'Reginor', image: require('../images/Reginor.png') },
+  { id: '7', name: 'Salvadore', image: require('../images/Salvadore.png') },
+  { id: '8', name: 'Xinyi', image: require('../images/Xinyi.png') },
 ];
 
 const AddFriends = ({ navigation }) => {
@@ -68,6 +68,7 @@ const AddFriends = ({ navigation }) => {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.friendCard}>
+            <Image source={item.image} style={styles.friendImage} />
             <Text style={styles.friendName}>{item.name}</Text>
             <TouchableOpacity
               style={[
@@ -110,16 +111,23 @@ const styles = StyleSheet.create({
   },
   friendCard: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'center', // Align items to the center vertically
     padding: 16,
     backgroundColor: '#F9F9F9',
     borderRadius: 8,
     marginBottom: 12,
+    paddingVertical: 20,
+  },
+  friendImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 12,
   },
   friendName: {
     fontSize: 18,
     fontWeight: '600',
+    flex: 1, // Take remaining space so the name doesn't overlap the button
   },
   addButton: {
     backgroundColor: '#DD3A3A',
