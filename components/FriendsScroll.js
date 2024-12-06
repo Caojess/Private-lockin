@@ -16,30 +16,30 @@ const FriendsScroll = () => {
   const competitions = [
     {
       id: 1,
-      name: "Andy's",
-      time: "3 hours / 1 day",
-      spots: "6/10 Spots Left",
+      name: "Andy's Competition",
+      time: "<3 hours for 3 days",
+      spots: "1 spot left",
       avatar: require("../images/andy.png"),
     },
     {
       id: 2,
-      name: "Mia's",
-      time: "4 hours / 1 day",
-      spots: "1/5 Spots Left",
+      name: "Mia's Competition",
+      time: "<4 hours for 1 day",
+      spots: "1 spot left",
       avatar: require("../images/Mia.png"),
     },
     {
       id: 3,
-      name: "Harper's",
-      time: "6 hours / 2 days",
-      spots: "4/8 Spots Left",
+      name: "Harper's Competition",
+      time: "<6 hours for 2 days",
+      spots: "4 spots left",
       avatar: require("../images/harper.png"),
     },
     {
       id: 4,
-      name: "You",
-      time: "5.5 hours",
-      spots: "1/5 Spots Left",
+      name: "Your Competition",
+      time: "<5.5 hours for 1 day",
+      spots: "1 spot left",
       avatar: require("../images/you.png"),
     },
   ];
@@ -72,8 +72,7 @@ const FriendsScroll = () => {
 
           {/* Competition Details */}
           <Text style={styles.cardTitle}>{competition.name}</Text>
-          <Text style={styles.cardSubTitle}>
-            {competition.buyIn} competition
+          <Text style={styles.cardSubTitle}>{competition.buyIn} 
           </Text>
           <Text style={styles.cardDetails}>{competition.time}</Text>
           <Text style={styles.cardDetails}>{competition.spots}</Text>
@@ -87,24 +86,18 @@ const FriendsScroll = () => {
                 competitors: [
                   {
                     id: 1,
-                    name: "Syd",
-                    time: "5.5 hours",
-                    avatar: require("../images/you.png"),
-                  },
-                  {
-                    id: 2,
                     name: "Andy",
                     time: "5 hours",
                     avatar: require("../images/andy.png"),
                   },
                   {
-                    id: 3,
+                    id: 2,
                     name: "Harper",
                     time: "6 hours",
                     avatar: require("../images/harper.png"),
                   },
                   {
-                    id: 4,
+                    id: 3,
                     name: "Mia",
                     time: "5 hours",
                     avatar: require("../images/Mia.png"),

@@ -19,31 +19,31 @@ export default function ProfileScreen() {
 
   const chartData = {
     "This Week": {
-      general: [2.5, 3, 2.8, 3.2, 3, 2.7, 2.9],
-      tiktok: [1, 1.2, 1.1, 1.3, 1.2, 1.1, 1],
-      messages: [0.8, 0.9, 0.7, 1, 0.9, 0.8, 0.7],
-      instagram: [1.2, 1.3, 1.1, 1.4, 1.2, 1.1, 1.3],
+      general: [1.2, 2.1, 2.8, 3.5, 2.4, 3.3, 2.7], // Scaled values between 1 and 4
+      tiktok: [1.5, 2, 2.5, 3, 2.8, 3.3, 3.5],
+      messages: [1.2, 1.6, 2.8, 2.4, 2.8, 3, 3.2],
+      instagram: [2, 2.5, 3, 3.2, 3.5, 3.8, 4],
       labels: ["M", "T", "W", "T", "F", "Sa", "Su"],
     },
     "This Month": {
-      general: [3, 2.9, 3.1, 3],
-      tiktok: [1.2, 1.1, 1.3, 1.2],
-      messages: [0.9, 0.8, 1, 0.9],
-      instagram: [1.3, 1.2, 1.4, 1.3],
+      general: [1.8, 2.7, 3.3, 3.8], // Scaled values
+      tiktok: [1.5, 2, 2.5, 3],
+      messages: [1.2, 1.8, 2.2, 3],
+      instagram: [2, 2.5, 3, 3.5],
       labels: ["W1", "W2", "W3", "W4"],
     },
     "Past 6 Months": {
-      general: [3, 3.1, 2.9, 3, 3.2, 3.1],
-      tiktok: [1.2, 1.3, 1.1, 1.2, 1.4, 1.3],
-      messages: [0.9, 0.8, 0.9, 1, 0.9, 0.8],
-      instagram: [1.3, 1.4, 1.2, 1.3, 1.5, 1.4],
+      general: [1.9, 2.4, 2.8, 3.1, 3.5, 3.9], // Scaled values
+      tiktok: [1.5, 1.8, 2.3, 2.8, 3.2, 3.8],
+      messages: [1.2, 1.6, 2.1, 2.5, 3, 3.5],
+      instagram: [2, 2.5, 3, 3.5, 3.8, 4],
       labels: ["Jul", "Au", "Se", "Oc", "No", "De"],
     },
     "Past Year": {
-      general: [2.9, 3, 3.1, 2.8, 3, 2.9, 3, 3.1, 3.2, 3, 2.9, 3],
-      tiktok: [1.1, 1.2, 1.3, 1, 1.2, 1.1, 1.3, 1.4, 1.2, 1.3, 1.2, 1.3],
-      messages: [0.8, 0.9, 0.7, 0.8, 0.9, 0.7, 0.8, 1, 0.9, 0.8, 0.9, 1],
-      instagram: [1.3, 1.2, 1.4, 1.3, 1.5, 1.4, 1.3, 1.6, 1.4, 1.5, 1.4, 1.5],
+      general: [1.5, 2, 2.8, 3.2, 3.4, 3.6, 3.8, 3.9, 3.5, 3, 2.7, 2.3], // Scaled values
+      tiktok: [1.5, 2, 2.5, 3, 3.2, 3.5, 3.7, 3.8, 3.9, 3.5, 3, 2.5],
+      messages: [1.2, 1.5, 2, 2.3, 2.8, 3, 3.3, 3.5, 3.7, 3.5, 3.2, 3],
+      instagram: [1.5, 2, 2.5, 3, 3.2, 3.5, 3.7, 3.8, 3.9, 3.5, 3, 2.5],
       labels: [
         "Ja",
         "Fe",
@@ -111,7 +111,7 @@ export default function ProfileScreen() {
         {/* Header Section */}
         <View style={styles.header}>
           <Image
-            source={require("../images/Mia.png")} // Profile picture
+            source={require("../images/you.png")} // Profile picture
             style={styles.profileImage}
           />
           <Text style={styles.title}>Julia L. </Text>
@@ -122,10 +122,11 @@ export default function ProfileScreen() {
         {/* Balance Section */}
         <View>
           <View style={styles.balanceContainer}>
-            <Text style={styles.sectionTitle}>
-              Current Balance:{" "}
-              <Text style={styles.sectionText}>${balance}</Text>
-            </Text>
+            <View style={styles.lockInBucksContainer}>
+              <Text style={styles.sectionTitle}>
+                LockIn Bucks: <Text style={styles.sectionText}>${balance}</Text>
+              </Text>
+            </View>
             <TouchableOpacity
               style={styles.addButton}
               onPress={() => setIsModalVisible(!isModalVisible)} // Toggle modal visibility
@@ -199,6 +200,8 @@ export default function ProfileScreen() {
               width={screenWidth - 80}
               height={220}
               fromZero
+              minValue={1}
+              maxValue={4}
               yAxisSuffix="h"
               chartConfig={chartConfig}
               style={styles.chart}
@@ -209,7 +212,7 @@ export default function ProfileScreen() {
         {/* TikTok Section */}
         <View style={styles.compressedBanner}>
           <Text style={styles.sectionTitle}>
-            Your spent an average of {formatAverage(data.tiktok)} per day on
+            You spent an average of {formatAverage(data.tiktok)} per day on
             TikTok
           </Text>
           <View style={styles.timeSpentContainer}>
@@ -225,6 +228,8 @@ export default function ProfileScreen() {
               width={screenWidth - 120}
               height={180}
               fromZero
+              minValue={1}
+              maxValue={4}
               yAxisSuffix="h"
               chartConfig={chartConfig}
               style={styles.chart}
@@ -251,6 +256,8 @@ export default function ProfileScreen() {
               width={screenWidth - 120}
               height={180}
               fromZero
+              minValue={1}
+              maxValue={4}
               yAxisSuffix="h"
               chartConfig={chartConfig}
               style={styles.chart}
@@ -277,6 +284,8 @@ export default function ProfileScreen() {
               width={screenWidth - 120}
               height={180}
               fromZero
+              minValue={1}
+              maxValue={4}
               yAxisSuffix="h"
               chartConfig={chartConfig}
               style={styles.chart}
@@ -301,8 +310,10 @@ export default function ProfileScreen() {
 const chartConfig = {
   backgroundGradientFrom: "#fff",
   backgroundGradientTo: "#fff",
-  color: (opacity = 1) => `rgba(221, 58, 58, ${opacity})`, // Correctly formatted template literal
-  labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, // Correctly formatted template literal
+  yAxisInterval: 1, // Increment y-axis by 1 unit
+  decimalPlaces: 0, // Display whole numbers only
+  color: (opacity = 1) => `rgba(221, 58, 58, ${opacity})`, // Bar color
+  labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, // Label color
   barPercentage: 0.35, // Increased for slightly wider bars
   fillShadowGradient: "#DD3A3A",
   fillShadowGradientOpacity: 1,
@@ -409,15 +420,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   sectionTitle: {
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: "bold",
     color: "#000",
     marginBottom: 8,
     alignSelf: "center",
   },
   sectionText: {
-    fontSize: 18,
-    fontWeight: "normal",
+    fontSize: 16,
+    fontWeight: "bold",
     color: "#000",
     marginBottom: 8,
     alignSelf: "flex-start",
@@ -535,5 +546,19 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 10,
     elevation: 5,
+  },
+  balanceContainer: {
+    flexDirection: "row", // Arrange items horizontally
+    alignItems: "center", // Vertically align items
+    justifyContent: "space-between", // Space between balance and button
+    marginBottom: 10, // Add spacing below
+  },
+  lockInBucksContainer: {
+    backgroundColor: "#FCE9E9", // Light pink background for LockIn Bucks
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    marginRight: 10, // Add space between the pink container and the button
+    alignSelf: "center",
   },
 });

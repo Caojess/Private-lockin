@@ -9,30 +9,30 @@ const PublicScroll = () => {
  const competitions = [
     {
       id: 1,
-      name: "Alexa's",
-      time: '2 hours / 1 day',
-      spots: '1/5 Spots Left',
+      name: "Alexa's Competition",
+      time: '<2 hours for 1 day',
+      spots: '1 spot left',
       avatar: require('../images/harper.png'),
     },
     {
       id: 2,
-      name: "Leah's",
-      time: '3.5 hours / 1 day',
-      spots: '6/10 Spots Left',
+      name: "Leah's Competition",
+      time: '<3.5 hours for 1 day',
+      spots: '6 spots left',
       avatar: require('../images/you.png'),
     },
     {
       id: 3,
-      name: "Jon's",
-      time: '4 hours / 2 days',
-      spots: '3/7 Spots Left',
+      name: "Jon's Competition",
+      time: '<4 hours for 2 days',
+      spots: '3 spots left',
       avatar: require('../images/andy.png'),
     },
     {
       id: 4,
-      name: 'Amy',
-      time: '5.5 hours',
-      spots: '1/5 Spots Left',
+      name: "Amy's Competition",
+      time: '<5.5 hours for 1 day',
+      spots: '1 spot left',
       avatar: require('../images/Mia.png'),
     },
   ];
@@ -59,7 +59,7 @@ const PublicScroll = () => {
 
           {/* Competition Details */}
           <Text style={styles.cardTitle}>{competition.name}</Text>
-          <Text style={styles.cardSubTitle}>{competition.buyIn} competition</Text>
+          <Text style={styles.cardSubTitle}>{competition.buyIn} </Text>
           <Text style={styles.cardDetails}>{competition.time}</Text>
           <Text style={styles.cardDetails}>{competition.spots}</Text>
 
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
       textAlign: 'center',
     },
     cardSubTitle: {
-      fontSize: 14,
+      fontSize: 16,
       fontWeight: '600',
       color: '#fff',
       marginBottom: 4,

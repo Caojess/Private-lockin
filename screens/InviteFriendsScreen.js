@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -8,15 +8,31 @@ import {
   TouchableOpacity,
   Image,
   Modal,
-} from 'react-native';
+} from "react-native";
 
 const InviteFriendsScreen = ({ navigation }) => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [friendsList, setFriendsList] = useState([
-    { id: '1', name: 'Julia', invited: false, avatar: '../images/Mia.png'},
-    { id: '2', name: 'Harper', invited: false, avatar: '../images/harper.png' },
-    { id: '3', name: 'Mia', invited: false, avatar: '../images/andy.png' },
+    {
+      id: "1",
+      name: "Bill",
+      invited: false,
+      avatar: Image.resolveAssetSource(require("../images/bill.png")).uri,
+    },
+    {
+      id: "2",
+      name: "Amanda",
+      invited: false,
+      avatar: Image.resolveAssetSource(require("../images/amanda.png")).uri,
+    },
+    {
+      id: "3",
+      name: "Michelle",
+      invited: false,
+      avatar: Image.resolveAssetSource(require("../images/PNG image.png")).uri,
+    },
   ]);
+
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleInviteToggle = (id) => {
@@ -33,7 +49,6 @@ const InviteFriendsScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-
       {/* Search Bar */}
       <View style={styles.searchBar}>
         <TextInput
@@ -45,7 +60,7 @@ const InviteFriendsScreen = ({ navigation }) => {
         />
       </View>
 
-      {/* Previous Competitors */}
+      {/* Friends List */}
       <FlatList
         data={filteredFriends}
         keyExtractor={(item) => item.id}
@@ -66,7 +81,7 @@ const InviteFriendsScreen = ({ navigation }) => {
                   item.invited && styles.invitedButtonText,
                 ]}
               >
-                {item.invited ? 'Invited' : 'Invite'}
+                {item.invited ? "Invited" : "Invite"}
               </Text>
             </TouchableOpacity>
           </View>
@@ -90,7 +105,9 @@ const InviteFriendsScreen = ({ navigation }) => {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Are you ready to create this competition?</Text>
+            <Text style={styles.modalTitle}>
+              Are you ready to create this competition?
+            </Text>
             <View style={styles.modalButtons}>
               <TouchableOpacity
                 style={styles.modalButton}
@@ -100,13 +117,14 @@ const InviteFriendsScreen = ({ navigation }) => {
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.modalButton, styles.noButton]}
-                
                 onPress={() => {
-                    setModalVisible(false);
-                    navigation.navigate('ShareInvite'); // Navigate to the Share Invite screen
-                  }}
+                  setModalVisible(false);
+                  navigation.navigate("ShareInvite"); // Navigate to the Share Invite screen
+                }}
               >
-                <Text style={[styles.modalButtonText, styles.noButtonText]}>Yes</Text>
+                <Text style={[styles.modalButtonText, styles.noButtonText]}>
+                  Yes
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -119,39 +137,31 @@ const InviteFriendsScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 16,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 16,
-    color: '#DD3A3A',
-  },
   searchBar: {
-    backgroundColor: '#FCE9E9',
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: '#ccc',
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 10,
     marginBottom: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   searchInput: {
     fontSize: 16,
-    color: '#000',
+    color: "#000",
     flex: 1,
   },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 12,
-    color: '#DD3A3A',
-  },
   friendItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 16,
+    backgroundColor: "#F9F9F9", // Matching background color with Add Friends screen
+    borderRadius: 8,
     marginBottom: 12,
   },
   avatar: {
@@ -159,85 +169,86 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
     marginRight: 12,
+    marginLeft: 15,
   },
   friendName: {
+    fontSize: 18, // Adjusted text size to match Add Friends screen
+    fontWeight: '600', // Matching weight from Add Friends
     flex: 1,
-    fontSize: 16,
-    color: '#000',
   },
   inviteButton: {
-    borderWidth: 1,
-    borderColor: '#DD3A3A',
-    borderRadius: 8,
+    backgroundColor: "#DD3A3A",
     paddingVertical: 6,
     paddingHorizontal: 12,
+    borderRadius: 20,
+    marginRight: 15,
   },
   inviteButtonText: {
-    color: '#DD3A3A',
-    fontWeight: 'bold',
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: '600',
   },
   invitedButton: {
-    backgroundColor: '#FCE9E9',
-    borderColor: '#FCE9E9',
+    backgroundColor: "#B0B0B0", // Gray background when invited
   },
   invitedButtonText: {
-    color: '#999',
+    color: "#fff",
   },
   nextButton: {
-    backgroundColor: '#DD3A3A',
+    backgroundColor: "#DD3A3A",
     paddingVertical: 12,
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 20,
   },
   nextButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
   },
   modalContent: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 20,
     borderRadius: 8,
-    width: '80%',
-    alignItems: 'center',
+    width: "80%",
+    alignItems: "center",
   },
   modalTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
     marginBottom: 20,
-    color: '#000',
+    color: "#000",
   },
   modalButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
   },
   modalButton: {
     flex: 1,
-    backgroundColor: '#FCE9E9',
+    backgroundColor: "#FCE9E9",
     paddingVertical: 10,
     marginHorizontal: 5,
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
   },
   modalButtonText: {
-    color: '#000',
+    color: "#000",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   noButton: {
-    backgroundColor: '#DD3A3A',
+    backgroundColor: "#DD3A3A",
   },
   noButtonText: {
-    color: '#fff',
+    color: "#fff",
   },
 });
 

@@ -30,20 +30,17 @@ const CurrentGameScreen = ({ navigation }) => {
       {/* Today Progress */}
       <View style={styles.todayBox}>
         <View style={styles.row}>
-          <Text style={styles.todayText1}>40 mins today</Text>
-          <Text style={styles.todayText2}> Daily Goal: 3 hours</Text>
+          <Text style={styles.todayText1}>40 Mins Today</Text>
+          <Text style={styles.todayText2}> Goal: &lt; 3 Hours</Text>
         </View>
         <View style={styles.progressBar}>
           <View
-            style={[
-              styles.progress,
-              { width: `${progressPercentage * 100}%` },
-            ]}
+            style={[styles.progress, { width: `${progressPercentage * 100}%` }]}
           />
         </View>
         <View style={styles.row}>
           <Text style={styles.payoutText}>Current Payout: $15</Text>
-          <Text style={styles.participantsIcon}>4 ppl left</Text>
+          <Text style={styles.participantsIcon}>4 👤</Text>
         </View>
       </View>
 
@@ -110,7 +107,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   todayText1: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: "bold",
     color: "#DD3A3A",
   },
@@ -120,9 +117,10 @@ const styles = StyleSheet.create({
     color: "#000",
   },
   payoutText: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: "bold",
     color: "#000",
+    marginTop: 10,
   },
   participantsIcon: {
     fontSize: 14,
