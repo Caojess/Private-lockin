@@ -40,6 +40,10 @@ const HomeScreen = ({ navigation, route }) => {
       contentContainerStyle={styles.contentContainer}
     >
       <Text style={styles.header}>Browse Competitions</Text>
+      <View style={styles.lockInBucksButton}>
+          <Text style={styles.lockInBucksText}>LockIn Bucks: $40</Text>
+        </View>
+
 
       {myCompetitions.length > 0 && (
         <>
@@ -67,14 +71,9 @@ const HomeScreen = ({ navigation, route }) => {
           ))}
         </>
       )}
+      <Text style={styles.sectionTitle}>Your Friends</Text>
 
-      <View style={styles.lockInBucksContainer}>
-        <Text style={styles.sectionTitle}>Your Friends</Text>
-        <View style={styles.lockInBucksButton}>
-          <Text style={styles.lockInBucksText}>LockIn Bucks: $40</Text>
-        </View>
-      </View>
-
+      
       <FriendsScroll competitions={mockCompetitions} />
 
       <Text style={[styles.sectionTitle, styles.localPublicSpacing]}>
@@ -105,7 +104,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "bold",
     textAlign: "center",
-    marginVertical: 16,
+    marginVertical: 10,
     color: "#DD3A3A",
   },
   sectionTitle: {
@@ -168,7 +167,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   createCustomButton: {
-    marginTop: 20,
+    marginTop: 10,
     backgroundColor: "#DD3A3A",
     paddingVertical: 12,
     borderRadius: 8,
@@ -190,15 +189,18 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   lockInBucksButton: {
+    alignSelf: "center",
     backgroundColor: "#FCE9E9",
     borderRadius: 8,
-    paddingVertical: 6,
+    paddingVertical: 8,
     paddingHorizontal: 12,
+    marginBottom: 10,
   },
   lockInBucksText: {
     color: "black",
     fontSize: 16,
     fontWeight: "bold",
+    alignSelf: "center",
   },
 });
 
