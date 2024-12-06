@@ -30,8 +30,8 @@ const CurrentGameScreen = ({ navigation }) => {
       {/* Today Progress */}
       <View style={styles.todayBox}>
         <View style={styles.row}>
-          <Text style={styles.todayText1}>40 mins today</Text>
-          <Text style={styles.todayText2}> Daily Goal: 3 hours</Text>
+          <Text style={styles.todayText1}>40 Mins Today</Text>
+          <Text style={styles.todayText2}> Goal: Under 3 Hours</Text>
         </View>
         <View style={styles.progressBar}>
           <View
@@ -117,9 +117,10 @@ const styles = StyleSheet.create({
     color: "#000",
   },
   payoutText: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: "bold",
     color: "#000",
+    marginTop: 10,
   },
   participantsIcon: {
     fontSize: 14,
