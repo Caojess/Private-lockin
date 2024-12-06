@@ -58,7 +58,7 @@ const AddFriends = ({ navigation }) => {
     <View style={styles.container}>
       <TextInput
         style={styles.searchInput}
-        placeholder="Search"
+        placeholder="Type username or number"
         value={searchTerm}
         onChangeText={handleSearch}
       />
