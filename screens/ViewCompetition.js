@@ -35,9 +35,9 @@ const ViewCompetition = ({ navigation }) => {
           </TouchableOpacity>
 
           <View style={styles.progressBarContainer}>
-            <Text style={styles.timeLeft}>1:37</Text>
+            <Text style={styles.timeLeft}>0:40</Text>
             <View style={styles.progressBarBackground}>
-              <View style={[styles.progressBarFill, { width: "50%" }]}></View>
+              <View style={[styles.progressBarFill, { width: "25%" }]}></View>
             </View>
             <Text style={styles.timeGoal}>3:00</Text>
           </View>

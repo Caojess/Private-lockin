@@ -7,28 +7,28 @@ const DATA = [
     id: "1",
     app: "Instagram",
     you: "15 min",
-    opponent: "45 min",
+    opponent: "10 min",
     icon: require("../images/instagram-icon.png"),
   },
   {
     id: "2",
     app: "Messages",
     you: "13 min",
-    opponent: "10 min",
+    opponent: "15 min",
     icon: require("../images/message-icon.png"),
   },
   {
     id: "3",
     app: "TikTok",
     you: "5 min",
-    opponent: "40 min",
+    opponent: "10 min",
     icon: require("../images/tiktok-icon.png"),
   },
   {
     id: "4",
     app: "YouTube",
     you: "7 min",
-    opponent: "55 min",
+    opponent: "10 min",
     icon: require("../images/youtube-icon.png"),
   },
 ];
@@ -62,7 +62,7 @@ const HeadToHeadMiaScreen = () => {
         <View style={styles.user}>
           <Text style={styles.label}>Mia</Text>
           <Image source={require("../images/Mia.png")} style={styles.avatar} />
-          <Text style={[styles.userTime, styles.nonBold]}>2:30</Text>
+          <Text style={[styles.userTime, styles.nonBold]}>0:45</Text>
         </View>
       </View>
 

@@ -33,7 +33,7 @@ const DATA = [
   },
 ];
 
-const HeadToHeadMiaScreen = () => {
+const HeadToHeadHarperScreen = () => {
   const isLower = (value1, value2) => {
     // Helper function to determine the lower value
     const num1 = parseInt(value1.replace(" min", ""));
@@ -61,7 +61,10 @@ const HeadToHeadMiaScreen = () => {
         {/* Opponent Section */}
         <View style={styles.user}>
           <Text style={styles.label}>Harper</Text>
-          <Image source={require("../images/Mia.png")} style={styles.avatar} />
+          <Image
+            source={require("../images/harper.png")}
+            style={styles.avatar}
+          />
           <Text style={[styles.userTime, styles.nonBold]}>2:30</Text>
         </View>
       </View>
@@ -75,7 +78,7 @@ const HeadToHeadMiaScreen = () => {
         <View style={[styles.row, styles.headerRow]}>
           <Text style={[styles.columnHeader, styles.leftColumn]}>You</Text>
           <Text style={styles.columnHeader}>App</Text>
-          <Text style={[styles.columnHeader, styles.rightColumn]}>Mia</Text>
+          <Text style={[styles.columnHeader, styles.rightColumn]}>Harper</Text>
         </View>
 
         {/* Table Data */}
@@ -227,4 +230,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HeadToHeadMiaScreen;
+export default HeadToHeadHarperScreen;
