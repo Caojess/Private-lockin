@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   addedButton: {
-    backgroundColor: '#B0B0B0', // Gray background when added
+    backgroundColor: '#B0B0B0', // Gray background when added !!!!!!!!!!!!!
   },
   addButtonText: {
     color: '#fff',
