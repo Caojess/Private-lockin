@@ -17,7 +17,7 @@ import { UserContext } from "./UserContext";
 export default function ProfileScreen() {
   const navigation = useNavigation(); // Get the navigation object
   const screenWidth = Dimensions.get("window").width;
-  const { user } = useContext(UserContext);
+  const { user, updateBalanceInFirestore } = useContext(UserContext);
 
   const chartData = {
     "This Week": {
@@ -65,15 +65,13 @@ export default function ProfileScreen() {
 
   const [selectedTimeframe, setSelectedTimeframe] = useState("This Week");
   const [isDropdownVisible, setDropdownVisible] = useState(false);
-
-  // adding the additional bank account
-  const [balance, setBalance] = useState(25); // Initial balance set to $25
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [newBalance, setNewBalance] = useState(""); // Track the input for new balance
+  const [newBalance, setNewBalance] = useState(""); // Track input for new balance
 
   const handleBalanceUpdate = () => {
     if (newBalance && !isNaN(newBalance)) {
-      setBalance((prevBalance) => prevBalance + parseFloat(newBalance)); // Add funds to balance
+      const amountToAdd = parseFloat(newBalance);
+      updateBalanceInFirestore(user.userId, amountToAdd); // Update the context's fakeMoney
       setIsModalVisible(false); // Close the modal
       setNewBalance(""); // Clear input
     }
@@ -113,12 +111,11 @@ export default function ProfileScreen() {
         {/* Header Section */}
         <View style={styles.header}>
           <Image
-            source={require("../images/you.png")} // Profile picture
+            source={require("../images/you.png")}
             style={styles.profileImage}
           />
-          <Text style={styles.title}>{user.username}. </Text>
+          <Text style={styles.title}>{user.username}</Text>
           <Text style={styles.subtitle}>San Francisco, CA</Text>
-          {/* Smaller subtitle */}
         </View>
 
         {/* Balance Section */}
@@ -126,18 +123,18 @@ export default function ProfileScreen() {
           <View style={styles.balanceContainer}>
             <View style={styles.lockInBucksContainer}>
               <Text style={styles.sectionTitle}>
-                LockIn Bucks: <Text style={styles.sectionText}>${balance}</Text>
+                LockIn Bucks:{" "}
+                <Text style={styles.sectionText}>${user.fakeMoney}</Text>
               </Text>
             </View>
             <TouchableOpacity
               style={styles.addButton}
-              onPress={() => setIsModalVisible(!isModalVisible)} // Toggle modal visibility
+              onPress={() => setIsModalVisible(!isModalVisible)}
             >
               <Text style={styles.addButtonText}>Add Funds</Text>
             </TouchableOpacity>
           </View>
 
-          {/* Conditionally Render Modal Section */}
           {isModalVisible && (
             <View style={styles.modalContainer}>
               <Text style={styles.modalTitle}>Enter Amount to Add</Text>

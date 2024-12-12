@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -10,9 +10,11 @@ import FriendsScroll from "../components/FriendsScroll";
 import PublicScroll from "../components/PublicScroll";
 import { db } from "../database/db"; // Adjust import if needed
 import { collection, getDocs } from "firebase/firestore"; // Firestore imports
+import { UserContext } from "./UserContext";
 
 const HomeScreen = ({ navigation, route }) => {
   const [competitions, setCompetitions] = useState([]); // All competitions
+  const { user } = useContext(UserContext);
 
   // Fetch competitions from Firestore
   const fetchCompetitions = async () => {
@@ -36,7 +38,6 @@ const HomeScreen = ({ navigation, route }) => {
       console.error("Error fetching competitions:", error);
     }
   };
-  
 
   // Call fetchCompetitions when the component mounts
   useEffect(() => {
@@ -50,7 +51,9 @@ const HomeScreen = ({ navigation, route }) => {
     >
       <Text style={styles.header}>Browse Competitions</Text>
       <View style={styles.lockInBucksButton}>
-        <Text style={styles.lockInBucksText}>LockIn Bucks: $40</Text>
+        <Text style={styles.lockInBucksText}>
+          LockIn Bucks: ${user.fakeMoney}
+        </Text>
       </View>
 
       <Text style={styles.sectionTitle}>Your Friends</Text>
@@ -101,6 +104,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     alignSelf: "center",
+  },
+  lockInBucksButton: {
+    alignSelf: "center",
+    backgroundColor: "#FCE9E9",
+    borderRadius: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    marginBottom: 20,
   },
   createCustomButton: {
     marginTop: 10,
