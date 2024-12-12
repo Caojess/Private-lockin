@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -12,10 +12,12 @@ import {
 import { BarChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { UserContext } from "./UserContext";
 
 export default function ProfileScreen() {
   const navigation = useNavigation(); // Get the navigation object
   const screenWidth = Dimensions.get("window").width;
+  const { user } = useContext(UserContext);
 
   const chartData = {
     "This Week": {
@@ -114,7 +116,7 @@ export default function ProfileScreen() {
             source={require("../images/you.png")} // Profile picture
             style={styles.profileImage}
           />
-          <Text style={styles.title}>Julia L. </Text>
+          <Text style={styles.title}>{user.username}. </Text>
           <Text style={styles.subtitle}>San Francisco, CA</Text>
           {/* Smaller subtitle */}
         </View>
@@ -419,7 +421,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  
+
   chart: {
     borderRadius: 10,
     marginVertical: 10,
@@ -560,5 +562,4 @@ const styles = StyleSheet.create({
     justifyContent: "space-between", // Space between balance and button
     marginBottom: 10, // Add spacing below
   },
-  
 });
