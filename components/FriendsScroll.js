@@ -9,47 +9,17 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-const FriendsScroll = () => {
-  // Randomized buy-in amounts
-  const buyInAmounts = ["$15", "$15", "$10", "$15", "$4"];
-  // Define the competitions array directly in this component
-  const competitions = [
-    {
-      id: 1,
-      name: "Andy's Competition",
-      time: "<3 hours for 3 days",
-      spots: "1 spot left",
-      avatar: require("../images/andy.png"),
-    },
-    {
-      id: 2,
-      name: "Mia's Competition",
-      time: "<4 hours for 1 day",
-      spots: "1 spot left",
-      avatar: require("../images/Mia.png"),
-    },
-    {
-      id: 3,
-      name: "Harper's Competition",
-      time: "<6 hours for 2 days",
-      spots: "4 spots left",
-      avatar: require("../images/harper.png"),
-    },
-    {
-      id: 4,
-      name: "Your Competition",
-      time: "<5.5 hours for 1 day",
-      spots: "1 spot left",
-      avatar: require("../images/you.png"),
-    },
-  ];
-
-  // Assign a random buy-in amount for each card
-  const competitionsWithBuyIn = competitions.map((competition, index) => ({
-    ...competition,
-    buyIn: buyInAmounts[index % buyInAmounts.length], // Cycle through the buy-in amounts
-  }));
+const FriendsScroll = ({ competitions }) => {
   const navigation = useNavigation();
+
+  // Handle empty state
+  if (competitions.length === 0) {
+    return (
+      <View style={styles.emptyState}>
+        <Text style={styles.emptyStateText}>No Friends Competitions Available</Text>
+      </View>
+    );
+  }
 
   return (
     <ScrollView
@@ -57,25 +27,28 @@ const FriendsScroll = () => {
       showsHorizontalScrollIndicator={false}
       style={styles.horizontalScroll}
     >
-      {competitionsWithBuyIn.map((competition) => (
+      {competitions.map((competition) => (
         <View key={competition.id} style={styles.card}>
           {/* Avatar */}
           <View style={styles.avatarContainer}>
             <Image
-              source={competition.avatar}
+              source={{ uri: competition.avatar || "default_avatar_url" }} // Add a default avatar if missing
               style={styles.profileImage}
-              onError={(e) =>
-                console.log("Error loading image:", e.nativeEvent.error)
-              }
+              onError={(e) => console.log("Error loading image:", e.nativeEvent.error)}
             />
           </View>
 
           {/* Competition Details */}
           <Text style={styles.cardTitle}>{competition.name}</Text>
-          <Text style={styles.cardSubTitle}>{competition.buyIn} 
+          <Text style={styles.cardSubTitle}>{`$${competition.entryFee}`}</Text>
+          <Text style={styles.cardDetails}>
+            {`<${competition.screenLimit} hours for ${competition.duration} day${
+              competition.duration > 1 ? "s" : ""
+            }`}
           </Text>
-          <Text style={styles.cardDetails}>{competition.time}</Text>
-          <Text style={styles.cardDetails}>{competition.spots}</Text>
+          <Text style={styles.cardDetails}>
+            {`${competition.spots} spot${competition.spots > 1 ? "s" : ""} left`}
+          </Text>
 
           {/* View Button */}
           <TouchableOpacity
@@ -83,28 +56,11 @@ const FriendsScroll = () => {
             onPress={() =>
               navigation.navigate("Compete", {
                 competitionName: competition.name,
-                competitors: [
-                  {
-                    id: 1,
-                    name: "Andy",
-                    time: "5 hours",
-                    avatar: require("../images/andy.png"),
-                  },
-                  {
-                    id: 2,
-                    name: "Harper",
-                    time: "6 hours",
-                    avatar: require("../images/harper.png"),
-                  },
-                  {
-                    id: 3,
-                    name: "Mia",
-                    time: "5 hours",
-                    avatar: require("../images/Mia.png"),
-                  },
-                ],
-                screenLimit: "3 hours / day",
-                timeLimit: "next 3 days",
+                competitors: competition.competitors,
+                screenLimit: `${competition.screenLimit} hours/day`,
+                duration: `${competition.duration} day${
+                  competition.duration > 1 ? "s" : ""
+                }`,
               })
             }
           >
@@ -167,13 +123,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginTop: 12,
     height: 30,
-    width: "100",
+    width: "100%",
   },
   viewButtonText: {
     textAlign: "center",
     fontSize: 14,
     fontWeight: "bold",
     color: "#000000",
+  },
+  emptyState: {
+    padding: 16,
+    alignItems: "center",
+  },
+  emptyStateText: {
+    color: "#999",
+    fontSize: 16,
   },
 });
 
