@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -10,38 +10,74 @@ import {
   Modal,
   LogBox,
 } from "react-native";
-
-LogBox.ignoreLogs(["Warning: ..."]); // Ignore warnings for clean logs
+import { auth } from "../database/db"; // Import Firebase auth instance
+import { signInWithEmailAndPassword } from "firebase/auth";
+LogBox.ignoreLogs(["Warning: ..."]); // Suppress warnings for clean logs
 
 const LoginScreen = ({ navigation }) => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [modalType, setModalType] = useState(null); // 'screenTime' or 'gamblingWarning'
+  const [modalType, setModalType] = useState(false); // 'screenTime' or 'gamblingWarning'
 
-  const handleLogin = () => {
-    if (username === "username" && password === "password") {
-      console.log("Login successful, showing ScreenTime modal");
+  useEffect(() => {
+    // Clear email and password when the screen is focused (the login error too)
+    const unsubscribe = navigation.addListener("focus", () => {
+      setEmail("");
+      setPassword("");
+    });
+
+    return unsubscribe; // Clean up the listener
+  }, [navigation]);
+
+  const handleLogin = async () => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+
+      // Show the screenTime modal on successful login
       setModalType("screenTime");
-    } else {
-      Alert.alert("Login Failed", "Invalid username or password.");
+    } catch (error) {
+      let errorMessage = "Login Failed. Please try again.";
+
+      switch (error.code) {
+        case "auth/invalid-email":
+          errorMessage = "Invalid email address.";
+          break;
+        case "auth/user-not-found":
+          errorMessage = "No account found with this email.";
+          break;
+        case "auth/wrong-password":
+          errorMessage = "Incorrect password. Please try again.";
+          break;
+        default:
+          errorMessage = "An unexpected error occurred. Please try again.";
+          break;
+      }
+
+      Alert.alert("Login Error", errorMessage);
     }
   };
 
+  const handleSignUp = () => {
+    navigation.navigate("SignUp");
+  };
+
   const handleAllowScreenTime = () => {
-    console.log("Allow Screen Time clicked");
-    setModalType("gamblingWarning"); // Move to next modal
+    setModalType("gamblingWarning"); // Show the gambling warning modal
   };
 
   const handleAgreeToGamblingWarning = () => {
-    console.log("Agree to Gambling Warning clicked");
     setModalType(null); // Close modal
-    navigation.navigate("Welcome"); // Navigate to Welcome screen
+    navigation.navigate("Welcome"); // Navigate to the Welcome screen
   };
 
   const handleDisagree = () => {
-    console.log("Disagree clicked");
     setModalType(null); // Close modal
-    navigation.navigate("Home"); // Navigate to Home screen
+    navigation.navigate("Home"); // Navigate to the Home screen
   };
 
   return (
@@ -57,10 +93,12 @@ const LoginScreen = ({ navigation }) => {
       {/* Username and Password Inputs */}
       <TextInput
         style={styles.input}
-        placeholder="Username"
+        placeholder="Email"
         placeholderTextColor="#ccc"
-        value={username}
-        onChangeText={(text) => setUsername(text)}
+        value={email}
+        onChangeText={(text) => setEmail(text)}
+        keyboardType="email-address"
+        autoCapitalize="none"
       />
       <TextInput
         style={styles.input}
@@ -68,21 +106,18 @@ const LoginScreen = ({ navigation }) => {
         placeholderTextColor="#ccc"
         secureTextEntry
         value={password}
-        onChangeText={(text) => setPassword(text)}
+        onChangeText={setPassword}
       />
 
-      {/* Login Button */}
       <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
         <Text style={styles.loginButtonText}>Login</Text>
       </TouchableOpacity>
 
-      {/* Sign Up Button */}
-      <TouchableOpacity style={styles.signupButton}>
+      <TouchableOpacity style={styles.signupButton} onPress={handleSignUp}>
         <Text style={styles.signupButtonText}>Sign up</Text>
       </TouchableOpacity>
 
-      {/* Modal */}
-      <Modal visible={!!modalType} transparent={true} animationType="slide">
+      <Modal visible={!!modalType} transparent animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             {modalType === "screenTime" && (
@@ -121,8 +156,9 @@ const LoginScreen = ({ navigation }) => {
                   habits, not just winning. Understand the risks: gambling-like
                   stakes can cause stress and financial strain.
                   {"\n\n"}Need help? Call 1-800-522-4700 for support from the
-                  National Problem Gambling Helpline.{"\n\n"}Press “I agree” to
-                  acknowledge this message and to use LOCKIN responsibly.
+                  National Problem Gambling Helpline.
+                  {"\n\n"}Press “I agree” to acknowledge this message and to use
+                  LOCKIN responsibly.
                 </Text>
                 <View style={styles.modalButtons}>
                   <TouchableOpacity

@@ -26,6 +26,8 @@ import ViewCompetition from "./screens/ViewCompetition";
 import HeadToHeadMia from "./screens/HeadToHeadMia";
 import HeadToHeadHarper from "./screens/HeadToHeadHarper";
 import MyCompetitionDetailsScreen from "./screens/MyCompetitionDetailsScreen";
+import SignUpScreen from "./screens/SignUpScreen";
+import { db } from "./database/db";
 
 // Create Competition Context
 export const CompetitionContext = createContext();
@@ -200,11 +202,9 @@ function ProgressStack() {
               <View style={styles.popupContainer}>
                 <Text style={styles.popupTitle}>Competition Not Joined</Text>
                 <Text style={styles.popupMessage}>
-                  You haven't joined a competition yet. 
-
-                  Please return to the home page and select a competition to view your progress.
+                  You haven't joined a competition yet. Please return to the
+                  home page and select a competition to view your progress.
                 </Text>
-    
               </View>
             </View>
           )}
@@ -212,26 +212,26 @@ function ProgressStack() {
         />
       )}
 
-<Stack.Screen 
-  name="ViewCompetition" 
-  component={ViewCompetition} 
-  options={{ title: "Competition Feed" }} 
-/>
-<Stack.Screen
+      <Stack.Screen
+        name="ViewCompetition"
+        component={ViewCompetition}
+        options={{ title: "Competition Feed" }}
+      />
+      <Stack.Screen
         name="Info"
         component={InfoScreen}
         options={{ title: "Information" }}
       />
-<Stack.Screen 
-  name="HeadToHeadMia" 
-  component={HeadToHeadMia} 
-  options={{ title: "" }} 
-/>
-<Stack.Screen 
-  name="HeadToHeadHarper" 
-  component={HeadToHeadHarper} 
-  options={{ title: "" }} 
-/>
+      <Stack.Screen
+        name="HeadToHeadMia"
+        component={HeadToHeadMia}
+        options={{ title: "" }}
+      />
+      <Stack.Screen
+        name="HeadToHeadHarper"
+        component={HeadToHeadHarper}
+        options={{ title: "" }}
+      />
     </Stack.Navigator>
   );
 }
@@ -262,11 +262,8 @@ function MainTabs() {
       <Tab.Screen name="Progress" component={ProgressStack} />
       <Tab.Screen name="Friends" component={FriendsStack} />
       <Tab.Screen name="Profile" component={ProfileStack} />
-      
-
     </Tab.Navigator>
   );
-  
 }
 function AuthStack() {
   return (
@@ -283,6 +280,12 @@ function AuthStack() {
       <Stack.Screen
         name="Login"
         component={LoginScreen}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="SignUp"
+        component={SignUpScreen}
         options={{ headerShown: false }}
       />
 
@@ -337,9 +340,6 @@ function AuthStack() {
     </Stack.Navigator>
   );
 }
-
-
-
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
