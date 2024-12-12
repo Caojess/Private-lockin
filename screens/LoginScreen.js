@@ -12,12 +12,18 @@ import {
 } from "react-native";
 import { auth } from "../database/db"; // Import Firebase auth instance
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "../database/db";
+import { useContext } from "react";
+import { UserContext } from "./UserContext";
+
 LogBox.ignoreLogs(["Warning: ..."]); // Suppress warnings for clean logs
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [modalType, setModalType] = useState(false); // 'screenTime' or 'gamblingWarning'
+  const [userData, setUserData] = useState(null); // State to store user data
 
   useEffect(() => {
     // Clear email and password when the screen is focused (the login error too)
@@ -25,9 +31,49 @@ const LoginScreen = ({ navigation }) => {
       setEmail("");
       setPassword("");
     });
-
     return unsubscribe; // Clean up the listener
   }, [navigation]);
+
+  const { updateUser } = useContext(UserContext);
+
+  const fetchUserData = async (userId, email) => {
+    try {
+      // Reference to the user document in the 'users' collection
+      const userDocRef = doc(db, "users", userId);
+
+      // Get the document
+      const userDocSnap = await getDoc(userDocRef);
+
+      let userData;
+
+      if (userDocSnap.exists()) {
+        // Document data
+        userData = userDocSnap.data();
+        console.log("User data:", userData);
+      } else {
+        // User document doesn't exist, create a new one with default values
+        userData = {
+          userId: userId,
+          email: email,
+          username: email.split("@")[0], // Use the part before @ as username
+          fakeMoney: 100, // Starting balance
+          screenTime: 0,
+          createdAt: new Date(),
+          lastLogin: new Date(),
+        };
+
+        // Set the new user document
+        await setDoc(userDocRef, userData);
+
+        console.log("New user document created:", userData);
+      }
+
+      return userData;
+    } catch (error) {
+      console.error("Error fetching or creating user data:", error);
+      return null;
+    }
+  };
 
   const handleLogin = async () => {
     try {
@@ -38,11 +84,23 @@ const LoginScreen = ({ navigation }) => {
       );
       const user = userCredential.user;
 
+      // Pass both userId and email to fetchUserData
+      const userData = await fetchUserData(user.uid, user.email);
+      updateUser({
+        userId: userData.userId,
+        username: userData.username,
+        email: userData.email,
+        fakeMoney: userData.fakeMoney,
+        screenTime: userData.screenTime,
+      });
+
+      // Set user data to the state
+      setUserData(userData); // Save userData to state
+
       // Show the screenTime modal on successful login
       setModalType("screenTime");
     } catch (error) {
       let errorMessage = "Login Failed. Please try again.";
-
       switch (error.code) {
         case "auth/invalid-email":
           errorMessage = "Invalid email address.";
@@ -57,7 +115,6 @@ const LoginScreen = ({ navigation }) => {
           errorMessage = "An unexpected error occurred. Please try again.";
           break;
       }
-
       Alert.alert("Login Error", errorMessage);
     }
   };
@@ -71,13 +128,19 @@ const LoginScreen = ({ navigation }) => {
   };
 
   const handleAgreeToGamblingWarning = () => {
-    setModalType(null); // Close modal
-    navigation.navigate("Welcome"); // Navigate to the Welcome screen
+    if (userData && userData.username) {
+      setModalType(null);
+      navigation.navigate("Welcome", { username: userData.username }); // Pass username to Welcome screen
+    } else {
+      // Handle the case where userData is null or doesn't have a username
+      console.log("User data is not available.");
+      Alert.alert("Error", "User data is not available. Please try again.");
+    }
   };
 
   const handleDisagree = () => {
     setModalType(null); // Close modal
-    navigation.navigate("Home"); // Navigate to the Home screen
+    navigation.navigate("Login"); // Navigate to the Home screen
   };
 
   return (

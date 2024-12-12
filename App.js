@@ -27,6 +27,7 @@ import HeadToHeadMia from "./screens/HeadToHeadMia";
 import HeadToHeadHarper from "./screens/HeadToHeadHarper";
 import MyCompetitionDetailsScreen from "./screens/MyCompetitionDetailsScreen";
 import SignUpScreen from "./screens/SignUpScreen";
+import { UserProvider, UserContext } from "./screens/UserContext"; // user context
 import { db } from "./database/db";
 
 // Create Competition Context
@@ -346,11 +347,13 @@ export default function App() {
   const [inCompetition, setInCompetition] = useState(false);
 
   return (
-    <CompetitionContext.Provider value={{ inCompetition, setInCompetition }}>
-      <NavigationContainer>
-        {isLoggedIn ? <MainTabs /> : <AuthStack />}
-      </NavigationContainer>
-    </CompetitionContext.Provider>
+    <UserProvider>
+      <CompetitionContext.Provider value={{ inCompetition, setInCompetition }}>
+        <NavigationContainer>
+          {isLoggedIn ? <MainTabs /> : <AuthStack />}
+        </NavigationContainer>
+      </CompetitionContext.Provider>
+    </UserProvider>
   );
 }
 

@@ -22,12 +22,10 @@ const SignUpScreen = ({ navigation }) => {
       Alert.alert("Error", "Please fill in all fields");
       return;
     }
-
     if (password !== confirmPassword) {
       Alert.alert("Error", "Passwords do not match");
       return;
     }
-
     try {
       // Create user with Firebase Authentication
       const userCredential = await createUserWithEmailAndPassword(
@@ -41,7 +39,13 @@ const SignUpScreen = ({ navigation }) => {
       await setDoc(doc(db, "users", user.uid), {
         email: user.email,
         createdAt: new Date(),
-        // Add any additional user fields you want to track
+        userId: user.uid,
+        email: user.email,
+        username: email.split("@")[0],
+        fakeMoney: 100, // Starting balance
+        screenTime: 0,
+        createdAt: new Date(),
+        lastLogin: new Date(),
       });
 
       Alert.alert("Success", "Account created successfully");
