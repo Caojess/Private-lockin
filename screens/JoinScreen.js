@@ -1,53 +1,151 @@
-import React, { useState, useContext } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Modal } from "react-native";
-import { CompetitionContext } from "../App"; // Import the context
+import React, { useState, useContext, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Modal,
+  Alert,
+} from "react-native";
+import { CompetitionContext } from "../App";
+import { UserContext } from "./UserContext";
+import { doc, getDoc, runTransaction } from "firebase/firestore";
+import { db } from "../database/db";
 
-const JoinScreen = ({ navigation }) => {
+const JoinScreen = ({ route, navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const { setInCompetition } = useContext(CompetitionContext); // Access the context
+  const [competitionData, setCompetitionData] = useState(null);
+  const { setInCompetition } = useContext(CompetitionContext);
+  const { user, updateBalanceInFirestore } = useContext(UserContext);
 
-  const handleJoin = () => {
-    setModalVisible(false);
-    setInCompetition(true); // Mark that the user has joined a competition
-    navigation.navigate("Progress", {
-      screen: "CurrentGame", // Navigate to the CurrentGame screen
-    });
+  const { competitionId } = route.params;
+
+  useEffect(() => {
+    const fetchCompetitionData = async () => {
+      try {
+        const docRef = doc(db, "competitionId", competitionId);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setCompetitionData(docSnap.data());
+        } else {
+          console.log("No such competition!");
+          Alert.alert("Error", "Competition not found.");
+        }
+      } catch (error) {
+        console.error("Error fetching competition data:", error);
+        Alert.alert("Error", "Failed to load competition data.");
+      }
+    };
+
+    fetchCompetitionData();
+  }, [competitionId]);
+
+  const handleJoin = async () => {
+    if (!competitionData) return;
+
+    const entryFee = parseFloat(competitionData.entryFee);
+    console.log(`Entry fee: ${entryFee}`);
+    console.log(`Current balance: ${user.fakeMoney}`);
+
+    if (user.fakeMoney < entryFee) {
+      Alert.alert(
+        "Insufficient Funds",
+        "You don't have enough balance to join this competition."
+      );
+      return;
+    }
+
+    try {
+      await runTransaction(db, async (transaction) => {
+        // Perform all reads first
+        const userRef = doc(db, "users", user.userId);
+        const userDoc = await transaction.get(userRef);
+        const compRef = doc(db, "competitionId", competitionId);
+        const compDoc = await transaction.get(compRef);
+
+        const currentBalance = userDoc.data().fakeMoney;
+        console.log(`Current balance from Firestore: ${currentBalance}`);
+
+        // Now perform all writes
+        const newBalance = currentBalance - entryFee;
+        console.log(`New balance after deduction: ${newBalance}`);
+
+        transaction.update(userRef, { fakeMoney: newBalance });
+
+        const updatedCompetitors = [
+          ...compDoc.data().competitors,
+          user.username,
+        ];
+        transaction.update(compRef, {
+          competitors: updatedCompetitors,
+          spots: (parseInt(compDoc.data().spots) - 1).toString(),
+        });
+      });
+
+      // Update local state
+      const updatedBalance = user.fakeMoney - entryFee;
+      await updateBalanceInFirestore(user.userId, updatedBalance);
+      console.log(`Updated balance in local state: ${updatedBalance}`);
+
+      setInCompetition(true);
+      Alert.alert("Success", "You have successfully joined the competition!", [
+        {
+          text: "OK",
+          onPress: () =>
+            navigation.navigate("Progress", { screen: "CurrentGame" }),
+        },
+      ]);
+    } catch (error) {
+      console.error("Error joining competition:", error);
+      Alert.alert("Error", "Failed to join competition. Please try again.");
+    }
   };
+
+  if (!competitionData) return <Text>Loading...</Text>;
+
+  const potTotal =
+    parseFloat(competitionData.entryFee) *
+    (competitionData.competitors.length + 1);
+  const payout = potTotal / (competitionData.competitors.length + 1);
 
   return (
     <View style={styles.container}>
-      {/* Title */}
       <Text style={styles.title}>You're Ready To Join!</Text>
 
-      {/* Pot Total and Payout */}
       <View style={styles.payoutContainer}>
         <View style={styles.payoutBox}>
           <Text style={styles.payoutLabel}>Pot Total</Text>
-          <Text style={styles.payoutValue}>$60.00</Text>
+          <Text style={styles.payoutValue}>${potTotal.toFixed(2)}</Text>
         </View>
         <View style={styles.payoutBox}>
           <Text style={styles.payoutLabel}>Your Payout Now</Text>
-          <Text style={styles.payoutValue}>$15.00</Text>
+          <Text style={styles.payoutValue}>${payout.toFixed(2)}</Text>
         </View>
       </View>
 
-      {/* Rules */}
-      <Text style={styles.rulesText}>Stay under 3 hours a day for 3 days</Text>
-      <Text style={styles.warningText}>or LOSE YOUR $15</Text>
+      <Text style={styles.rulesText}>
+        Stay under {competitionData.screenLimit} hours a day for{" "}
+        {competitionData.duration} days
+      </Text>
+      <Text style={styles.warningText}>
+        or LOSE YOUR ${competitionData.entryFee}
+      </Text>
 
       <View style={styles.balanceBox}>
-        <Text style={styles.balanceText}>You currently have $40 in your account</Text>
+        <Text style={styles.balanceText}>
+          You currently have ${user.fakeMoney.toFixed(2)} in your account
+        </Text>
       </View>
 
-      {/* Join Button */}
       <TouchableOpacity
         style={styles.joinButton}
         onPress={() => setModalVisible(true)}
       >
-        <Text style={styles.joinButtonText}>Join for $15</Text>
+        <Text style={styles.joinButtonText}>
+          Join for ${competitionData.entryFee}
+        </Text>
       </TouchableOpacity>
 
-      {/* Modal */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -57,7 +155,8 @@ const JoinScreen = ({ navigation }) => {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <Text style={styles.modalText}>
-              Are you sure you want to join this 3-day competition for $15?
+              Are you sure you want to join this {competitionData.duration}-day
+              competition for ${competitionData.entryFee}?
             </Text>
             <View style={styles.modalButtons}>
               <TouchableOpacity
@@ -68,7 +167,10 @@ const JoinScreen = ({ navigation }) => {
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.modalButton, styles.modalButtonConfirm]}
-                onPress={handleJoin}
+                onPress={() => {
+                  setModalVisible(false);
+                  handleJoin();
+                }}
               >
                 <Text style={styles.modalButtonText}>Yes!</Text>
               </TouchableOpacity>
@@ -147,16 +249,16 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginHorizontal: 8,
     marginTop: 60,
-    paddingVertical: 4,  // Reduced vertical padding
+    paddingVertical: 4, // Reduced vertical padding
     paddingHorizontal: 16, // Keep horizontal padding
     alignItems: "center",
     justifyContent: "center", // Ensure text is vertically centered
     alignSelf: "center",
     height: 40, // Set a fixed height that is smaller but enough for text
   },
-  
+
   balanceText: {
-    fontSize: 16,  // Reduce font size to fit in smaller box
+    fontSize: 16, // Reduce font size to fit in smaller box
     color: "#000",
     textAlign: "center",
     fontWeight: "bold",

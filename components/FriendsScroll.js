@@ -16,7 +16,9 @@ const FriendsScroll = ({ competitions }) => {
   if (competitions.length === 0) {
     return (
       <View style={styles.emptyState}>
-        <Text style={styles.emptyStateText}>No Friends Competitions Available</Text>
+        <Text style={styles.emptyStateText}>
+          No Friends Competitions Available
+        </Text>
       </View>
     );
   }
@@ -32,9 +34,15 @@ const FriendsScroll = ({ competitions }) => {
           {/* Avatar */}
           <View style={styles.avatarContainer}>
             <Image
-              source={{ uri: competition.avatar || "default_avatar_url" }} // Add a default avatar if missing
+              source={
+                competition.avatar
+                  ? { uri: competition.avatar }
+                  : require("../images/default-pfp.png")
+              } // Add a default avatar if missing [how default profile pic]
               style={styles.profileImage}
-              onError={(e) => console.log("Error loading image:", e.nativeEvent.error)}
+              onError={(e) =>
+                console.log("Error loading image:", e.nativeEvent.error)
+              }
             />
           </View>
 
@@ -42,25 +50,28 @@ const FriendsScroll = ({ competitions }) => {
           <Text style={styles.cardTitle}>{competition.name}</Text>
           <Text style={styles.cardSubTitle}>{`$${competition.entryFee}`}</Text>
           <Text style={styles.cardDetails}>
-            {`<${competition.screenLimit} hours for ${competition.duration} day${
-              competition.duration > 1 ? "s" : ""
-            }`}
+            {`<${competition.screenLimit} hours for ${
+              competition.duration
+            } day${competition.duration > 1 ? "s" : ""}`}
           </Text>
           <Text style={styles.cardDetails}>
-            {`${competition.spots} spot${competition.spots > 1 ? "s" : ""} left`}
+            {`${competition.spots} spot${
+              competition.spots > 1 ? "s" : ""
+            } left`}
           </Text>
 
-          {/* View Button */}
           <TouchableOpacity
             style={styles.viewButton}
             onPress={() =>
               navigation.navigate("Compete", {
-                competitionName: competition.name,
+                id: competition.id,
+                name: competition.name,
                 competitors: competition.competitors,
-                screenLimit: `${competition.screenLimit} hours/day`,
-                duration: `${competition.duration} day${
-                  competition.duration > 1 ? "s" : ""
-                }`,
+                screenLimit: competition.screenLimit,
+                duration: competition.duration,
+                entryFee: competition.entryFee,
+                spots: competition.spots,
+                type: competition.type,
               })
             }
           >

@@ -45,31 +45,20 @@ const UserProvider = ({ children }) => {
     }));
   };
 
-  const updateBalanceInFirestore = async (userId, amount) => {
+  const updateBalanceInFirestore = async (userId, newBalance) => {
     try {
       const userRef = doc(db, "users", userId);
+      await updateDoc(userRef, { fakeMoney: newBalance });
 
-      // First, get the current balance
-      const userSnap = await getDoc(userRef);
-      if (userSnap.exists()) {
-        const currentBalance = userSnap.data().fakeMoney || 0;
-        const newBalance = currentBalance + amount;
+      // Update local state
+      setUser((prevUser) => ({
+        ...prevUser,
+        fakeMoney: newBalance,
+      }));
 
-        // Update Firestore
-        await updateDoc(userRef, {
-          fakeMoney: newBalance,
-        });
-
-        // Update local state
-        setUser((prevUser) => ({
-          ...prevUser,
-          fakeMoney: newBalance,
-        }));
-
-        console.log("Balance updated successfully");
-      } else {
-        console.log("No such user!");
-      }
+      console.log(
+        `Balance updated in Firestore and local state: ${newBalance}`
+      );
     } catch (error) {
       console.error("Error updating balance:", error);
     }

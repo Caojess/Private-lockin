@@ -6,51 +6,81 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 
 const CompeteScreen = ({ route, navigation }) => {
-  const { competitionName, competitors, screenLimit, timeLimit } = route.params;
+  const {
+    id,
+    name = "Unnamed Competition",
+    competitors = [],
+    screenLimit = "N/A",
+    duration = "N/A",
+    entryFee = "N/A",
+    spots = "N/A",
+    type = "unknown",
+  } = route.params || {};
+
+  // Function to get the image for a competitor
+  // const getCompetitorImage = (competitorName) => {
+  //   try {
+  //     return require(`../images/${competitorName}.png`);
+  //   } catch (error) {
+  //     console.warn(`Image not found for ${competitorName}`);
+  //     return require("../images/default-pfp.png"); // Make sure you have a default avatar
+  //   }
+  // };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {/* Full-Width Header */}
       <View style={styles.headerContainer}>
-        <Text
-          style={styles.headerText}
-        >{`${competitionName} `}</Text>
+        <Text style={styles.headerText}>{name}</Text>
+      </View>
+
+      {/* Competition Details */}
+      <View style={styles.detailsContainer}>
+        <Text style={styles.detailText}>Entry Fee: ${entryFee}</Text>
+        <Text style={styles.detailText}>Spots Left: {spots}</Text>
+        <Text style={styles.detailText}>Type: {type}</Text>
       </View>
 
       {/* Competitors Section */}
       <Text style={styles.subheader}>Competitors</Text>
       <FlatList
         data={competitors}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={styles.competitorRow}>
-            {/* Avatar */}
-            <Image source={item.avatar} style={styles.avatar} />
-            <Text style={styles.competitorName}>{item.name}</Text>
-            <Text style={styles.competitorTime}>{item.time}</Text>
+            <Image
+              source={require("../images/default-pfp.png")}
+              style={styles.avatar}
+            />
+            <Text style={styles.competitorName}>{item}</Text>
+            <Text style={styles.competitorTime}>--:--</Text>
           </View>
         )}
+        ListEmptyComponent={
+          <Text style={styles.emptyList}>No competitors yet</Text>
+        }
       />
 
-      {/* Screen Limit & Timeline */}
+      {/* Screen Limit & Duration */}
       <Text style={styles.limit}>
-        Screen Limit: <Text style={styles.bold}>{screenLimit}</Text>
+        Screen Limit: <Text style={styles.bold}>{screenLimit} hours / day</Text>
       </Text>
       <Text style={styles.limit}>
-        Timeline: <Text style={styles.bold}>{timeLimit}</Text>
+        Duration: <Text style={styles.bold}>next {duration} days</Text>
       </Text>
 
       {/* Continue Button */}
       <TouchableOpacity
         style={styles.continueButton}
-        onPress={() => navigation.navigate("Join")}
+        onPress={() => navigation.navigate("Join", { competitionId: id })}
       >
         <Text style={styles.continueButtonText}>Continue</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 
