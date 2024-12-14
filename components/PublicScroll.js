@@ -9,6 +9,22 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
+// Helper function to resolve image paths
+const resolveImagePath = (relativePath) => {
+  switch (relativePath) {
+    case "images/Mia.png":
+      return require("../images/Mia.png");
+    case "images/Autumn.png":
+      return require("../images/Autumn.png");
+    case "images/amanda.png":
+      return require("../images/amanda.png");
+    case "images/Reginor.png":
+      return require("../images/Reginor.png");
+    default:
+      return require("../images/default-pfp.png"); // Default fallback image
+  }
+};
+
 const PublicScroll = ({ competitions }) => {
   const navigation = useNavigation();
 
@@ -34,14 +50,13 @@ const PublicScroll = ({ competitions }) => {
           {/* Main Image for Competition */}
           <View style={styles.avatarContainer}>
             <Image
-              source={
-                competition.image
-                  ? { uri: competition.image }
-                  : require("../images/default-pfp.png")
-              }
+              source={resolveImagePath(competition.image)} // Dynamically resolve image path
               style={styles.profileImage}
               onError={(e) =>
-                console.log("Error loading main image:", e.nativeEvent.error)
+                console.log(
+                  `Error loading image for ${competition.name}:`,
+                  e.nativeEvent.error
+                )
               }
             />
           </View>
