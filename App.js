@@ -34,6 +34,24 @@ import { db } from "./database/db";
 // Create Competition Context
 export const CompetitionContext = createContext();
 
+export const CompetitionProvider = ({ children }) => {
+  const [inCompetition, setInCompetition] = useState(false);
+  const [currentCompetitionId, setCurrentCompetitionId] = useState(null);
+
+  return (
+    <CompetitionContext.Provider
+      value={{
+        inCompetition,
+        setInCompetition,
+        currentCompetitionId,
+        setCurrentCompetitionId,
+      }}
+    >
+      {children}
+    </CompetitionContext.Provider>
+  );
+};
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 

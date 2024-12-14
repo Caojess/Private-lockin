@@ -1,16 +1,26 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import Svg, { Circle } from "react-native-svg";
-import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Modal,
+  Alert,
+} from "react-native";
+import Svg, { Circle, G } from "react-native-svg";
+import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../database/db";
 import { CompetitionContext } from "../App"; // Adjust the import path as needed
-import { UserContext } from "./UserContext"; // Adjust the import path as needed
+import { UserContext, updateBalanceInFirestore } from "./UserContext"; // Adjust the import path as needed
 
 const CurrentGameScreen = ({ navigation }) => {
-  const [timeLeft, setTimeLeft] = useState(120); // 1 minute in seconds for demo
+  const [timeLeft, setTimeLeft] = useState(10); // 1 minute in seconds for demo
   const [competitionData, setCompetitionData] = useState(null);
-  const { currentCompetitionId } = useContext(CompetitionContext);
-  const { user } = useContext(UserContext);
+  const [showWinnerModal, setShowWinnerModal] = useState(false);
+  const [winners, setWinners] = useState([]);
+  const { currentCompetitionId, setInCompetition, setCurrentCompetitionId } =
+    useContext(CompetitionContext);
+  const { user, updateBalanceInFirestore } = useContext(UserContext);
 
   useEffect(() => {
     if (!currentCompetitionId) return;
@@ -30,17 +40,70 @@ const CurrentGameScreen = ({ navigation }) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+      setTimeLeft((prev) => {
+        console.log("Time left:", prev); // Add this log
+        if (prev <= 1) {
+          clearInterval(interval);
+          console.log("Timer reached zero, calling handleCompetitionEnd"); // Add this log
+          handleCompetitionEnd();
+          return 0;
+        }
+        return prev - 1;
+      });
     }, 1000);
 
     return () => clearInterval(interval);
   }, []);
+
+  const handleCompetitionEnd = async () => {
+    if (!competitionData) return;
+
+    const activeCompetitors = competitionData.competitors.filter(
+      (c) => !c.dropped && c.screenTime < 180
+    );
+    setWinners(activeCompetitors);
+    setShowWinnerModal(true);
+
+    // Update competition status in Firestore
+    const compRef = doc(db, "competitionId", currentCompetitionId);
+    await updateDoc(compRef, {
+      status: "completed",
+      winners: activeCompetitors.map((c) => c.name),
+    });
+  };
+
+  const handleClaimPayout = async () => {
+    const totalPot =
+      parseFloat(competitionData.entryFee) * competitionData.competitors.length;
+    const payout = winners.length > 0 ? totalPot / winners.length : 0;
+
+    if (winners.some((w) => w.name === user.username)) {
+      try {
+        await updateBalanceInFirestore(user.userId, payout);
+        Alert.alert(
+          "Success",
+          `$${payout.toFixed(2)} has been added to your account!`
+        );
+      } catch (error) {
+        console.error("Error updating balance:", error);
+        Alert.alert("Error", "Failed to update balance. Please try again.");
+      }
+    }
+
+    setShowWinnerModal(false);
+    setInCompetition(false);
+    setCurrentCompetitionId(null);
+    navigation.navigate("Home");
+  };
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}m ${secs.toString().padStart(2, "0")}s`;
   };
+
+  const CIRCLE_LENGTH = 2 * Math.PI * 90; // Circumference of the circle
+  const TOTAL_TIME = 60; // Total time in seconds
 
   if (!competitionData) {
     return <Text>Loading...</Text>;
@@ -81,7 +144,7 @@ const CurrentGameScreen = ({ navigation }) => {
         </View>
         <View style={styles.row}>
           <Text style={styles.payoutText}>
-            Current Payout: ${currentPayout}
+            Current Payout: ${currentPayout.toFixed(2)}
           </Text>
           <Text style={styles.participantsIcon}>
             {activeCompetitors.length} 👤
@@ -89,34 +152,38 @@ const CurrentGameScreen = ({ navigation }) => {
         </View>
       </View>
 
+      {/* Countdown Timer */}
       <View style={styles.timerContainer}>
         <Svg width={300} height={300} viewBox="0 0 200 200">
-          <Circle
-            cx="100"
-            cy="100"
-            r="90"
-            stroke="#F5F5F5"
-            strokeWidth="10"
-            fill="none"
-          />
-          <Circle
-            cx="100"
-            cy="100"
-            r="90"
-            stroke="#DD3A3A"
-            strokeWidth="10"
-            fill="none"
-            strokeDasharray="565"
-            strokeDashoffset={(1 - timeLeft / 60) * 565}
-            strokeLinecap="round"
-          />
+          <G rotation="-90" origin="100, 100">
+            <Circle
+              cx="100"
+              cy="100"
+              r="90"
+              stroke="#F5F5F5"
+              strokeWidth="10"
+              fill="none"
+            />
+            <Circle
+              cx="100"
+              cy="100"
+              r="90"
+              stroke="#DD3A3A"
+              strokeWidth="10"
+              fill="none"
+              strokeDasharray={CIRCLE_LENGTH}
+              strokeDashoffset={CIRCLE_LENGTH * (1 - timeLeft / TOTAL_TIME)}
+              strokeLinecap="round"
+            />
+          </G>
         </Svg>
         <View style={styles.timerTextContainer}>
-          <Text style={styles.dayText}>Day {competitionData.duration}</Text>
+          <Text style={styles.dayText}>
+            Day {competitionData?.duration || 3}
+          </Text>
           <Text style={styles.timeLeftText}>{formatTime(timeLeft)}</Text>
         </View>
       </View>
-
       <TouchableOpacity
         style={styles.button}
         onPress={() =>
@@ -127,6 +194,44 @@ const CurrentGameScreen = ({ navigation }) => {
       >
         <Text style={styles.buttonText}>View Competition</Text>
       </TouchableOpacity>
+
+      {/* Conditionally render the button */}
+      {timeLeft === 0 && (
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => setShowWinnerModal(true)}
+        >
+          <Text style={styles.buttonText}>Game Recap</Text>
+        </TouchableOpacity>
+      )}
+
+      {/* Winner Modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showWinnerModal}
+        onRequestClose={() => setShowWinnerModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Competition Ended!</Text>
+            <Text style={styles.modalText}>Winners:</Text>
+            {winners.map((winner, index) => (
+              <Text key={index} style={styles.winnerText}>
+                {winner.name}
+              </Text>
+            ))}
+            <TouchableOpacity
+              style={styles.claimButton}
+              onPress={handleClaimPayout}
+            >
+              <Text style={styles.claimButtonText}>
+                Claim ${currentPayout} Payout
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -216,6 +321,47 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     color: "#FFFFFF",
+    fontWeight: "bold",
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+    alignItems: "center",
+    width: "80%",
+  },
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+    color: "#DD3A3A",
+  },
+  modalText: {
+    fontSize: 18,
+    marginBottom: 10,
+    color: "#000",
+    fontWeight: "bold",
+  },
+  winnerText: {
+    fontSize: 16,
+    marginBottom: 5,
+    color: "#000",
+  },
+  claimButton: {
+    backgroundColor: "#DD3A3A",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 20,
+  },
+  claimButtonText: {
+    color: "white",
+    fontSize: 16,
     fontWeight: "bold",
   },
 });

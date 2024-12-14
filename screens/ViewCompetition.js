@@ -1,98 +1,158 @@
-import React from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState, useEffect, useContext } from "react";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
+import { doc, onSnapshot, updateDoc } from "firebase/firestore";
+import { db } from "../database/db";
+import { CompetitionContext } from "../App";
+import { UserContext } from "./UserContext";
 
 const ViewCompetition = ({ navigation }) => {
+  const [competitionData, setCompetitionData] = useState(null);
+  const { currentCompetitionId } = useContext(CompetitionContext);
+  const { user } = useContext(UserContext);
+
+  useEffect(() => {
+    if (!currentCompetitionId) return;
+
+    const competitionRef = doc(db, "competitionId", currentCompetitionId);
+    const unsubscribe = onSnapshot(competitionRef, async (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const data = docSnapshot.data();
+        console.log("Competition data:", data); // Debug log
+
+        // Check for dropped competitors and update if necessary
+        const updatedCompetitors = data.competitors.map((c) => ({
+          ...c,
+          dropped: c.dropped === true || c.screenTime >= 180,
+        }));
+
+        const activeCompetitors = updatedCompetitors.filter((c) => !c.dropped);
+
+        if (
+          JSON.stringify(updatedCompetitors) !==
+          JSON.stringify(data.competitors)
+        ) {
+          // Update competitors' dropped status in Firestore
+          await updateDoc(competitionRef, {
+            competitors: updatedCompetitors,
+          });
+
+          // The updated data will be fetched in the next snapshot
+        } else {
+          setCompetitionData({ ...data, competitors: updatedCompetitors });
+        }
+      } else {
+        console.log("No such competition!");
+      }
+    });
+
+    return () => unsubscribe();
+  }, [currentCompetitionId]);
+
+  if (!competitionData) return <Text>Loading...</Text>;
+
+  const droppedCompetitors = competitionData.competitors.filter(
+    (c) => c.dropped
+  );
+  const activeCompetitors = competitionData.competitors.filter(
+    (c) => !c.dropped
+  );
+
+  console.log("Dropped competitors:", droppedCompetitors); // Debug log
+  console.log("Active competitors:", activeCompetitors); // Debug log
+
+  const totalPot =
+    parseFloat(competitionData.entryFee) * competitionData.competitors.length;
+  const updatedPayout =
+    activeCompetitors.length > 0
+      ? totalPot / activeCompetitors.length
+      : totalPot;
+
+  const formatTime = (minutes) => {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return `${hours}:${mins.toString().padStart(2, "0")}`;
+  };
+
   return (
-    <View style={styles.container}>
-      {/* Header */}
+    <ScrollView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
         ></TouchableOpacity>
-
-        <TouchableOpacity></TouchableOpacity>
       </View>
 
-      {/* Competitor Dropped Notification */}
-      <View style={styles.notification}>
-        <Text style={styles.notificationText}>Competitor Dropped: Andy</Text>
-        <Text style={styles.updatedPayout}>Updated Payout: $20</Text>
-      </View>
-
-      {/* Competitor Rows */}
-      <View style={styles.competitorRow}>
-        {/* You */}
-        <View style={styles.profileSection}>
-          <Image source={require("../images/you.png")} style={styles.avatar} />
-          <Text style={styles.nameText}>You</Text>
+      {droppedCompetitors.map((dropped, index) => (
+        <View key={index} style={styles.notification}>
+          <Text style={styles.notificationText}>
+            Competitor Dropped: {dropped.name}
+          </Text>
+          <Text style={styles.updatedPayout}>
+            Updated Payout: ${updatedPayout.toFixed(2)}
+          </Text>
         </View>
-        <View style={styles.progressSection}>
-          <TouchableOpacity
-            style={styles.compareButton}
-            onPress={() => navigation.navigate("Profile", { fromStats: true })}
-          >
-            <Text style={styles.compareText}>My Stats</Text>
-          </TouchableOpacity>
+      ))}
 
-          <View style={styles.progressBarContainer}>
-            <Text style={styles.timeLeft}>0:40</Text>
-            <View style={styles.progressBarBackground}>
-              <View style={[styles.progressBarFill, { width: "25%" }]}></View>
+      {activeCompetitors.map((competitor, index) => (
+        <View key={index} style={styles.competitorRow}>
+          <View style={styles.profileSection}>
+            <Image
+              source={
+                competitor.image
+                  ? { uri: competitor.image }
+                  : require("../images/default-pfp.png")
+              }
+              style={styles.avatar}
+            />
+            <Text style={styles.nameText}>
+              {competitor.name === user.username ? "You" : competitor.name}
+            </Text>
+          </View>
+          <View style={styles.progressSection}>
+            <TouchableOpacity
+              style={styles.compareButton}
+              onPress={() =>
+                navigation.navigate(
+                  competitor.name === user.username
+                    ? "Profile"
+                    : `HeadToHead${competitor.name}`,
+                  { fromStats: true }
+                )
+              }
+            >
+              <Text style={styles.compareText}>
+                {competitor.name === user.username ? "My Stats" : "Compare"}
+              </Text>
+            </TouchableOpacity>
+
+            <View style={styles.progressBarContainer}>
+              <Text style={styles.timeLeft}>
+                {formatTime(competitor.screenTime || 0)}
+              </Text>
+              <View style={styles.progressBarBackground}>
+                <View
+                  style={[
+                    styles.progressBarFill,
+                    {
+                      width: `${
+                        Math.min((competitor.screenTime || 0) / 180, 1) * 100
+                      }%`,
+                    },
+                  ]}
+                ></View>
+              </View>
+              <Text style={styles.timeGoal}>3:00</Text>
             </View>
-            <Text style={styles.timeGoal}>3:00</Text>
           </View>
         </View>
-      </View>
-
-      <View style={styles.competitorRow}>
-        {/* Mia */}
-        <View style={styles.profileSection}>
-          <Image source={require("../images/Mia.png")} style={styles.avatar} />
-          <Text style={styles.nameText}>Mia</Text>
-        </View>
-        <View style={styles.progressSection}>
-          <TouchableOpacity
-            style={styles.compareButton}
-            onPress={() => navigation.navigate("HeadToHeadMia")}
-          >
-            <Text style={styles.compareText}>Compare</Text>
-          </TouchableOpacity>
-          <View style={styles.progressBarContainer}>
-            <Text style={styles.timeLeft}>00:45</Text>
-            <View style={styles.progressBarBackground}>
-              <View style={[styles.progressBarFill, { width: "25%" }]}></View>
-            </View>
-            <Text style={styles.timeGoal}>3:00</Text>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.competitorRow}>
-        {/* Harper */}
-        <View style={styles.profileSection}>
-          <Image
-            source={require("../images/harper.png")}
-            style={styles.avatar}
-          />
-          <Text style={styles.nameText}>Harper</Text>
-        </View>
-        <View style={styles.progressSection}>
-          <TouchableOpacity
-            style={styles.compareButton}
-            onPress={() => navigation.navigate("HeadToHeadHarper")}
-          >
-            <Text style={styles.compareText}>Compare</Text>
-          </TouchableOpacity>
-          <View style={styles.progressBarContainer}>
-            <Text style={styles.timeLeft}>02:30</Text>
-            <View style={styles.progressBarBackground}>
-              <View style={[styles.progressBarFill, { width: "83%" }]}></View>
-            </View>
-            <Text style={styles.timeGoal}>3:00</Text>
-          </View>
-        </View>
-      </View>
-    </View>
+      ))}
+    </ScrollView>
   );
 };
 
