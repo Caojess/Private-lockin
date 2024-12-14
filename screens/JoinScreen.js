@@ -45,97 +45,109 @@ const JoinScreen = ({ route, navigation }) => {
     fetchCompetitionData();
   }, [competitionId]);
 
-  // handling new db population
   const handleJoin = async () => {
     if (!competitionData) {
       Alert.alert("Error", "Competition data not available.");
       return;
     }
-
+  
     const entryFee = parseFloat(competitionData.entryFee);
-
+  
     try {
       const result = await runTransaction(db, async (transaction) => {
         // Get the latest competition data
         const compRef = doc(db, "competitionId", competitionId);
         const compDoc = await transaction.get(compRef);
-
+  
         if (!compDoc.exists()) {
           throw new Error("Competition does not exist!");
         }
-
+  
         const latestCompData = compDoc.data();
         const availableSpots = parseInt(latestCompData.spots) || 0;
         const currentCompetitors = latestCompData.competitors || [];
-
+  
         // Check if there are still spots available
         if (availableSpots <= 0) {
           throw new Error("Competition is full");
         }
-
+  
         // Check user's balance
         const userRef = doc(db, "users", user.userId);
         const userDoc = await transaction.get(userRef);
-
+  
         if (!userDoc.exists()) {
           throw new Error("User document does not exist!");
         }
-
+  
         const currentBalance = userDoc.data().fakeMoney || 0;
         const newBalance = currentBalance - entryFee;
-
+  
         if (newBalance < 0) {
           throw new Error("Insufficient funds");
         }
-
-        // Check if user is already in the competition
-        if (
-          currentCompetitors.some(
-            (competitor) => competitor.name === user.username
-          )
-        ) {
-          throw new Error("You have already joined this competition");
+  
+        // Skip adding the user to competitors if they already exist
+        const userAlreadyInCompetition = currentCompetitors.some(
+          (competitor) => competitor.name === user.username
+        );
+  
+        if (!userAlreadyInCompetition) {
+          // Update competition data (only if user isn't already in the list)
+          const updatedCompetitors = [
+            ...currentCompetitors,
+            {
+              name: user.username,
+              image: user.profileImage || "images/default-pfp.png", // Add user image
+              hours: 0,
+              screenTime: 0,
+              dropped: false,
+            },
+          ];
+  
+          const newAvailableSpots = availableSpots - 1;
+  
+          transaction.update(compRef, {
+            competitors: updatedCompetitors,
+            spots: newAvailableSpots,
+          });
         }
-
+  
         // Update user's balance
         transaction.update(userRef, { fakeMoney: newBalance });
-
-        // Update competition data
-        const updatedCompetitors = [
-          ...currentCompetitors,
-          {
-            name: user.username,
-            image: user.profileImage || "images/default-pfp.png",
-            hours: 0,
-            screenTime: 0,
-            dropped: false,
-          },
-        ];
-
-        const newAvailableSpots = availableSpots - 1;
-
-        transaction.update(compRef, {
-          competitors: updatedCompetitors,
-          spots: newAvailableSpots,
-        });
-
-        return { newBalance, updatedCompetitors, spots: newAvailableSpots };
+  
+        return {
+          newBalance,
+          updatedCompetitors: userAlreadyInCompetition
+            ? currentCompetitors
+            : [
+                ...currentCompetitors,
+                {
+                  name: user.username,
+                  image: user.profileImage || "images/default-pfp.png", // Add user image
+                  hours: 0,
+                  screenTime: 0,
+                  dropped: false,
+                },
+              ],
+          spots: userAlreadyInCompetition ? availableSpots : availableSpots - 1,
+        };
       });
-
+  
       // Update local state
       setCompetitionData((prevData) => ({
         ...prevData,
         competitors: result.updatedCompetitors,
         spots: result.spots,
       }));
-
+  
       // Update user's balance in context
       await updateBalanceInFirestore(user.userId, -entryFee);
-
+  
       // Set competition status
       setInCompetition(true);
       setCurrentCompetitionId(competitionId);
-
+  
       Alert.alert("Success", "You have successfully joined the competition!", [
         {
           text: "OK",
@@ -150,6 +162,7 @@ const JoinScreen = ({ route, navigation }) => {
       );
     }
   };
+  
 
   if (!competitionData) return <Text>Loading...</Text>;
 
@@ -308,18 +321,18 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginHorizontal: 8,
     marginTop: 60,
-    paddingVertical: 4, // Reduced vertical padding
-    paddingHorizontal: 16, // Keep horizontal padding
+    paddingVertical: 4,
+    paddingHorizontal: 16,
     alignItems: "center",
-    justifyContent: "center", // Ensure text is vertically centered
+    justifyContent: "center",
     alignSelf: "center",
-    height: 40, // Set a fixed height that is smaller but enough for text
+    height: 40,
   },
   disabledButton: {
     backgroundColor: "#888", // Gray color for disabled state
   },
   balanceText: {
-    fontSize: 16, // Reduce font size to fit in smaller box
+    fontSize: 16,
     color: "#000",
     textAlign: "center",
     fontWeight: "bold",
