@@ -7,10 +7,30 @@ import {
   Image,
   TouchableOpacity,
   SafeAreaView,
-  ActivityIndicator,
 } from "react-native";
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "../database/db"; // Make sure this path is correct
+import { db } from "../database/db"; // Ensure the path to your Firebase setup is correct
+
+const resolveImagePath = (relativePath) => {
+  switch (relativePath) {
+    case "images/Mia.png":
+      return require("../images/Mia.png");
+      case "images/andy.png":
+      return require("../images/andy.png");
+      case "images/Zach.png":
+      return require("../images/Zach.png");
+    case "images/Autumn.png":
+      return require("../images/amanda.png");
+      case "images/images/harper.png":
+      return require("../images/harper.png");
+    case "images/Emma.png":
+      return require("../images/Bridgerton.png");
+    case "images/Salvadore.png":
+      return require("../images/Salvadore.png");
+    default:
+      return require("../images/default-pfp.png"); // Default fallback image
+  }
+};
 
 const CompeteScreen = ({ route, navigation }) => {
   const [competitionData, setCompetitionData] = useState(null);
@@ -38,19 +58,7 @@ const CompeteScreen = ({ route, navigation }) => {
   }, [id]);
 
   const renderCompetitor = ({ item }) => {
-    // Always use the default profile picture
-    const avatarSource = require("../images/default-pfp.png");
-
-    // Check if item is a string (old format) or an object (new format)
-    if (typeof item === "string") {
-      return (
-        <View style={styles.competitorRow}>
-          <Image source={avatarSource} style={styles.avatar} />
-          <Text style={styles.competitorName}>{item}</Text>
-          <Text style={styles.competitorTime}>--</Text>
-        </View>
-      );
-    }
+    const avatarSource = resolveImagePath(item.image);
 
     // Handle hours that might be stored as strings or numbers
     const hours =
@@ -85,8 +93,6 @@ const CompeteScreen = ({ route, navigation }) => {
     screenLimit,
     duration,
     entryFee,
-    spots,
-    type,
   } = competitionData;
 
   return (
