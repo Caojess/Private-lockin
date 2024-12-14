@@ -23,6 +23,20 @@ const FriendsScroll = ({ competitions }) => {
     );
   }
 
+  // Helper function to resolve image paths
+  const resolveImagePath = (relativePath) => {
+    switch (relativePath) {
+      case "images/andy.png":
+        return require("../images/andy.png");
+      case "images/harper.png":
+        return require("../images/harper.png");
+      case "images/Mia.png":
+        return require("../images/Mia.png");
+      default:
+        return require("../images/default-pfp.png"); // Default image
+    }
+  };
+
   return (
     <ScrollView
       horizontal={true}
@@ -31,17 +45,17 @@ const FriendsScroll = ({ competitions }) => {
     >
       {competitions.map((competition) => (
         <View key={competition.id} style={styles.card}>
-          {/* Avatar */}
+          {/* Main Image for Competition */}
           <View style={styles.avatarContainer}>
             <Image
               source={
-                competition.avatar
-                  ? { uri: competition.avatar }
+                competition.image
+                  ? resolveImagePath(competition.image)
                   : require("../images/default-pfp.png")
-              } // Add a default avatar if missing [how default profile pic]
+              }
               style={styles.profileImage}
               onError={(e) =>
-                console.log("Error loading image:", e.nativeEvent.error)
+                console.log("Error loading main image:", e.nativeEvent.error)
               }
             />
           </View>
@@ -60,6 +74,7 @@ const FriendsScroll = ({ competitions }) => {
             } left`}
           </Text>
 
+          {/* View Button */}
           <TouchableOpacity
             style={styles.viewButton}
             onPress={() =>
@@ -89,13 +104,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   card: {
-    width: 200,
-    height: 200,
+    width: 220,
+    height: 220,
     backgroundColor: "#DD3A3A",
     borderRadius: 12,
     padding: 16,
     marginRight: 12,
-    alignItems: "center", // Center all content horizontally
+    alignItems: "center",
   },
   avatarContainer: {
     marginBottom: 8,
@@ -105,7 +120,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 30,
     borderWidth: 3,
-    borderColor: "#fff", // White border around the avatar
+    borderColor: "#fff",
   },
   cardTitle: {
     fontSize: 14,
@@ -133,8 +148,6 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 16,
     marginTop: 12,
-    height: 30,
-    width: "100%",
   },
   viewButtonText: {
     textAlign: "center",
