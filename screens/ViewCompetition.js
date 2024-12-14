@@ -103,11 +103,7 @@ const ViewCompetition = ({ navigation }) => {
         <View key={index} style={styles.competitorRow}>
           <View style={styles.profileSection}>
             <Image
-              source={
-                competitor.image
-                  ? { uri: competitor.image }
-                  : require("../images/default-pfp.png")
-              }
+              source={require("../images/default-pfp.png")}
               style={styles.avatar}
             />
             <Text style={styles.nameText}>

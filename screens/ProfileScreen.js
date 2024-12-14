@@ -326,16 +326,6 @@ export default function ProfileScreen() {
             />
           </View>
         </View>
-
-        {/* Logout Button */}
-        <View style={styles.logoutButtonContainer}>
-          <TouchableOpacity
-            style={styles.logoutButton}
-            onPress={() => navigation.navigate("Login")} // Navigate to LoginScreen
-          >
-            <Text style={styles.logoutButtonText}>Log Out</Text>
-          </TouchableOpacity>
-        </View>
       </ScrollView>
     </SafeAreaView>
   );

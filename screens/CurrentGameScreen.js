@@ -14,7 +14,7 @@ import { CompetitionContext } from "../App"; // Adjust the import path as needed
 import { UserContext, updateBalanceInFirestore } from "./UserContext"; // Adjust the import path as needed
 
 const CurrentGameScreen = ({ navigation }) => {
-  const [timeLeft, setTimeLeft] = useState(10); // 1 minute in seconds for demo
+  const [timeLeft, setTimeLeft] = useState(60); // 1 minute in seconds for demo
   const [competitionData, setCompetitionData] = useState(null);
   const [showWinnerModal, setShowWinnerModal] = useState(false);
   const [winners, setWinners] = useState([]);
