@@ -26,7 +26,11 @@ const JoinScreen = ({ route, navigation }) => {
         const docRef = doc(db, "competitionId", competitionId);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          setCompetitionData(docSnap.data());
+          const data = docSnap.data();
+          setCompetitionData({
+            ...data,
+            spots: parseInt(data.spots), // Ensure spots is a number
+          });
         } else {
           console.log("No such competition!");
           Alert.alert("Error", "Competition not found.");
@@ -42,6 +46,11 @@ const JoinScreen = ({ route, navigation }) => {
 
   const handleJoin = async () => {
     if (!competitionData) return;
+
+    if (competitionData.spots <= 0) {
+      Alert.alert("No Spots Left", "Sorry, this competition is full.");
+      return;
+    }
 
     const entryFee = parseFloat(competitionData.entryFee);
     console.log(`Entry fee: ${entryFee}`);
@@ -138,11 +147,19 @@ const JoinScreen = ({ route, navigation }) => {
       </View>
 
       <TouchableOpacity
-        style={styles.joinButton}
-        onPress={() => setModalVisible(true)}
+        style={[
+          styles.joinButton,
+          competitionData.spots <= 0 && styles.disabledButton,
+        ]}
+        onPress={() =>
+          competitionData.spots > 0 ? setModalVisible(true) : null
+        }
+        disabled={competitionData.spots <= 0}
       >
         <Text style={styles.joinButtonText}>
-          Join for ${competitionData.entryFee}
+          {competitionData.spots > 0
+            ? `Join for $${competitionData.entryFee}`
+            : "No spots left"}
         </Text>
       </TouchableOpacity>
 
@@ -156,7 +173,8 @@ const JoinScreen = ({ route, navigation }) => {
           <View style={styles.modalContent}>
             <Text style={styles.modalText}>
               Are you sure you want to join this {competitionData.duration}-day
-              competition for ${competitionData.entryFee}?
+              competition for ${competitionData.entryFee}?{"\n\n"}
+              Spots left: {competitionData.spots}
             </Text>
             <View style={styles.modalButtons}>
               <TouchableOpacity
@@ -256,7 +274,9 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     height: 40, // Set a fixed height that is smaller but enough for text
   },
-
+  disabledButton: {
+    backgroundColor: "#888", // Gray color for disabled state
+  },
   balanceText: {
     fontSize: 16, // Reduce font size to fit in smaller box
     color: "#000",
