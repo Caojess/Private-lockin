@@ -76,7 +76,9 @@ const CurrentGameScreen = ({ navigation }) => {
       {/* View Competition Button */}
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate("ViewCompetition")}
+        onPress={() =>
+          navigation.navigate("Progress", { screen: "ViewCompetition" })
+        }
       >
         <Text style={styles.buttonText}>View Competition</Text>
       </TouchableOpacity>

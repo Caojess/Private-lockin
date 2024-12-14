@@ -15,9 +15,9 @@ import { db } from "../database/db";
 const JoinScreen = ({ route, navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [competitionData, setCompetitionData] = useState(null);
-  const { setInCompetition } = useContext(CompetitionContext);
+  const { setInCompetition, setCurrentCompetitionId } =
+    useContext(CompetitionContext);
   const { user, updateBalanceInFirestore } = useContext(UserContext);
-
   const { competitionId } = route.params;
 
   useEffect(() => {
@@ -29,7 +29,8 @@ const JoinScreen = ({ route, navigation }) => {
           const data = docSnap.data();
           setCompetitionData({
             ...data,
-            spots: parseInt(data.spots), // Ensure spots is a number
+            spots: parseInt(data.spots) || 0,
+            competitors: data.competitors || [],
           });
         } else {
           console.log("No such competition!");
@@ -44,69 +45,109 @@ const JoinScreen = ({ route, navigation }) => {
     fetchCompetitionData();
   }, [competitionId]);
 
+  // handling new db population
   const handleJoin = async () => {
-    if (!competitionData) return;
-
-    if (competitionData.spots <= 0) {
-      Alert.alert("No Spots Left", "Sorry, this competition is full.");
+    if (!competitionData) {
+      Alert.alert("Error", "Competition data not available.");
       return;
     }
 
     const entryFee = parseFloat(competitionData.entryFee);
-    console.log(`Entry fee: ${entryFee}`);
-    console.log(`Current balance: ${user.fakeMoney}`);
-
-    if (user.fakeMoney < entryFee) {
-      Alert.alert(
-        "Insufficient Funds",
-        "You don't have enough balance to join this competition."
-      );
-      return;
-    }
 
     try {
-      await runTransaction(db, async (transaction) => {
-        // Perform all reads first
-        const userRef = doc(db, "users", user.userId);
-        const userDoc = await transaction.get(userRef);
+      const result = await runTransaction(db, async (transaction) => {
+        // Get the latest competition data
         const compRef = doc(db, "competitionId", competitionId);
         const compDoc = await transaction.get(compRef);
 
-        const currentBalance = userDoc.data().fakeMoney;
-        console.log(`Current balance from Firestore: ${currentBalance}`);
+        if (!compDoc.exists()) {
+          throw new Error("Competition does not exist!");
+        }
 
-        // Now perform all writes
+        const latestCompData = compDoc.data();
+        const availableSpots = parseInt(latestCompData.spots) || 0;
+        const currentCompetitors = latestCompData.competitors || [];
+
+        // Check if there are still spots available
+        if (availableSpots <= 0) {
+          throw new Error("Competition is full");
+        }
+
+        // Check user's balance
+        const userRef = doc(db, "users", user.userId);
+        const userDoc = await transaction.get(userRef);
+
+        if (!userDoc.exists()) {
+          throw new Error("User document does not exist!");
+        }
+
+        const currentBalance = userDoc.data().fakeMoney || 0;
         const newBalance = currentBalance - entryFee;
-        console.log(`New balance after deduction: ${newBalance}`);
 
+        if (newBalance < 0) {
+          throw new Error("Insufficient funds");
+        }
+
+        // Check if user is already in the competition
+        if (
+          currentCompetitors.some(
+            (competitor) => competitor.name === user.username
+          )
+        ) {
+          throw new Error("You have already joined this competition");
+        }
+
+        // Update user's balance
         transaction.update(userRef, { fakeMoney: newBalance });
 
+        // Update competition data
         const updatedCompetitors = [
-          ...compDoc.data().competitors,
-          user.username,
+          ...currentCompetitors,
+          {
+            name: user.username,
+            image: user.profileImage || "images/default-pfp.png",
+            hours: 0,
+            screenTime: 0,
+            dropped: false,
+          },
         ];
+
+        const newAvailableSpots = availableSpots - 1;
+
         transaction.update(compRef, {
           competitors: updatedCompetitors,
-          spots: (parseInt(compDoc.data().spots) - 1).toString(),
+          spots: newAvailableSpots,
         });
+
+        return { newBalance, updatedCompetitors, spots: newAvailableSpots };
       });
 
       // Update local state
-      const updatedBalance = user.fakeMoney - entryFee;
-      await updateBalanceInFirestore(user.userId, updatedBalance);
-      console.log(`Updated balance in local state: ${updatedBalance}`);
+      setCompetitionData((prevData) => ({
+        ...prevData,
+        competitors: result.updatedCompetitors,
+        spots: result.spots,
+      }));
 
+      // Update user's balance in context
+      await updateBalanceInFirestore(user.userId, -entryFee);
+
+      // Set competition status
       setInCompetition(true);
+      setCurrentCompetitionId(competitionId);
+
       Alert.alert("Success", "You have successfully joined the competition!", [
         {
           text: "OK",
-          onPress: () =>
-            navigation.navigate("Progress", { screen: "CurrentGame" }),
+          onPress: () => navigation.navigate("Progress"),
         },
       ]);
     } catch (error) {
       console.error("Error joining competition:", error);
-      Alert.alert("Error", "Failed to join competition. Please try again.");
+      Alert.alert(
+        "Error",
+        error.message || "Failed to join competition. Please try again."
+      );
     }
   };
 
@@ -142,7 +183,7 @@ const JoinScreen = ({ route, navigation }) => {
 
       <View style={styles.balanceBox}>
         <Text style={styles.balanceText}>
-          You currently have ${user.fakeMoney.toFixed(2)} in your account
+          You currently have ${user.fakeMoney}
         </Text>
       </View>
 

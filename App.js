@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useContext } from "react";
 
 // Import screens
 import HomeScreen from "./screens/HomeScreen";
@@ -345,10 +346,18 @@ function AuthStack() {
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [inCompetition, setInCompetition] = useState(false);
+  const [currentCompetitionId, setCurrentCompetitionId] = useState(null);
 
   return (
     <UserProvider>
-      <CompetitionContext.Provider value={{ inCompetition, setInCompetition }}>
+      <CompetitionContext.Provider
+        value={{
+          inCompetition,
+          setInCompetition,
+          currentCompetitionId,
+          setCurrentCompetitionId,
+        }}
+      >
         <NavigationContainer>
           {isLoggedIn ? <MainTabs /> : <AuthStack />}
         </NavigationContainer>

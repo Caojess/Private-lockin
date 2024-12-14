@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,62 +7,110 @@ import {
   Image,
   TouchableOpacity,
   SafeAreaView,
+  ActivityIndicator,
 } from "react-native";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../database/db"; // Make sure this path is correct
 
 const CompeteScreen = ({ route, navigation }) => {
-  const {
-    id,
-    name = "Unnamed Competition",
-    competitors = [],
-    screenLimit = "N/A",
-    duration = "N/A",
-    entryFee = "N/A",
-    spots = "N/A",
-    type = "unknown",
-  } = route.params || {};
+  const [competitionData, setCompetitionData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const { id } = route.params;
 
-  // Helper function to resolve competitor images
-  const resolveCompetitorImage = (imagePath) => {
-    if (!imagePath) return require("../images/default-pfp.png"); // Default image
-    return { uri: imagePath.trim() }; // Ensure the path is a valid URI
+  useEffect(() => {
+    const fetchCompetitionData = async () => {
+      try {
+        const docRef = doc(db, "competitionId", id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setCompetitionData({ id: docSnap.id, ...docSnap.data() });
+        } else {
+          console.log("No such competition!");
+        }
+      } catch (error) {
+        console.error("Error fetching competition data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCompetitionData();
+  }, [id]);
+
+  const renderCompetitor = ({ item }) => {
+    // Always use the default profile picture
+    const avatarSource = require("../images/default-pfp.png");
+
+    // Check if item is a string (old format) or an object (new format)
+    if (typeof item === "string") {
+      return (
+        <View style={styles.competitorRow}>
+          <Image source={avatarSource} style={styles.avatar} />
+          <Text style={styles.competitorName}>{item}</Text>
+          <Text style={styles.competitorTime}>--</Text>
+        </View>
+      );
+    }
+
+    // Handle hours that might be stored as strings or numbers
+    const hours =
+      item.hours !== null && item.hours !== undefined
+        ? typeof item.hours === "string"
+          ? parseFloat(item.hours)
+          : item.hours
+        : null;
+
+    return (
+      <View style={styles.competitorRow}>
+        <Image source={avatarSource} style={styles.avatar} />
+        <Text style={styles.competitorName}>{item.name}</Text>
+        <Text style={styles.competitorTime}>
+          {hours !== null ? `${hours} hrs` : "--"}
+        </Text>
+      </View>
+    );
   };
+
+  if (!competitionData) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text>No competition data available</Text>
+      </View>
+    );
+  }
+
+  const {
+    name,
+    competitors = [],
+    screenLimit,
+    duration,
+    entryFee,
+    spots,
+    type,
+  } = competitionData;
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Full-Width Header */}
       <View style={styles.headerContainer}>
         <Text style={styles.headerText}>{name}</Text>
       </View>
 
-      {/* Competition Details */}
       <View style={styles.detailsContainer}>
         <Text style={styles.detailText}>Entry Fee: ${entryFee}</Text>
         <Text style={styles.detailText}>Spots Left: {spots}</Text>
         <Text style={styles.detailText}>Type: {type}</Text>
       </View>
 
-      {/* Competitors Section */}
       <Text style={styles.subheader}>Competitors</Text>
       <FlatList
         data={competitors}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.competitorRow}>
-            <Image
-              source={resolveCompetitorImage(item.image)}
-              style={styles.avatar}
-              onError={() => console.warn("Error loading image", item.image)}
-            />
-            <Text style={styles.competitorName}>{item.name}</Text>
-            <Text style={styles.competitorTime}>{item.hours} hours</Text>
-          </View>
-        )}
+        renderItem={renderCompetitor}
         ListEmptyComponent={
           <Text style={styles.emptyList}>No competitors yet</Text>
         }
       />
 
-      {/* Screen Limit & Duration */}
       <Text style={styles.limit}>
         Screen Limit: <Text style={styles.bold}>{screenLimit} hours / day</Text>
       </Text>
@@ -70,7 +118,6 @@ const CompeteScreen = ({ route, navigation }) => {
         Duration: <Text style={styles.bold}>next {duration} days</Text>
       </Text>
 
-      {/* Continue Button */}
       <TouchableOpacity
         style={styles.continueButton}
         onPress={() => navigation.navigate("Join", { competitionId: id })}
@@ -82,6 +129,11 @@ const CompeteScreen = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",

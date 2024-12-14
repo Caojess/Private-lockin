@@ -80,13 +80,7 @@ const FriendsScroll = ({ competitions }) => {
             onPress={() =>
               navigation.navigate("Compete", {
                 id: competition.id,
-                name: competition.name,
-                competitors: competition.competitors,
-                screenLimit: competition.screenLimit,
-                duration: competition.duration,
-                entryFee: competition.entryFee,
-                spots: competition.spots,
-                type: competition.type,
+                // Remove other props, we'll fetch them in CompeteScreen
               })
             }
           >

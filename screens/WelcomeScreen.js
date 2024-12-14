@@ -29,9 +29,6 @@ const WelcomeScreen = ({ navigation }) => {
           Create Custom
         </Text>
       </TouchableOpacity>
-      <Text style={styles.moneyText}>
-        We've added $100 to your account, enjoy!
-      </Text>
     </View>
   );
 };

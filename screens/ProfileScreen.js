@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   View,
   Text,
@@ -13,11 +13,34 @@ import { BarChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { UserContext } from "./UserContext";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../database/db";
 
 export default function ProfileScreen() {
-  const navigation = useNavigation(); // Get the navigation object
+  const navigation = useNavigation();
   const screenWidth = Dimensions.get("window").width;
-  const { user, updateBalanceInFirestore } = useContext(UserContext);
+  const { user, updateUser, updateBalanceInFirestore } =
+    useContext(UserContext);
+
+  useEffect(() => {
+    const fetchLatestBalance = async () => {
+      if (!user || !user.userId) {
+        console.log("No user data available");
+        return;
+      }
+      try {
+        const userDoc = await getDoc(doc(db, "users", user.userId));
+        if (userDoc.exists()) {
+          const latestFakeMoney = userDoc.data().fakeMoney;
+          updateUser({ fakeMoney: latestFakeMoney });
+        }
+      } catch (error) {
+        console.error("Error fetching latest balance:", error);
+      }
+    };
+
+    fetchLatestBalance();
+  }, [user?.userId, updateUser]);
 
   const chartData = {
     "This Week": {
@@ -68,12 +91,25 @@ export default function ProfileScreen() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [newBalance, setNewBalance] = useState(""); // Track input for new balance
 
-  const handleBalanceUpdate = () => {
+  const handleBalanceUpdate = async () => {
     if (newBalance && !isNaN(newBalance)) {
       const amountToAdd = parseFloat(newBalance);
-      updateBalanceInFirestore(user.userId, amountToAdd); // Update the context's fakeMoney
-      setIsModalVisible(false); // Close the modal
-      setNewBalance(""); // Clear input
+      try {
+        const updatedBalance = await updateBalanceInFirestore(
+          user.userId,
+          amountToAdd
+        );
+        console.log(
+          `Balance updated successfully. New balance: ${updatedBalance}`
+        );
+        setIsModalVisible(false); // Close the modal
+        setNewBalance(""); // Clear input
+      } catch (error) {
+        console.error("Error adding funds:", error);
+        Alert.alert("Error", "Failed to add funds. Please try again.");
+      }
+    } else {
+      Alert.alert("Invalid Input", "Please enter a valid number.");
     }
   };
 
@@ -115,7 +151,6 @@ export default function ProfileScreen() {
             style={styles.profileImage}
           />
           <Text style={styles.title}>{user.username}</Text>
-          <Text style={styles.subtitle}>San Francisco, CA</Text>
         </View>
 
         {/* Balance Section */}
