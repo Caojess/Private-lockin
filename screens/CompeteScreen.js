@@ -95,12 +95,6 @@ const CompeteScreen = ({ route, navigation }) => {
         <Text style={styles.headerText}>{name}</Text>
       </View>
 
-      <View style={styles.detailsContainer}>
-        <Text style={styles.detailText}>Entry Fee: ${entryFee}</Text>
-        <Text style={styles.detailText}>Spots Left: {spots}</Text>
-        <Text style={styles.detailText}>Type: {type}</Text>
-      </View>
-
       <Text style={styles.subheader}>Competitors</Text>
       <FlatList
         data={competitors}

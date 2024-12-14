@@ -1,37 +1,78 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Svg, { Circle } from "react-native-svg";
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import { db } from "../database/db";
+import { CompetitionContext } from "../App"; // Adjust the import path as needed
+import { UserContext } from "./UserContext"; // Adjust the import path as needed
 
 const CurrentGameScreen = ({ navigation }) => {
-  const [timeLeft, setTimeLeft] = useState(54000); // 15 hours in seconds
+  const [timeLeft, setTimeLeft] = useState(120); // 1 minute in seconds for demo
+  const [competitionData, setCompetitionData] = useState(null);
+  const { currentCompetitionId } = useContext(CompetitionContext);
+  const { user } = useContext(UserContext);
 
-  // Countdown logic
+  useEffect(() => {
+    if (!currentCompetitionId) return;
+
+    const competitionRef = doc(db, "competitionId", currentCompetitionId);
+    const unsubscribe = onSnapshot(competitionRef, (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const data = docSnapshot.data();
+        setCompetitionData(data);
+      } else {
+        console.log("No such competition!");
+      }
+    });
+
+    return () => unsubscribe();
+  }, [currentCompetitionId]);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
     }, 1000);
 
-    return () => clearInterval(interval); // Cleanup interval on unmount
+    return () => clearInterval(interval);
   }, []);
 
   const formatTime = (seconds) => {
-    const hrs = Math.floor(seconds / 3600);
-    const mins = Math.floor((seconds % 3600) / 60);
+    const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${hrs}h ${mins.toString().padStart(2, "0")}m ${secs
-      .toString()
-      .padStart(2, "0")}s`;
+    return `${mins}m ${secs.toString().padStart(2, "0")}s`;
   };
 
-  const progressPercentage = 40 / 180; // Example: 40 mins out of 3 hours
+  if (!competitionData) {
+    return <Text>Loading...</Text>;
+  }
+
+  const currentUserData =
+    competitionData.competitors.find((c) => c.name === user.username) || {};
+  const progressPercentage =
+    (currentUserData.screenTime || 0) / (competitionData.screenLimit * 60);
+
+  // Calculate payout based on remaining active competitors
+  const activeCompetitors = competitionData.competitors.filter(
+    (c) => !c.dropped
+  );
+  const totalPot =
+    parseFloat(competitionData.entryFee) * competitionData.competitors.length;
+  const currentPayout =
+    activeCompetitors.length > 0
+      ? totalPot / activeCompetitors.length
+      : totalPot;
 
   return (
     <View style={styles.container}>
-      {/* Today Progress */}
       <View style={styles.todayBox}>
         <View style={styles.row}>
-          <Text style={styles.todayText1}>Time spent: 40 mins </Text>
-          <Text style={styles.todayText2}> Goal: &lt; 3 Hours</Text>
+          <Text style={styles.todayText1}>
+            Time spent: {currentUserData.screenTime || 0} mins{" "}
+          </Text>
+          <Text style={styles.todayText2}>
+            {" "}
+            Goal: &lt; {competitionData.screenLimit} Hours
+          </Text>
         </View>
         <View style={styles.progressBar}>
           <View
@@ -39,12 +80,15 @@ const CurrentGameScreen = ({ navigation }) => {
           />
         </View>
         <View style={styles.row}>
-          <Text style={styles.payoutText}>Current Payout: $15</Text>
-          <Text style={styles.participantsIcon}>4 👤</Text>
+          <Text style={styles.payoutText}>
+            Current Payout: ${currentPayout}
+          </Text>
+          <Text style={styles.participantsIcon}>
+            {activeCompetitors.length} 👤
+          </Text>
         </View>
       </View>
 
-      {/* Countdown Timer */}
       <View style={styles.timerContainer}>
         <Svg width={300} height={300} viewBox="0 0 200 200">
           <Circle
@@ -63,21 +107,22 @@ const CurrentGameScreen = ({ navigation }) => {
             strokeWidth="10"
             fill="none"
             strokeDasharray="565"
-            strokeDashoffset={(1 - timeLeft / 54000) * 565}
+            strokeDashoffset={(1 - timeLeft / 60) * 565}
             strokeLinecap="round"
           />
         </Svg>
         <View style={styles.timerTextContainer}>
-          <Text style={styles.dayText}>Day 2</Text>
+          <Text style={styles.dayText}>Day {competitionData.duration}</Text>
           <Text style={styles.timeLeftText}>{formatTime(timeLeft)}</Text>
         </View>
       </View>
 
-      {/* View Competition Button */}
       <TouchableOpacity
         style={styles.button}
         onPress={() =>
-          navigation.navigate("Progress", { screen: "ViewCompetition" })
+          navigation.navigate("ViewCompetition", {
+            competitionId: currentCompetitionId,
+          })
         }
       >
         <Text style={styles.buttonText}>View Competition</Text>
