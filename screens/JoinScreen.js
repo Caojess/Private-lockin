@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { CompetitionContext } from "../App";
 import { UserContext } from "./UserContext";
-import { doc, getDoc, runTransaction } from "firebase/firestore";
+import { doc, getDoc, runTransaction, onSnapshot } from "firebase/firestore";
 import { db } from "../database/db";
 
 const JoinScreen = ({ route, navigation }) => {
@@ -151,7 +151,7 @@ const JoinScreen = ({ route, navigation }) => {
       Alert.alert("Success", "You have successfully joined the competition!", [
         {
           text: "OK",
-          onPress: () => navigation.navigate("Progress"),
+          onPress: () => navigation.navigate("Progress", { competitionId }),
         },
       ]);
     } catch (error) {
@@ -167,9 +167,15 @@ const JoinScreen = ({ route, navigation }) => {
   if (!competitionData) return <Text>Loading...</Text>;
 
   const potTotal =
-    parseFloat(competitionData.entryFee) *
-    (competitionData.competitors.length + 1);
-  const payout = potTotal / (competitionData.competitors.length + 1);
+    parseFloat(competitionData.entryFee) * competitionData.competitors.length;
+  const payout =
+    competitionData.competitors.length > 0
+      ? potTotal / competitionData.competitors.length
+      : parseFloat(competitionData.entryFee);
+
+  const potTotalIfJoined = potTotal + parseFloat(competitionData.entryFee);
+  const payoutIfJoined =
+    potTotalIfJoined / (competitionData.competitors.length + 1);
 
   return (
     <View style={styles.container}>
@@ -177,12 +183,22 @@ const JoinScreen = ({ route, navigation }) => {
 
       <View style={styles.payoutContainer}>
         <View style={styles.payoutBox}>
-          <Text style={styles.payoutLabel}>Pot Total</Text>
+          <Text style={styles.payoutLabel}>Current Pot Total</Text>
           <Text style={styles.payoutValue}>${potTotal.toFixed(2)}</Text>
+          {competitionData.spots > 0 && (
+            <Text style={styles.payoutSubtext}>
+              ${potTotalIfJoined.toFixed(2)} if you join
+            </Text>
+          )}
         </View>
         <View style={styles.payoutBox}>
           <Text style={styles.payoutLabel}>Your Payout Now</Text>
-          <Text style={styles.payoutValue}>${payout.toFixed(2)}</Text>
+          <Text style={styles.payoutValue}>
+            $
+            {competitionData.spots > 0
+              ? payoutIfJoined.toFixed(2)
+              : payout.toFixed(2)}
+          </Text>
         </View>
       </View>
 
@@ -295,6 +311,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     color: "#fff",
     marginBottom: 8,
+  },
+  payoutSubtext: {
+    fontSize: 14,
+    color: "red",
+    marginTop: 4,
   },
   payoutValue: {
     fontSize: 26,
