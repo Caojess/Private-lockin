@@ -21,15 +21,11 @@ const CompeteScreen = ({ route, navigation }) => {
     type = "unknown",
   } = route.params || {};
 
-  // Function to get the image for a competitor
-  // const getCompetitorImage = (competitorName) => {
-  //   try {
-  //     return require(`../images/${competitorName}.png`);
-  //   } catch (error) {
-  //     console.warn(`Image not found for ${competitorName}`);
-  //     return require("../images/default-pfp.png"); // Make sure you have a default avatar
-  //   }
-  // };
+  // Helper function to resolve competitor images
+  const resolveCompetitorImage = (imagePath) => {
+    if (!imagePath) return require("../images/default-pfp.png"); // Default image
+    return { uri: imagePath.trim() }; // Ensure the path is a valid URI
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -53,11 +49,12 @@ const CompeteScreen = ({ route, navigation }) => {
         renderItem={({ item }) => (
           <View style={styles.competitorRow}>
             <Image
-              source={require("../images/default-pfp.png")}
+              source={resolveCompetitorImage(item.image)}
               style={styles.avatar}
+              onError={() => console.warn("Error loading image", item.image)}
             />
-            <Text style={styles.competitorName}>{item}</Text>
-            <Text style={styles.competitorTime}>--:--</Text>
+            <Text style={styles.competitorName}>{item.name}</Text>
+            <Text style={styles.competitorTime}>{item.hours} hours</Text>
           </View>
         )}
         ListEmptyComponent={
@@ -94,7 +91,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#DD3A3A",
     paddingVertical: 20,
     alignItems: "center",
-    width: "100%", // Ensures the header spans full width
+    width: "100%",
   },
   headerText: {
     color: "#fff",
@@ -158,6 +155,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 16,
     fontWeight: "bold",
+  },
+  emptyList: {
+    fontSize: 16,
+    color: "#999",
+    textAlign: "center",
+    marginTop: 16,
   },
 });
 
